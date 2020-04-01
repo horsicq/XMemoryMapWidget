@@ -10,9 +10,9 @@ HEADERS += \
 SOURCES += \
     $$PWD/xmemorymapwidget.cpp
 
-!contains(XCONFIG, xbinary) {
-    XCONFIG += xbinary
-    include($$PWD/../Formats/xbinary.pri)
+!contains(XCONFIG, xformats) {
+    XCONFIG += xformats
+    include($$PWD/../Formats/xformats.pri)
 }
 
 !contains(XCONFIG, xlineedithex) {

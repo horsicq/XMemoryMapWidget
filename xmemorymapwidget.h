@@ -22,7 +22,7 @@
 #define XMEMORYMAPWIDGET_H
 
 #include <QWidget>
-#include "xbinary.h"
+#include "xformats.h"
 
 namespace Ui {
 class XMemoryMapWidget;
@@ -37,9 +37,15 @@ public:
     ~XMemoryMapWidget();
     void setData(QIODevice *pDevice);
 
+private slots:
+    void process();
+
+    void on_comboBoxType_currentIndexChanged(int index);
+
 private:
     Ui::XMemoryMapWidget *ui;
     QIODevice *pDevice;
+    XBinary::_MEMORY_MAP memoryMap;
 };
 
 #endif // XMEMORYMAPWIDGET_H

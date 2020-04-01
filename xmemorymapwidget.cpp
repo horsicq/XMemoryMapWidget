@@ -35,7 +35,7 @@ XMemoryMapWidget::~XMemoryMapWidget()
 
 void XMemoryMapWidget::setData(QIODevice *pDevice)
 {
-    QSignalBlocker blocker(ui->comboBoxType);
+    const bool bWasBlocked=ui->comboBoxType->blockSignals(true);
 
     ui->comboBoxType->clear();
 
@@ -48,4 +48,23 @@ void XMemoryMapWidget::setData(QIODevice *pDevice)
         XBinary::FT ft=listFileTypes.at(i);
         ui->comboBoxType->addItem(XBinary::fileTypeIdToString(ft),ft);
     }
+
+    ui->comboBoxType->blockSignals(bWasBlocked);
+
+    if(nCount)
+    {
+        ui->comboBoxType->setCurrentIndex(nCount-1);
+    }
+}
+
+void XMemoryMapWidget::process()
+{
+
+}
+
+void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int index)
+{
+    XBinary::FT ft=(XBinary::FT)(ui->comboBoxType->currentData().toInt());
+
+    memoryMap=XFormats::getMemoryMap(pDevice,ft);
 }
