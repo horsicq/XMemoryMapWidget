@@ -35,6 +35,9 @@ XMemoryMapWidget::~XMemoryMapWidget()
 
 void XMemoryMapWidget::setData(QIODevice *pDevice)
 {
+    this->pDevice=pDevice;
+    ui->widgetHex->setData(pDevice);
+
     const bool bWasBlocked=ui->comboBoxType->blockSignals(true);
 
     ui->comboBoxType->clear();
@@ -67,4 +70,19 @@ void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int index)
     XBinary::FT ft=(XBinary::FT)(ui->comboBoxType->currentData().toInt());
 
     memoryMap=XFormats::getMemoryMap(pDevice,ft);
+}
+
+void XMemoryMapWidget::on_radioButtonFileOffset_toggled(bool checked)
+{
+
+}
+
+void XMemoryMapWidget::on_radioButtonVirtualAddress_toggled(bool checked)
+{
+
+}
+
+void XMemoryMapWidget::on_radioButtonRelativeVirtualAddress_toggled(bool checked)
+{
+
 }

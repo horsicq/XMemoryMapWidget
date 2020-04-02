@@ -42,6 +42,10 @@ private slots:
 
     void on_comboBoxType_currentIndexChanged(int index);
 
+    void on_radioButtonFileOffset_toggled(bool checked);
+    void on_radioButtonVirtualAddress_toggled(bool checked);
+    void on_radioButtonRelativeVirtualAddress_toggled(bool checked);
+
 private:
     Ui::XMemoryMapWidget *ui;
     QIODevice *pDevice;

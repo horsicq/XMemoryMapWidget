@@ -64,7 +64,7 @@
         <item>
          <layout class="QFormLayout" name="formLayout">
           <item row="0" column="0">
-           <widget class="QRadioButton" name="radioButtonFileOffset_3">
+           <widget class="QRadioButton" name="radioButtonFileOffset">
             <property name="text">
              <string>File offset</string>
             </property>
@@ -77,7 +77,7 @@
            <widget class="XLineEditHEX" name="lineEditFileOffset"/>
           </item>
           <item row="1" column="0">
-           <widget class="QRadioButton" name="radioButtonFileOffset_2">
+           <widget class="QRadioButton" name="radioButtonVirtualAddress">
             <property name="text">
              <string>Virtual address</string>
             </property>
@@ -90,7 +90,7 @@
            <widget class="XLineEditHEX" name="lineEditFileVirtualAddress"/>
           </item>
           <item row="2" column="0">
-           <widget class="QRadioButton" name="radioButtonFileOffset">
+           <widget class="QRadioButton" name="radioButtonRelativeVirtualAddress">
             <property name="text">
              <string>Relative virtual address</string>
             </property>
