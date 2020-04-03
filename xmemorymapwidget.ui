@@ -87,7 +87,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="XLineEditHEX" name="lineEditFileVirtualAddress"/>
+           <widget class="XLineEditHEX" name="lineEditVirtualAddress"/>
           </item>
           <item row="2" column="0">
            <widget class="QRadioButton" name="radioButtonRelativeVirtualAddress">

@@ -45,6 +45,11 @@ private slots:
     void on_radioButtonFileOffset_toggled(bool checked);
     void on_radioButtonVirtualAddress_toggled(bool checked);
     void on_radioButtonRelativeVirtualAddress_toggled(bool checked);
+    void ajust();
+
+    void on_lineEditFileOffset_textChanged(const QString &arg1);
+    void on_lineEditVirtualAddress_textChanged(const QString &arg1);
+    void on_lineEditRelativeVirtualAddress_textChanged(const QString &arg1);
 
 private:
     Ui::XMemoryMapWidget *ui;

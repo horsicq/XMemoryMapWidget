@@ -70,19 +70,66 @@ void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int index)
     XBinary::FT ft=(XBinary::FT)(ui->comboBoxType->currentData().toInt());
 
     memoryMap=XFormats::getMemoryMap(pDevice,ft);
+
+    ui->radioButtonFileOffset->setChecked(true);
+
+    ui->lineEditFileOffset->setValue((quint32)0);
+
+    ajust();
 }
 
 void XMemoryMapWidget::on_radioButtonFileOffset_toggled(bool checked)
 {
-
+    Q_UNUSED(checked)
+    ajust();
 }
 
 void XMemoryMapWidget::on_radioButtonVirtualAddress_toggled(bool checked)
 {
-
+    Q_UNUSED(checked)
+    ajust();
 }
 
 void XMemoryMapWidget::on_radioButtonRelativeVirtualAddress_toggled(bool checked)
 {
+    Q_UNUSED(checked)
+    ajust();
+}
 
+void XMemoryMapWidget::ajust()
+{
+    quint64 nOffset=ui->lineEditFileOffset->getValue();
+    quint64 nVirtualAddress=ui->lineEditVirtualAddress->getValue();
+    quint64 nRelativeVirtualAddress=ui->lineEditRelativeVirtualAddress->getValue();
+
+    if(ui->radioButtonFileOffset->isChecked())
+    {
+
+    }
+    else if(ui->radioButtonVirtualAddress->isChecked())
+    {
+
+    }
+    else if(ui->radioButtonRelativeVirtualAddress->isChecked())
+    {
+
+    }
+}
+
+void XMemoryMapWidget::on_lineEditFileOffset_textChanged(const QString &arg1)
+{
+    Q_UNUSED(arg1)
+    ajust();
+}
+
+void XMemoryMapWidget::on_lineEditVirtualAddress_textChanged(const QString &arg1)
+{
+    Q_UNUSED(arg1)
+    ajust();
+}
+
+void XMemoryMapWidget::on_lineEditRelativeVirtualAddress_textChanged(const QString &arg1)
+{
+    Q_UNUSED(arg1)
+    ajust();
 }
