@@ -26,6 +26,8 @@ XMemoryMapWidget::XMemoryMapWidget(QWidget *parent) :
     ui(new Ui::XMemoryMapWidget)
 {
     ui->setupUi(this);
+
+    mode=XLineEditHEX::MODE_16;
 }
 
 XMemoryMapWidget::~XMemoryMapWidget()
@@ -38,7 +40,7 @@ void XMemoryMapWidget::setData(QIODevice *pDevice)
     this->pDevice=pDevice;
     ui->widgetHex->setData(pDevice);
 
-    const bool bWasBlocked=ui->comboBoxType->blockSignals(true);
+    QSignalBlocker(ui->comboBoxType);
 
     ui->comboBoxType->clear();
 
@@ -52,11 +54,10 @@ void XMemoryMapWidget::setData(QIODevice *pDevice)
         ui->comboBoxType->addItem(XBinary::fileTypeIdToString(ft),ft);
     }
 
-    ui->comboBoxType->blockSignals(bWasBlocked);
-
     if(nCount)
     {
         ui->comboBoxType->setCurrentIndex(nCount-1);
+        updateMemoryMap();
     }
 }
 
@@ -67,6 +68,35 @@ void XMemoryMapWidget::process()
 
 void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int index)
 {
+    Q_UNUSED(index)
+
+    updateMemoryMap();
+}
+
+void XMemoryMapWidget::on_radioButtonFileOffset_toggled(bool checked)
+{
+    Q_UNUSED(checked)
+    ajust(false);
+}
+
+void XMemoryMapWidget::on_radioButtonVirtualAddress_toggled(bool checked)
+{
+    Q_UNUSED(checked)
+    ajust(false);
+}
+
+void XMemoryMapWidget::on_radioButtonRelativeVirtualAddress_toggled(bool checked)
+{
+    Q_UNUSED(checked)
+    ajust(false);
+}
+
+void XMemoryMapWidget::updateMemoryMap()
+{
+    QSignalBlocker(ui->lineEditFileOffset);
+    QSignalBlocker(ui->lineEditVirtualAddress);
+    QSignalBlocker(ui->lineEditRelativeVirtualAddress);
+
     XBinary::FT ft=(XBinary::FT)(ui->comboBoxType->currentData().toInt());
 
     memoryMap=XFormats::getMemoryMap(pDevice,ft);
@@ -75,61 +105,103 @@ void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int index)
 
     ui->lineEditFileOffset->setValue((quint32)0);
 
-    ajust();
+    if(memoryMap.mode==XBinary::MODE_16)
+    {
+        mode=XLineEditHEX::MODE_16;
+    }
+    else if(memoryMap.mode==XBinary::MODE_32)
+    {
+        mode=XLineEditHEX::MODE_32;
+    }
+    else if(memoryMap.mode==XBinary::MODE_64)
+    {
+        mode=XLineEditHEX::MODE_64;
+    }
+    else if(memoryMap.mode==XBinary::MODE_UNKNOWN)
+    {
+        mode=XLineEditHEX::MODE_64;
+    }
+
+    ajust(true);
 }
 
-void XMemoryMapWidget::on_radioButtonFileOffset_toggled(bool checked)
+void XMemoryMapWidget::ajust(bool bInit)
 {
-    Q_UNUSED(checked)
-    ajust();
-}
+    QSignalBlocker(ui->lineEditFileOffset);
+    QSignalBlocker(ui->lineEditVirtualAddress);
+    QSignalBlocker(ui->lineEditRelativeVirtualAddress);
 
-void XMemoryMapWidget::on_radioButtonVirtualAddress_toggled(bool checked)
-{
-    Q_UNUSED(checked)
-    ajust();
-}
-
-void XMemoryMapWidget::on_radioButtonRelativeVirtualAddress_toggled(bool checked)
-{
-    Q_UNUSED(checked)
-    ajust();
-}
-
-void XMemoryMapWidget::ajust()
-{
-    quint64 nOffset=ui->lineEditFileOffset->getValue();
+    quint64 nFileOffset=ui->lineEditFileOffset->getValue();
     quint64 nVirtualAddress=ui->lineEditVirtualAddress->getValue();
     quint64 nRelativeVirtualAddress=ui->lineEditRelativeVirtualAddress->getValue();
 
     if(ui->radioButtonFileOffset->isChecked())
     {
+        ui->lineEditFileOffset->setReadOnly(false);
+        ui->lineEditVirtualAddress->setReadOnly(true);
+        ui->lineEditRelativeVirtualAddress->setReadOnly(true);
 
+        nVirtualAddress=XBinary::offsetToAddress(&memoryMap,nFileOffset);
+        nRelativeVirtualAddress=XBinary::offsetToRelAddress(&memoryMap,nFileOffset);
+
+        if(bInit)
+        {
+            ui->lineEditFileOffset->setModeValue(mode,nFileOffset);
+        }
+
+        ui->lineEditVirtualAddress->setModeValue(mode,nVirtualAddress);
+        ui->lineEditRelativeVirtualAddress->setModeValue(mode,nRelativeVirtualAddress);
     }
     else if(ui->radioButtonVirtualAddress->isChecked())
     {
+        ui->lineEditFileOffset->setReadOnly(true);
+        ui->lineEditVirtualAddress->setReadOnly(false);
+        ui->lineEditRelativeVirtualAddress->setReadOnly(true);
 
+        nFileOffset=XBinary::addressToOffset(&memoryMap,nVirtualAddress);
+        nRelativeVirtualAddress=XBinary::addressToRelAddress(&memoryMap,nVirtualAddress);
+
+        if(bInit)
+        {
+            ui->lineEditVirtualAddress->setModeValue(mode,nVirtualAddress);
+        }
+
+        ui->lineEditFileOffset->setModeValue(mode,nFileOffset);
+        ui->lineEditRelativeVirtualAddress->setModeValue(mode,nRelativeVirtualAddress);
     }
     else if(ui->radioButtonRelativeVirtualAddress->isChecked())
     {
+        ui->lineEditFileOffset->setReadOnly(true);
+        ui->lineEditVirtualAddress->setReadOnly(true);
+        ui->lineEditRelativeVirtualAddress->setReadOnly(false);
 
-    }
+        nFileOffset=XBinary::relAddressToOffset(&memoryMap,nRelativeVirtualAddress);
+        nVirtualAddress=XBinary::relAddressToAddress(&memoryMap,nRelativeVirtualAddress);
+
+        if(bInit)
+        {
+            ui->lineEditRelativeVirtualAddress->setModeValue(mode,nRelativeVirtualAddress);
+        }
+
+        ui->lineEditFileOffset->setModeValue(mode,nFileOffset);
+        ui->lineEditVirtualAddress->setModeValue(mode,nVirtualAddress);
+    } 
 }
 
 void XMemoryMapWidget::on_lineEditFileOffset_textChanged(const QString &arg1)
 {
     Q_UNUSED(arg1)
-    ajust();
+    ajust(false);
 }
 
 void XMemoryMapWidget::on_lineEditVirtualAddress_textChanged(const QString &arg1)
 {
     Q_UNUSED(arg1)
-    ajust();
+    ajust(false);
 }
 
 void XMemoryMapWidget::on_lineEditRelativeVirtualAddress_textChanged(const QString &arg1)
 {
     Q_UNUSED(arg1)
-    ajust();
+    ajust(false);
 }

@@ -23,6 +23,7 @@
 
 #include <QWidget>
 #include "xformats.h"
+#include "xlineedithex.h"
 
 namespace Ui {
 class XMemoryMapWidget;
@@ -45,7 +46,8 @@ private slots:
     void on_radioButtonFileOffset_toggled(bool checked);
     void on_radioButtonVirtualAddress_toggled(bool checked);
     void on_radioButtonRelativeVirtualAddress_toggled(bool checked);
-    void ajust();
+    void updateMemoryMap();
+    void ajust(bool bInit);
 
     void on_lineEditFileOffset_textChanged(const QString &arg1);
     void on_lineEditVirtualAddress_textChanged(const QString &arg1);
@@ -55,6 +57,7 @@ private:
     Ui::XMemoryMapWidget *ui;
     QIODevice *pDevice;
     XBinary::_MEMORY_MAP memoryMap;
+    XLineEditHEX::MODE mode;
 };
 
 #endif // XMEMORYMAPWIDGET_H
