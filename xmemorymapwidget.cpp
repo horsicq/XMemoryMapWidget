@@ -40,7 +40,7 @@ void XMemoryMapWidget::setData(QIODevice *pDevice)
     this->pDevice=pDevice;
     ui->widgetHex->setData(pDevice);
 
-    QSignalBlocker(ui->comboBoxType);
+    const QSignalBlocker blocker(ui->comboBoxType);
 
     ui->comboBoxType->clear();
 
@@ -93,9 +93,9 @@ void XMemoryMapWidget::on_radioButtonRelativeVirtualAddress_toggled(bool checked
 
 void XMemoryMapWidget::updateMemoryMap()
 {
-    QSignalBlocker(ui->lineEditFileOffset);
-    QSignalBlocker(ui->lineEditVirtualAddress);
-    QSignalBlocker(ui->lineEditRelativeVirtualAddress);
+    const QSignalBlocker blocker1(ui->lineEditFileOffset);
+    const QSignalBlocker blocker2(ui->lineEditVirtualAddress);
+    const QSignalBlocker blocker3(ui->lineEditRelativeVirtualAddress);
 
     XBinary::FT ft=(XBinary::FT)(ui->comboBoxType->currentData().toInt());
 
@@ -127,9 +127,9 @@ void XMemoryMapWidget::updateMemoryMap()
 
 void XMemoryMapWidget::ajust(bool bInit)
 {
-    QSignalBlocker(ui->lineEditFileOffset);
-    QSignalBlocker(ui->lineEditVirtualAddress);
-    QSignalBlocker(ui->lineEditRelativeVirtualAddress);
+    const QSignalBlocker blocker1(ui->lineEditFileOffset);
+    const QSignalBlocker blocker2(ui->lineEditVirtualAddress);
+    const QSignalBlocker blocker3(ui->lineEditRelativeVirtualAddress);
 
     quint64 nFileOffset=ui->lineEditFileOffset->getValue();
     quint64 nVirtualAddress=ui->lineEditVirtualAddress->getValue();
@@ -185,7 +185,19 @@ void XMemoryMapWidget::ajust(bool bInit)
 
         ui->lineEditFileOffset->setModeValue(mode,nFileOffset);
         ui->lineEditVirtualAddress->setModeValue(mode,nVirtualAddress);
-    } 
+    }
+
+    if(XBinary::isOffsetValid(&memoryMap,nFileOffset))
+    {
+        ui->stackedWidgetHex->setCurrentIndex(0);
+
+        ui->widgetHex->goToOffset(nFileOffset);
+    }
+    else
+    {
+        // Invalid offset
+        ui->stackedWidgetHex->setCurrentIndex(1);
+    }
 }
 
 void XMemoryMapWidget::on_lineEditFileOffset_textChanged(const QString &arg1)
