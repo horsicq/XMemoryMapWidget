@@ -118,8 +118,8 @@ void XMemoryMapWidget::updateMemoryMap()
         mode=XLineEditHEX::MODE_64;
     }
     else if(memoryMap.mode==XBinary::MODE_UNKNOWN)
-    {
-        mode=XLineEditHEX::MODE_64;
+    {     
+        mode=XLineEditHEX::getModeFromSize(memoryMap.nRawSize);
     }
 
     ajust(true);
