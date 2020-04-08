@@ -192,6 +192,7 @@ void XMemoryMapWidget::ajust(bool bInit)
         ui->stackedWidgetHex->setCurrentIndex(0);
 
         ui->widgetHex->goToOffset(nFileOffset);
+        ui->widgetHex->reload();
     }
     else
     {
