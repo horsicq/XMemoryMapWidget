@@ -122,6 +122,45 @@ void XMemoryMapWidget::updateMemoryMap()
         mode=XLineEditHEX::getModeFromSize(memoryMap.nRawSize);
     }
 
+    QAbstractItemModel *pOldModel=ui->tableViewMemoryMap->model();
+
+    int nCount=memoryMap.listRecords.count();
+
+    QStandardItemModel *pModel=new QStandardItemModel(nCount,4,this);
+
+    pModel->setHeaderData(0,Qt::Horizontal,tr("Name"));
+    pModel->setHeaderData(1,Qt::Horizontal,tr("Offset"));
+    pModel->setHeaderData(2,Qt::Horizontal,tr("Address"));
+    pModel->setHeaderData(3,Qt::Horizontal,tr("Size"));
+
+    for(int i=0;i<nCount;i++)
+    {
+        QStandardItem *itemName=new QStandardItem;
+        itemName->setText(memoryMap.listRecords.at(i).sName);
+        pModel->setItem(i,0,itemName);
+
+        QStandardItem *itemOffset=new QStandardItem;
+        itemOffset->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nOffset));
+        pModel->setItem(i,1,itemOffset);
+
+        QStandardItem *itemAddress=new QStandardItem;
+        itemAddress->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nAddress));
+        pModel->setItem(i,2,itemAddress);
+
+        QStandardItem *itemSize=new QStandardItem;
+        itemSize->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nSize));
+        pModel->setItem(i,3,itemSize);
+    }
+
+    ui->tableViewMemoryMap->setModel(pModel);
+
+    delete pOldModel;
+
+    ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(0,QHeaderView::Stretch);
+    ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(1,QHeaderView::Interactive);
+    ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(2,QHeaderView::Interactive);
+    ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(3,QHeaderView::Interactive);
+
     ajust(true);
 }
 

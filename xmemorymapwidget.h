@@ -22,6 +22,7 @@
 #define XMEMORYMAPWIDGET_H
 
 #include <QWidget>
+#include <QStandardItemModel>
 #include "xformats.h"
 #include "xlineedithex.h"
 
