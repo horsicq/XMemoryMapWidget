@@ -133,21 +133,49 @@ void XMemoryMapWidget::updateMemoryMap()
     pModel->setHeaderData(2,Qt::Horizontal,tr("Address"));
     pModel->setHeaderData(3,Qt::Horizontal,tr("Size"));
 
+    QColor colDisabled=QWidget::palette().color(QPalette::Window);
+
     for(int i=0;i<nCount;i++)
     {
+        bool bIsVirtual=memoryMap.listRecords.at(i).bIsVirtual;
+
         QStandardItem *itemName=new QStandardItem;
+
+        if(bIsVirtual)
+        {
+            itemName->setBackground(colDisabled);
+        }
+
         itemName->setText(memoryMap.listRecords.at(i).sName);
         pModel->setItem(i,0,itemName);
 
         QStandardItem *itemOffset=new QStandardItem;
+
+        if(bIsVirtual)
+        {
+            itemOffset->setBackground(colDisabled);
+        }
+
         itemOffset->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nOffset));
         pModel->setItem(i,1,itemOffset);
 
         QStandardItem *itemAddress=new QStandardItem;
+
+        if(bIsVirtual)
+        {
+            itemAddress->setBackground(colDisabled);
+        }
+
         itemAddress->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nAddress));
         pModel->setItem(i,2,itemAddress);
 
         QStandardItem *itemSize=new QStandardItem;
+
+        if(bIsVirtual)
+        {
+            itemSize->setBackground(colDisabled);
+        }
+
         itemSize->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nSize));
         pModel->setItem(i,3,itemSize);
     }
