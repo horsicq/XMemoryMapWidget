@@ -23,6 +23,7 @@
 
 #include <QWidget>
 #include <QStandardItemModel>
+#include <QItemSelection>
 #include "xformats.h"
 #include "xlineedithex.h"
 
@@ -53,6 +54,8 @@ private slots:
     void on_lineEditFileOffset_textChanged(const QString &arg1);
     void on_lineEditVirtualAddress_textChanged(const QString &arg1);
     void on_lineEditRelativeVirtualAddress_textChanged(const QString &arg1);
+
+    void on_tableViewSelection(const QItemSelection &selected, const QItemSelection &deselected);
 
 private:
     Ui::XMemoryMapWidget *ui;

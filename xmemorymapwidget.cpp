@@ -195,6 +195,8 @@ void XMemoryMapWidget::updateMemoryMap()
     ui->tableViewMemoryMap->setColumnWidth(2,nColumnSize);
     ui->tableViewMemoryMap->setColumnWidth(3,nColumnSize);
 
+    connect(ui->tableViewMemoryMap->selectionModel(),SIGNAL(selectionChanged(QItemSelection, QItemSelection)),this,SLOT(on_tableViewSelection(QItemSelection, QItemSelection)));
+
     ajust(true);
 }
 
@@ -290,4 +292,9 @@ void XMemoryMapWidget::on_lineEditRelativeVirtualAddress_textChanged(const QStri
 {
     Q_UNUSED(arg1)
     ajust(false);
+}
+
+void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    qDebug("on_tableViewSelection");
 }
