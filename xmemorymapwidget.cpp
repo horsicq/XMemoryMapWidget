@@ -96,6 +96,8 @@ void XMemoryMapWidget::updateMemoryMap()
     const QSignalBlocker blocker1(ui->lineEditFileOffset);
     const QSignalBlocker blocker2(ui->lineEditVirtualAddress);
     const QSignalBlocker blocker3(ui->lineEditRelativeVirtualAddress);
+    const QSignalBlocker blocker4(ui->tableViewMemoryMap);
+    const QSignalBlocker blocker5(ui->pageHex);
 
     XBinary::FT ft=(XBinary::FT)(ui->comboBoxType->currentData().toInt());
 
@@ -140,6 +142,9 @@ void XMemoryMapWidget::updateMemoryMap()
         bool bIsVirtual=memoryMap.listRecords.at(i).bIsVirtual;
 
         QStandardItem *itemName=new QStandardItem;
+
+        itemName->setData(memoryMap.listRecords.at(i).nOffset,Qt::UserRole+0);
+        itemName->setData(memoryMap.listRecords.at(i).nAddress,Qt::UserRole+1);
 
         if(bIsVirtual)
         {
@@ -205,6 +210,8 @@ void XMemoryMapWidget::ajust(bool bInit)
     const QSignalBlocker blocker1(ui->lineEditFileOffset);
     const QSignalBlocker blocker2(ui->lineEditVirtualAddress);
     const QSignalBlocker blocker3(ui->lineEditRelativeVirtualAddress);
+    const QSignalBlocker blocker4(ui->tableViewMemoryMap);
+    const QSignalBlocker blocker5(ui->pageHex);
 
     quint64 nFileOffset=ui->lineEditFileOffset->getValue();
     quint64 nVirtualAddress=ui->lineEditVirtualAddress->getValue();
@@ -262,18 +269,7 @@ void XMemoryMapWidget::ajust(bool bInit)
         ui->lineEditVirtualAddress->setModeValue(mode,nVirtualAddress);
     }
 
-    if(XBinary::isOffsetValid(&memoryMap,nFileOffset))
-    {
-        ui->stackedWidgetHex->setCurrentIndex(0);
-
-        ui->widgetHex->goToOffset(nFileOffset);
-        ui->widgetHex->reload();
-    }
-    else
-    {
-        // Invalid offset
-        ui->stackedWidgetHex->setCurrentIndex(1);
-    }
+    _goToOffset(nFileOffset);
 }
 
 void XMemoryMapWidget::on_lineEditFileOffset_textChanged(const QString &arg1)
@@ -296,5 +292,49 @@ void XMemoryMapWidget::on_lineEditRelativeVirtualAddress_textChanged(const QStri
 
 void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &selected, const QItemSelection &deselected)
 {
-    qDebug("on_tableViewSelection");
+    Q_UNUSED(selected)
+    Q_UNUSED(deselected)
+
+    const QSignalBlocker blocker1(ui->lineEditFileOffset);
+    const QSignalBlocker blocker2(ui->lineEditVirtualAddress);
+    const QSignalBlocker blocker3(ui->lineEditRelativeVirtualAddress);
+    const QSignalBlocker blocker4(ui->tableViewMemoryMap);
+    const QSignalBlocker blocker5(ui->pageHex);
+
+    QItemSelectionModel *pSelectionModel=ui->tableViewMemoryMap->selectionModel();
+
+    if(pSelectionModel)
+    {
+        QModelIndexList listIndexes=pSelectionModel->selectedRows(0);
+
+        if(listIndexes.count())
+        {
+            qint64 nFileOffset=listIndexes.at(0).data(Qt::UserRole+0).toLongLong();
+            qint64 nVirtualAddress=listIndexes.at(0).data(Qt::UserRole+1).toLongLong();
+            qint64 nRelativeVirtualAddress=XBinary::addressToRelAddress(&memoryMap,nVirtualAddress);
+
+            ui->lineEditFileOffset->setModeValue(mode,nFileOffset);
+            ui->lineEditVirtualAddress->setModeValue(mode,nVirtualAddress);
+            ui->lineEditRelativeVirtualAddress->setModeValue(mode,nRelativeVirtualAddress);
+
+            _goToOffset(nFileOffset);
+        }
+    }
+
+}
+
+void XMemoryMapWidget::_goToOffset(qint64 nOffset)
+{
+    if(XBinary::isOffsetValid(&memoryMap,nOffset))
+    {
+        ui->stackedWidgetHex->setCurrentIndex(0);
+
+        ui->widgetHex->goToOffset(nOffset);
+        ui->widgetHex->reload();
+    }
+    else
+    {
+        // Invalid offset
+        ui->stackedWidgetHex->setCurrentIndex(1);
+    }
 }

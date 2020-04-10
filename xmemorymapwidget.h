@@ -57,6 +57,8 @@ private slots:
 
     void on_tableViewSelection(const QItemSelection &selected, const QItemSelection &deselected);
 
+    void _goToOffset(qint64 nOffset);
+
 private:
     Ui::XMemoryMapWidget *ui;
     QIODevice *pDevice;
