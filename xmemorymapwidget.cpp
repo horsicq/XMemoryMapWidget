@@ -213,6 +213,8 @@ void XMemoryMapWidget::ajust(bool bInit)
     const QSignalBlocker blocker4(ui->tableViewMemoryMap);
     const QSignalBlocker blocker5(ui->pageHex);
 
+    int nTableViewIndex=-1;
+
     quint64 nFileOffset=ui->lineEditFileOffset->getValue();
     quint64 nVirtualAddress=ui->lineEditVirtualAddress->getValue();
     quint64 nRelativeVirtualAddress=ui->lineEditRelativeVirtualAddress->getValue();
@@ -225,6 +227,13 @@ void XMemoryMapWidget::ajust(bool bInit)
 
         nVirtualAddress=XBinary::offsetToAddress(&memoryMap,nFileOffset);
         nRelativeVirtualAddress=XBinary::offsetToRelAddress(&memoryMap,nFileOffset);
+
+        XBinary::_MEMORY_RECORD memoryRecord=XBinary::getMemoryRecordByOffset(&memoryMap,nFileOffset);
+
+        if(memoryRecord.nSize)
+        {
+            nTableViewIndex=memoryRecord.nIndex;
+        }
 
         if(bInit)
         {
@@ -243,6 +252,13 @@ void XMemoryMapWidget::ajust(bool bInit)
         nFileOffset=XBinary::addressToOffset(&memoryMap,nVirtualAddress);
         nRelativeVirtualAddress=XBinary::addressToRelAddress(&memoryMap,nVirtualAddress);
 
+        XBinary::_MEMORY_RECORD memoryRecord=XBinary::getMemoryRecordByAddress(&memoryMap,nVirtualAddress);
+
+        if(memoryRecord.nSize)
+        {
+            nTableViewIndex=memoryRecord.nIndex;
+        }
+
         if(bInit)
         {
             ui->lineEditVirtualAddress->setModeValue(mode,nVirtualAddress);
@@ -260,6 +276,13 @@ void XMemoryMapWidget::ajust(bool bInit)
         nFileOffset=XBinary::relAddressToOffset(&memoryMap,nRelativeVirtualAddress);
         nVirtualAddress=XBinary::relAddressToAddress(&memoryMap,nRelativeVirtualAddress);
 
+        XBinary::_MEMORY_RECORD memoryRecord=XBinary::getMemoryRecordByRelAddress(&memoryMap,nRelativeVirtualAddress);
+
+        if(memoryRecord.nSize)
+        {
+            nTableViewIndex=memoryRecord.nIndex;
+        }
+
         if(bInit)
         {
             ui->lineEditRelativeVirtualAddress->setModeValue(mode,nRelativeVirtualAddress);
@@ -267,6 +290,11 @@ void XMemoryMapWidget::ajust(bool bInit)
 
         ui->lineEditFileOffset->setModeValue(mode,nFileOffset);
         ui->lineEditVirtualAddress->setModeValue(mode,nVirtualAddress);
+    }
+
+    if(nTableViewIndex!=-1)
+    {
+        ui->tableViewMemoryMap->setCurrentIndex(ui->tableViewMemoryMap->model()->index(nTableViewIndex,0));
     }
 
     _goToOffset(nFileOffset);
