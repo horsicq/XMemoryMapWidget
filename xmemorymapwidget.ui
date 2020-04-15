@@ -108,6 +108,12 @@
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
            <widget class="QGroupBox" name="groupBoxMode">
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="title">
              <string>Mode</string>
             </property>
@@ -136,6 +142,12 @@
           </item>
           <item>
            <widget class="QGroupBox" name="groupBoxEndianness">
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="title">
              <string>Endianness</string>
             </property>
