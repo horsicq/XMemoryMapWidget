@@ -61,11 +61,6 @@ void XMemoryMapWidget::setData(QIODevice *pDevice)
     }
 }
 
-void XMemoryMapWidget::process()
-{
-
-}
-
 void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int index)
 {
     Q_UNUSED(index)
@@ -102,6 +97,8 @@ void XMemoryMapWidget::updateMemoryMap()
     XBinary::FT ft=(XBinary::FT)(ui->comboBoxType->currentData().toInt());
 
     memoryMap=XFormats::getMemoryMap(pDevice,ft);
+
+    ui->labelArch->setText(memoryMap.sArch);
 
     ui->radioButtonFileOffset->setChecked(true);
 

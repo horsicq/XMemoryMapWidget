@@ -41,8 +41,6 @@ public:
     void setData(QIODevice *pDevice);
 
 private slots:
-    void process();
-
     void on_comboBoxType_currentIndexChanged(int index);
 
     void on_radioButtonFileOffset_toggled(bool checked);
