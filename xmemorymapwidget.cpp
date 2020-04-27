@@ -71,18 +71,21 @@ void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int index)
 void XMemoryMapWidget::on_radioButtonFileOffset_toggled(bool checked)
 {
     Q_UNUSED(checked)
+
     ajust(false);
 }
 
 void XMemoryMapWidget::on_radioButtonVirtualAddress_toggled(bool checked)
 {
     Q_UNUSED(checked)
+
     ajust(false);
 }
 
 void XMemoryMapWidget::on_radioButtonRelativeVirtualAddress_toggled(bool checked)
 {
     Q_UNUSED(checked)
+
     ajust(false);
 }
 

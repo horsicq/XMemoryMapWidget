@@ -42,19 +42,15 @@ public:
 
 private slots:
     void on_comboBoxType_currentIndexChanged(int index);
-
     void on_radioButtonFileOffset_toggled(bool checked);
     void on_radioButtonVirtualAddress_toggled(bool checked);
     void on_radioButtonRelativeVirtualAddress_toggled(bool checked);
     void updateMemoryMap();
     void ajust(bool bInit);
-
     void on_lineEditFileOffset_textChanged(const QString &arg1);
     void on_lineEditVirtualAddress_textChanged(const QString &arg1);
     void on_lineEditRelativeVirtualAddress_textChanged(const QString &arg1);
-
     void on_tableViewSelection(const QItemSelection &selected, const QItemSelection &deselected);
-
     void _goToOffset(qint64 nOffset);
 
 private:
