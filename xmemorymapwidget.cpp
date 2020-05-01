@@ -305,18 +305,21 @@ void XMemoryMapWidget::ajust(bool bInit)
 void XMemoryMapWidget::on_lineEditFileOffset_textChanged(const QString &arg1)
 {
     Q_UNUSED(arg1)
+
     ajust(false);
 }
 
 void XMemoryMapWidget::on_lineEditVirtualAddress_textChanged(const QString &arg1)
 {
     Q_UNUSED(arg1)
+
     ajust(false);
 }
 
 void XMemoryMapWidget::on_lineEditRelativeVirtualAddress_textChanged(const QString &arg1)
 {
     Q_UNUSED(arg1)
+
     ajust(false);
 }
 
