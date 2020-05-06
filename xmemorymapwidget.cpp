@@ -196,7 +196,7 @@ void XMemoryMapWidget::updateMemoryMap()
     ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(2,QHeaderView::Interactive);
     ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(3,QHeaderView::Interactive);
 
-    qint32 nColumnSize=XLineEditHEX::getWidthFromMode(mode);
+    qint32 nColumnSize=XLineEditHEX::getWidthFromMode(this,mode);
 
     ui->tableViewMemoryMap->setColumnWidth(1,nColumnSize);
     ui->tableViewMemoryMap->setColumnWidth(2,nColumnSize);
