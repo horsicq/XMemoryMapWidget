@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_6">
    <property name="leftMargin">
@@ -177,7 +177,7 @@
           <item>
            <widget class="QGroupBox" name="groupBoxArch">
             <property name="title">
-             <string>Arch</string>
+             <string>Architecture</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_9">
              <property name="leftMargin">
@@ -271,7 +271,7 @@
    <item>
     <widget class="QGroupBox" name="groupBoxHex">
      <property name="title">
-      <string>Hex</string>
+      <string notr="true">Hex</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <property name="leftMargin">
