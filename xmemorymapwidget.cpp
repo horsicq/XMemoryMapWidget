@@ -99,7 +99,7 @@ void XMemoryMapWidget::updateMemoryMap()
 
     XBinary::FT ft=(XBinary::FT)(ui->comboBoxType->currentData().toInt());
 
-    memoryMap=XFormats::getMemoryMap(pDevice,ft);
+    memoryMap=XFormats::getMemoryMap(ft,pDevice);
 
     ui->labelArch->setText(memoryMap.sArch);
     ui->labelMode->setText(XBinary::modeIdToString(memoryMap.mode));
