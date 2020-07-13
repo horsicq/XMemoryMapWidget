@@ -42,9 +42,9 @@ public:
 
 private slots:
     void on_comboBoxType_currentIndexChanged(int index);
-    void on_radioButtonFileOffset_toggled(bool checked);
-    void on_radioButtonVirtualAddress_toggled(bool checked);
-    void on_radioButtonRelativeVirtualAddress_toggled(bool checked);
+    void on_radioButtonFileOffset_toggled(bool bChecked);
+    void on_radioButtonVirtualAddress_toggled(bool bChecked);
+    void on_radioButtonRelativeVirtualAddress_toggled(bool bChecked);
     void updateMemoryMap();
     void ajust(bool bInit);
     void on_lineEditFileOffset_textChanged(const QString &sText);

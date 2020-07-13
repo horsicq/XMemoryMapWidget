@@ -68,23 +68,23 @@ void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int index)
     updateMemoryMap();
 }
 
-void XMemoryMapWidget::on_radioButtonFileOffset_toggled(bool checked)
+void XMemoryMapWidget::on_radioButtonFileOffset_toggled(bool bChecked)
 {
-    Q_UNUSED(checked)
+    Q_UNUSED(bChecked)
 
     ajust(false);
 }
 
-void XMemoryMapWidget::on_radioButtonVirtualAddress_toggled(bool checked)
+void XMemoryMapWidget::on_radioButtonVirtualAddress_toggled(bool bChecked)
 {
-    Q_UNUSED(checked)
+    Q_UNUSED(bChecked)
 
     ajust(false);
 }
 
-void XMemoryMapWidget::on_radioButtonRelativeVirtualAddress_toggled(bool checked)
+void XMemoryMapWidget::on_radioButtonRelativeVirtualAddress_toggled(bool bChecked)
 {
-    Q_UNUSED(checked)
+    Q_UNUSED(bChecked)
 
     ajust(false);
 }
