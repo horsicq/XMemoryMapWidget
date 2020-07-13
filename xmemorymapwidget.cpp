@@ -302,23 +302,23 @@ void XMemoryMapWidget::ajust(bool bInit)
     _goToOffset(nFileOffset);
 }
 
-void XMemoryMapWidget::on_lineEditFileOffset_textChanged(const QString &arg1)
+void XMemoryMapWidget::on_lineEditFileOffset_textChanged(const QString &sText)
 {
-    Q_UNUSED(arg1)
+    Q_UNUSED(sText)
 
     ajust(false);
 }
 
-void XMemoryMapWidget::on_lineEditVirtualAddress_textChanged(const QString &arg1)
+void XMemoryMapWidget::on_lineEditVirtualAddress_textChanged(const QString &sText)
 {
-    Q_UNUSED(arg1)
+    Q_UNUSED(sText)
 
     ajust(false);
 }
 
-void XMemoryMapWidget::on_lineEditRelativeVirtualAddress_textChanged(const QString &arg1)
+void XMemoryMapWidget::on_lineEditRelativeVirtualAddress_textChanged(const QString &sText)
 {
-    Q_UNUSED(arg1)
+    Q_UNUSED(sText)
 
     ajust(false);
 }
