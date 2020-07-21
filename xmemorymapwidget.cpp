@@ -61,9 +61,9 @@ void XMemoryMapWidget::setData(QIODevice *pDevice)
     }
 }
 
-void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int index)
+void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int nIndex)
 {
-    Q_UNUSED(index)
+    Q_UNUSED(nIndex)
 
     updateMemoryMap();
 }
