@@ -27,6 +27,8 @@ DialogMemoryMap::DialogMemoryMap(QWidget *parent, QIODevice *pDevice) :
 {
     ui->setupUi(this);
 
+    setWindowFlags(Qt::Window);
+
     ui->widgetMemoryMap->setData(pDevice);
 }
 
