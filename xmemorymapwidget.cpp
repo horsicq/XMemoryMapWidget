@@ -35,7 +35,7 @@ XMemoryMapWidget::~XMemoryMapWidget()
     delete ui;
 }
 
-void XMemoryMapWidget::setData(QIODevice *pDevice)
+void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT ft)
 {
     this->pDevice=pDevice;
     ui->widgetHex->setData(pDevice);
@@ -56,7 +56,25 @@ void XMemoryMapWidget::setData(QIODevice *pDevice)
 
     if(nCount)
     {
-        ui->comboBoxType->setCurrentIndex(nCount-1);
+        if(ft==XBinary::FT_UNKNOWN)
+        {
+            ui->comboBoxType->setCurrentIndex(nCount-1);
+        }
+        else
+        {
+            int nCount=ui->comboBoxType->count();
+
+            for(int i=0;i<nCount;i++)
+            {
+                if(ui->comboBoxType->itemData(i).toUInt()==ft)
+                {
+                    ui->comboBoxType->setCurrentIndex(i);
+
+                    break;
+                }
+            }
+        }
+
         updateMemoryMap();
     }
 }

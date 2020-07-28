@@ -22,6 +22,7 @@
 #define DIALOGMEMORYMAP_H
 
 #include <QDialog>
+#include "xbinary.h"
 
 namespace Ui {
 class DialogMemoryMap;
@@ -32,7 +33,7 @@ class DialogMemoryMap : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogMemoryMap(QWidget *parent,QIODevice *pDevice);
+    explicit DialogMemoryMap(QWidget *parent, QIODevice *pDevice, XBinary::FT ft);
     ~DialogMemoryMap();
 
 private slots:

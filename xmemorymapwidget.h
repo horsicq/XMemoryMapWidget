@@ -38,7 +38,7 @@ class XMemoryMapWidget : public QWidget
 public:
     explicit XMemoryMapWidget(QWidget *parent=nullptr);
     ~XMemoryMapWidget();
-    void setData(QIODevice *pDevice);
+    void setData(QIODevice *pDevice,XBinary::FT ft=XBinary::FT_UNKNOWN);
 
 private slots:
     void on_comboBoxType_currentIndexChanged(int nIndex);

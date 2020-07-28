@@ -21,7 +21,7 @@
 #include "dialogmemorymap.h"
 #include "ui_dialogmemorymap.h"
 
-DialogMemoryMap::DialogMemoryMap(QWidget *parent, QIODevice *pDevice) :
+DialogMemoryMap::DialogMemoryMap(QWidget *parent, QIODevice *pDevice, XBinary::FT ft) :
     QDialog(parent),
     ui(new Ui::DialogMemoryMap)
 {
@@ -29,7 +29,7 @@ DialogMemoryMap::DialogMemoryMap(QWidget *parent, QIODevice *pDevice) :
 
     setWindowFlags(Qt::Window);
 
-    ui->widgetMemoryMap->setData(pDevice);
+    ui->widgetMemoryMap->setData(pDevice,ft);
 }
 
 DialogMemoryMap::~DialogMemoryMap()
