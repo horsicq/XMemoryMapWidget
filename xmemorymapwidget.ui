@@ -117,6 +117,9 @@
             <property name="title">
              <string>Mode</string>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
             <layout class="QVBoxLayout" name="verticalLayout_11">
              <property name="leftMargin">
               <number>0</number>
@@ -135,6 +138,9 @@
                <property name="text">
                 <string/>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
               </widget>
              </item>
             </layout>
@@ -150,6 +156,9 @@
             </property>
             <property name="title">
              <string>Endianness</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_10">
              <property name="leftMargin">
@@ -169,6 +178,9 @@
                <property name="text">
                 <string/>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
               </widget>
              </item>
             </layout>
@@ -178,6 +190,9 @@
            <widget class="QGroupBox" name="groupBoxArch">
             <property name="title">
              <string>Architecture</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_9">
              <property name="leftMargin">
@@ -196,6 +211,9 @@
               <widget class="QLabel" name="labelArch">
                <property name="text">
                 <string/>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
