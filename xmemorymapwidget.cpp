@@ -21,8 +21,8 @@
 #include "xmemorymapwidget.h"
 #include "ui_xmemorymapwidget.h"
 
-XMemoryMapWidget::XMemoryMapWidget(QWidget *parent) :
-    QWidget(parent),
+XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) :
+    QWidget(pParent),
     ui(new Ui::XMemoryMapWidget)
 {
     ui->setupUi(this);

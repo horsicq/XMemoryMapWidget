@@ -36,7 +36,7 @@ class XMemoryMapWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit XMemoryMapWidget(QWidget *parent=nullptr);
+    explicit XMemoryMapWidget(QWidget *pParent=nullptr);
     ~XMemoryMapWidget();
     void setData(QIODevice *pDevice,XBinary::FT ft=XBinary::FT_UNKNOWN);
 
