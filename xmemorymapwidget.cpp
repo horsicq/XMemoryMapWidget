@@ -35,7 +35,7 @@ XMemoryMapWidget::~XMemoryMapWidget()
     delete ui;
 }
 
-void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT ft)
+void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT fileType)
 {
     this->pDevice=pDevice;
     ui->widgetHex->setData(pDevice);
@@ -56,7 +56,7 @@ void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT ft)
 
     if(nCount)
     {
-        if(ft==XBinary::FT_UNKNOWN)
+        if(fileType==XBinary::FT_UNKNOWN)
         {
             ui->comboBoxType->setCurrentIndex(nCount-1);
         }
@@ -66,7 +66,7 @@ void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT ft)
 
             for(int i=0;i<nCount;i++)
             {
-                if(ui->comboBoxType->itemData(i).toUInt()==ft)
+                if(ui->comboBoxType->itemData(i).toUInt()==fileType)
                 {
                     ui->comboBoxType->setCurrentIndex(i);
 
