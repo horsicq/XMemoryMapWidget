@@ -33,7 +33,7 @@ class DialogMemoryMap : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, XBinary::FT ft);
+    explicit DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, XBinary::FT fileType);
     ~DialogMemoryMap();
 
 private slots:
