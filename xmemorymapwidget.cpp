@@ -50,8 +50,8 @@ void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT fileType)
 
     for(int i=0;i<nCount;i++)
     {
-        XBinary::FT ft=listFileTypes.at(i);
-        ui->comboBoxType->addItem(XBinary::fileTypeIdToString(ft),ft);
+        XBinary::FT fileType=listFileTypes.at(i);
+        ui->comboBoxType->addItem(XBinary::fileTypeIdToString(fileType),fileType);
     }
 
     if(nCount)
