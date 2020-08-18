@@ -115,9 +115,9 @@ void XMemoryMapWidget::updateMemoryMap()
     const QSignalBlocker blocker4(ui->tableViewMemoryMap);
     const QSignalBlocker blocker5(ui->pageHex);
 
-    XBinary::FT ft=(XBinary::FT)(ui->comboBoxType->currentData().toInt());
+    XBinary::FT fileType=(XBinary::FT)(ui->comboBoxType->currentData().toInt());
 
-    memoryMap=XFormats::getMemoryMap(ft,pDevice);
+    memoryMap=XFormats::getMemoryMap(fileType,pDevice);
 
     ui->labelArch->setText(memoryMap.sArch);
     ui->labelMode->setText(XBinary::modeIdToString(memoryMap.mode));
