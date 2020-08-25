@@ -161,48 +161,48 @@ void XMemoryMapWidget::updateMemoryMap()
     {
         bool bIsVirtual=memoryMap.listRecords.at(i).bIsVirtual;
 
-        QStandardItem *itemName=new QStandardItem;
+        QStandardItem *pItemName=new QStandardItem;
 
-        itemName->setData(memoryMap.listRecords.at(i).nOffset,Qt::UserRole+0);
-        itemName->setData(memoryMap.listRecords.at(i).nAddress,Qt::UserRole+1);
-
-        if(bIsVirtual)
-        {
-            itemName->setBackground(colDisabled);
-        }
-
-        itemName->setText(memoryMap.listRecords.at(i).sName);
-        pModel->setItem(i,0,itemName);
-
-        QStandardItem *itemOffset=new QStandardItem;
+        pItemName->setData(memoryMap.listRecords.at(i).nOffset,Qt::UserRole+0);
+        pItemName->setData(memoryMap.listRecords.at(i).nAddress,Qt::UserRole+1);
 
         if(bIsVirtual)
         {
-            itemOffset->setBackground(colDisabled);
+            pItemName->setBackground(colDisabled);
         }
 
-        itemOffset->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nOffset));
-        pModel->setItem(i,1,itemOffset);
+        pItemName->setText(memoryMap.listRecords.at(i).sName);
+        pModel->setItem(i,0,pItemName);
 
-        QStandardItem *itemAddress=new QStandardItem;
+        QStandardItem *pItemOffset=new QStandardItem;
 
         if(bIsVirtual)
         {
-            itemAddress->setBackground(colDisabled);
+            pItemOffset->setBackground(colDisabled);
         }
 
-        itemAddress->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nAddress));
-        pModel->setItem(i,2,itemAddress);
+        pItemOffset->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nOffset));
+        pModel->setItem(i,1,pItemOffset);
 
-        QStandardItem *itemSize=new QStandardItem;
+        QStandardItem *pItemAddress=new QStandardItem;
 
         if(bIsVirtual)
         {
-            itemSize->setBackground(colDisabled);
+            pItemAddress->setBackground(colDisabled);
         }
 
-        itemSize->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nSize));
-        pModel->setItem(i,3,itemSize);
+        pItemAddress->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nAddress));
+        pModel->setItem(i,2,pItemAddress);
+
+        QStandardItem *pItemSize=new QStandardItem;
+
+        if(bIsVirtual)
+        {
+            pItemSize->setBackground(colDisabled);
+        }
+
+        pItemSize->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nSize));
+        pModel->setItem(i,3,pItemSize);
     }
 
     ui->tableViewMemoryMap->setModel(pModel);
