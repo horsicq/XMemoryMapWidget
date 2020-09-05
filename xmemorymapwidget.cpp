@@ -66,9 +66,9 @@ void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT fileType)
         }
         else
         {
-            int nCount=ui->comboBoxType->count();
+            int nNumberOfItems=ui->comboBoxType->count();
 
-            for(int i=0;i<nCount;i++)
+            for(int i=0;i<nNumberOfItems;i++)
             {
                 if(ui->comboBoxType->itemData(i).toUInt()==fileType)
                 {
