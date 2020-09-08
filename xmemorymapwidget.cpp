@@ -150,9 +150,9 @@ void XMemoryMapWidget::updateMemoryMap()
 
     QAbstractItemModel *pOldModel=ui->tableViewMemoryMap->model();
 
-    int nCount=memoryMap.listRecords.count();
+    int nNumberOfRecords=memoryMap.listRecords.count();
 
-    QStandardItemModel *pModel=new QStandardItemModel(nCount,4,this);
+    QStandardItemModel *pModel=new QStandardItemModel(nNumberOfRecords,4,this);
 
     pModel->setHeaderData(0,Qt::Horizontal,tr("Name"));
     pModel->setHeaderData(1,Qt::Horizontal,tr("Offset"));
@@ -161,7 +161,7 @@ void XMemoryMapWidget::updateMemoryMap()
 
     QColor colDisabled=QWidget::palette().color(QPalette::Window);
 
-    for(int i=0;i<nCount;i++)
+    for(int i=0;i<nNumberOfRecords;i++)
     {
         bool bIsVirtual=memoryMap.listRecords.at(i).bIsVirtual;
 
