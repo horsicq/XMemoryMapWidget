@@ -44,11 +44,11 @@ void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT fileType)
 
     ui->comboBoxType->clear();
 
-    QSet<XBinary::FT> stFT=XBinary::getFileTypes(pDevice);
+    QSet<XBinary::FT> stFileType=XBinary::getFileTypes(pDevice);
 
-    stFT.insert(XBinary::FT_COM);
+    stFileType.insert(XBinary::FT_COM);
 
-    QList<XBinary::FT> listFileTypes=XBinary::_getFileTypeListFromSet(stFT);
+    QList<XBinary::FT> listFileTypes=XBinary::_getFileTypeListFromSet(stFileType);
 
     int nNumberOfListTypes=listFileTypes.count();
 
