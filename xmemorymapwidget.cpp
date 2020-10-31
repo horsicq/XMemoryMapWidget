@@ -169,6 +169,7 @@ void XMemoryMapWidget::updateMemoryMap()
 
         pItemName->setData(memoryMap.listRecords.at(i).nOffset,Qt::UserRole+0);
         pItemName->setData(memoryMap.listRecords.at(i).nAddress,Qt::UserRole+1);
+        pItemName->setData(memoryMap.listRecords.at(i).nSize,Qt::UserRole+2);
 
         if(bIsVirtual)
         {
@@ -321,7 +322,7 @@ void XMemoryMapWidget::ajust(bool bInit)
         ui->tableViewMemoryMap->setCurrentIndex(ui->tableViewMemoryMap->model()->index(nTableViewIndex,0));
     }
 
-    _goToOffset(nFileOffset);
+    _goToOffset(nFileOffset,1);
 }
 
 void XMemoryMapWidget::on_lineEditFileOffset_textChanged(const QString &sText)
@@ -366,25 +367,28 @@ void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &selected, con
         {
             qint64 nFileOffset=listIndexes.at(0).data(Qt::UserRole+0).toLongLong();
             qint64 nVirtualAddress=listIndexes.at(0).data(Qt::UserRole+1).toLongLong();
+            qint64 nSize=listIndexes.at(0).data(Qt::UserRole+2).toLongLong();
+
             qint64 nRelativeVirtualAddress=XBinary::addressToRelAddress(&memoryMap,nVirtualAddress);
 
             ui->lineEditFileOffset->setModeValue(mode,nFileOffset);
             ui->lineEditVirtualAddress->setModeValue(mode,nVirtualAddress);
             ui->lineEditRelativeVirtualAddress->setModeValue(mode,nRelativeVirtualAddress);
 
-            _goToOffset(nFileOffset);
+            _goToOffset(nFileOffset,nSize);
         }
     }
 
 }
 
-void XMemoryMapWidget::_goToOffset(qint64 nOffset)
+void XMemoryMapWidget::_goToOffset(qint64 nOffset, qint64 nSize)
 {
     if(XBinary::isOffsetValid(&memoryMap,nOffset))
     {
         ui->stackedWidgetHex->setCurrentIndex(0);
 
         ui->widgetHex->goToOffset(nOffset);
+        ui->widgetHex->setSelection(nOffset,nSize);
         ui->widgetHex->reload();
     }
     else
