@@ -123,9 +123,9 @@ void XMemoryMapWidget::updateMemoryMap()
 
     memoryMap=XFormats::getMemoryMap(fileType,pDevice);
 
-    ui->labelArch->setText(memoryMap.sArch);
-    ui->labelMode->setText(XBinary::modeIdToString(memoryMap.mode));
-    ui->labelEndianness->setText(XBinary::endiannessToString(memoryMap.bIsBigEndian));
+    ui->lineEditArch->setText(memoryMap.sArch);
+    ui->lineEditMode->setText(XBinary::modeIdToString(memoryMap.mode));
+    ui->lineEditEndianness->setText(XBinary::endiannessToString(memoryMap.bIsBigEndian));
 
     ui->radioButtonFileOffset->setChecked(true);
 
