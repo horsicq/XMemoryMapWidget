@@ -159,7 +159,7 @@ void XMemoryMapWidget::updateMemoryMap()
     pModel->setHeaderData(2,Qt::Horizontal,tr("Address"));
     pModel->setHeaderData(3,Qt::Horizontal,tr("Size"));
 
-    QColor colDisabled=QWidget::palette().color(QPalette::Window);
+//    QColor colDisabled=QWidget::palette().color(QPalette::Window);
 
     for(int i=0;i<nNumberOfRecords;i++)
     {
@@ -171,40 +171,40 @@ void XMemoryMapWidget::updateMemoryMap()
         pItemName->setData(memoryMap.listRecords.at(i).nAddress,Qt::UserRole+1);
         pItemName->setData(memoryMap.listRecords.at(i).nSize,Qt::UserRole+2);
 
-        if(bIsVirtual)
-        {
-            pItemName->setBackground(colDisabled);
-        }
+//        if(bIsVirtual)
+//        {
+//            pItemName->setBackground(colDisabled);
+//        }
 
         pItemName->setText(memoryMap.listRecords.at(i).sName);
         pModel->setItem(i,0,pItemName);
 
         QStandardItem *pItemOffset=new QStandardItem;
 
-        if(bIsVirtual)
-        {
-            pItemOffset->setBackground(colDisabled);
-        }
+//        if(bIsVirtual)
+//        {
+//            pItemOffset->setBackground(colDisabled);
+//        }
 
         pItemOffset->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nOffset));
         pModel->setItem(i,1,pItemOffset);
 
         QStandardItem *pItemAddress=new QStandardItem;
 
-        if(bIsVirtual)
-        {
-            pItemAddress->setBackground(colDisabled);
-        }
+//        if(bIsVirtual)
+//        {
+//            pItemAddress->setBackground(colDisabled);
+//        }
 
         pItemAddress->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nAddress));
         pModel->setItem(i,2,pItemAddress);
 
         QStandardItem *pItemSize=new QStandardItem;
 
-        if(bIsVirtual)
-        {
-            pItemSize->setBackground(colDisabled);
-        }
+//        if(bIsVirtual)
+//        {
+//            pItemSize->setBackground(colDisabled);
+//        }
 
         pItemSize->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nSize));
         pModel->setItem(i,3,pItemSize);
@@ -383,6 +383,11 @@ void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &selected, con
 
 void XMemoryMapWidget::_goToOffset(qint64 nOffset, qint64 nSize)
 {
+    if(nSize==0)
+    {
+        nSize=1;
+    }
+
     if(XBinary::isOffsetValid(&memoryMap,nOffset))
     {
         ui->stackedWidgetHex->setCurrentIndex(0);
