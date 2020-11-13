@@ -55,9 +55,9 @@ private slots:
 
 private:
     Ui::XMemoryMapWidget *ui;
-    QIODevice *pDevice;
-    XBinary::_MEMORY_MAP memoryMap;
-    XLineEditHEX::MODE mode;
+    QIODevice *g_pDevice;
+    XBinary::_MEMORY_MAP g_memoryMap;
+    XLineEditHEX::MODE g_mode;
 };
 
 #endif // XMEMORYMAPWIDGET_H

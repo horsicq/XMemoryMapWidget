@@ -27,7 +27,7 @@ XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) :
 {
     ui->setupUi(this);
 
-    mode=XLineEditHEX::MODE_16;
+    g_mode=XLineEditHEX::MODE_16;
 }
 
 XMemoryMapWidget::~XMemoryMapWidget()
@@ -37,7 +37,7 @@ XMemoryMapWidget::~XMemoryMapWidget()
 
 void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT fileType)
 {
-    this->pDevice=pDevice;
+    this->g_pDevice=pDevice;
     ui->widgetHex->setData(pDevice);
 
     const QSignalBlocker blocker(ui->comboBoxType);
@@ -121,36 +121,36 @@ void XMemoryMapWidget::updateMemoryMap()
 
     XBinary::FT fileType=(XBinary::FT)(ui->comboBoxType->currentData().toInt());
 
-    memoryMap=XFormats::getMemoryMap(fileType,pDevice);
+    g_memoryMap=XFormats::getMemoryMap(fileType,g_pDevice);
 
-    ui->lineEditArch->setText(memoryMap.sArch);
-    ui->lineEditMode->setText(XBinary::modeIdToString(memoryMap.mode));
-    ui->lineEditEndianness->setText(XBinary::endiannessToString(memoryMap.bIsBigEndian));
+    ui->lineEditArch->setText(g_memoryMap.sArch);
+    ui->lineEditMode->setText(XBinary::modeIdToString(g_memoryMap.mode));
+    ui->lineEditEndianness->setText(XBinary::endiannessToString(g_memoryMap.bIsBigEndian));
 
     ui->radioButtonFileOffset->setChecked(true);
 
     ui->lineEditFileOffset->setValue((quint32)0);
 
-    if(memoryMap.mode==XBinary::MODE_16)
+    if(g_memoryMap.mode==XBinary::MODE_16)
     {
-        mode=XLineEditHEX::MODE_16;
+        g_mode=XLineEditHEX::MODE_16;
     }
-    else if((memoryMap.mode==XBinary::MODE_16SEG)||(memoryMap.mode==XBinary::MODE_32))
+    else if((g_memoryMap.mode==XBinary::MODE_16SEG)||(g_memoryMap.mode==XBinary::MODE_32))
     {
-        mode=XLineEditHEX::MODE_32;
+        g_mode=XLineEditHEX::MODE_32;
     }
-    else if(memoryMap.mode==XBinary::MODE_64)
+    else if(g_memoryMap.mode==XBinary::MODE_64)
     {
-        mode=XLineEditHEX::MODE_64;
+        g_mode=XLineEditHEX::MODE_64;
     }
-    else if(memoryMap.mode==XBinary::MODE_UNKNOWN)
+    else if(g_memoryMap.mode==XBinary::MODE_UNKNOWN)
     {     
-        mode=XLineEditHEX::getModeFromSize(memoryMap.nRawSize);
+        g_mode=XLineEditHEX::getModeFromSize(g_memoryMap.nRawSize);
     }
 
     QAbstractItemModel *pOldModel=ui->tableViewMemoryMap->model();
 
-    int nNumberOfRecords=memoryMap.listRecords.count();
+    int nNumberOfRecords=g_memoryMap.listRecords.count();
 
     QStandardItemModel *pModel=new QStandardItemModel(nNumberOfRecords,4,this);
 
@@ -163,20 +163,20 @@ void XMemoryMapWidget::updateMemoryMap()
 
     for(int i=0;i<nNumberOfRecords;i++)
     {
-        bool bIsVirtual=memoryMap.listRecords.at(i).bIsVirtual;
+        bool bIsVirtual=g_memoryMap.listRecords.at(i).bIsVirtual;
 
         QStandardItem *pItemName=new QStandardItem;
 
-        pItemName->setData(memoryMap.listRecords.at(i).nOffset,Qt::UserRole+0);
-        pItemName->setData(memoryMap.listRecords.at(i).nAddress,Qt::UserRole+1);
-        pItemName->setData(memoryMap.listRecords.at(i).nSize,Qt::UserRole+2);
+        pItemName->setData(g_memoryMap.listRecords.at(i).nOffset,Qt::UserRole+0);
+        pItemName->setData(g_memoryMap.listRecords.at(i).nAddress,Qt::UserRole+1);
+        pItemName->setData(g_memoryMap.listRecords.at(i).nSize,Qt::UserRole+2);
 
 //        if(bIsVirtual)
 //        {
 //            pItemName->setBackground(colDisabled);
 //        }
 
-        pItemName->setText(memoryMap.listRecords.at(i).sName);
+        pItemName->setText(g_memoryMap.listRecords.at(i).sName);
         pModel->setItem(i,0,pItemName);
 
         QStandardItem *pItemOffset=new QStandardItem;
@@ -186,7 +186,7 @@ void XMemoryMapWidget::updateMemoryMap()
 //            pItemOffset->setBackground(colDisabled);
 //        }
 
-        pItemOffset->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nOffset));
+        pItemOffset->setText(XLineEditHEX::getFormatString(g_mode,g_memoryMap.listRecords.at(i).nOffset));
         pModel->setItem(i,1,pItemOffset);
 
         QStandardItem *pItemAddress=new QStandardItem;
@@ -196,7 +196,7 @@ void XMemoryMapWidget::updateMemoryMap()
 //            pItemAddress->setBackground(colDisabled);
 //        }
 
-        pItemAddress->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nAddress));
+        pItemAddress->setText(XLineEditHEX::getFormatString(g_mode,g_memoryMap.listRecords.at(i).nAddress));
         pModel->setItem(i,2,pItemAddress);
 
         QStandardItem *pItemSize=new QStandardItem;
@@ -206,7 +206,7 @@ void XMemoryMapWidget::updateMemoryMap()
 //            pItemSize->setBackground(colDisabled);
 //        }
 
-        pItemSize->setText(XLineEditHEX::getFormatString(mode,memoryMap.listRecords.at(i).nSize));
+        pItemSize->setText(XLineEditHEX::getFormatString(g_mode,g_memoryMap.listRecords.at(i).nSize));
         pModel->setItem(i,3,pItemSize);
     }
 
@@ -219,7 +219,7 @@ void XMemoryMapWidget::updateMemoryMap()
     ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(2,QHeaderView::Interactive);
     ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(3,QHeaderView::Interactive);
 
-    qint32 nColumnSize=XLineEditHEX::getWidthFromMode(this,mode);
+    qint32 nColumnSize=XLineEditHEX::getWidthFromMode(this,g_mode);
 
     ui->tableViewMemoryMap->setColumnWidth(1,nColumnSize);
     ui->tableViewMemoryMap->setColumnWidth(2,nColumnSize);
@@ -250,10 +250,10 @@ void XMemoryMapWidget::ajust(bool bInit)
         ui->lineEditVirtualAddress->setReadOnly(true);
         ui->lineEditRelativeVirtualAddress->setReadOnly(true);
 
-        nVirtualAddress=XBinary::offsetToAddress(&memoryMap,nFileOffset);
-        nRelativeVirtualAddress=XBinary::offsetToRelAddress(&memoryMap,nFileOffset);
+        nVirtualAddress=XBinary::offsetToAddress(&g_memoryMap,nFileOffset);
+        nRelativeVirtualAddress=XBinary::offsetToRelAddress(&g_memoryMap,nFileOffset);
 
-        XBinary::_MEMORY_RECORD memoryRecord=XBinary::getMemoryRecordByOffset(&memoryMap,nFileOffset);
+        XBinary::_MEMORY_RECORD memoryRecord=XBinary::getMemoryRecordByOffset(&g_memoryMap,nFileOffset);
 
         if(memoryRecord.nSize)
         {
@@ -262,11 +262,11 @@ void XMemoryMapWidget::ajust(bool bInit)
 
         if(bInit)
         {
-            ui->lineEditFileOffset->setModeValue(mode,nFileOffset);
+            ui->lineEditFileOffset->setModeValue(g_mode,nFileOffset);
         }
 
-        ui->lineEditVirtualAddress->setModeValue(mode,nVirtualAddress);
-        ui->lineEditRelativeVirtualAddress->setModeValue(mode,nRelativeVirtualAddress);
+        ui->lineEditVirtualAddress->setModeValue(g_mode,nVirtualAddress);
+        ui->lineEditRelativeVirtualAddress->setModeValue(g_mode,nRelativeVirtualAddress);
     }
     else if(ui->radioButtonVirtualAddress->isChecked())
     {
@@ -274,10 +274,10 @@ void XMemoryMapWidget::ajust(bool bInit)
         ui->lineEditVirtualAddress->setReadOnly(false);
         ui->lineEditRelativeVirtualAddress->setReadOnly(true);
 
-        nFileOffset=XBinary::addressToOffset(&memoryMap,nVirtualAddress);
-        nRelativeVirtualAddress=XBinary::addressToRelAddress(&memoryMap,nVirtualAddress);
+        nFileOffset=XBinary::addressToOffset(&g_memoryMap,nVirtualAddress);
+        nRelativeVirtualAddress=XBinary::addressToRelAddress(&g_memoryMap,nVirtualAddress);
 
-        XBinary::_MEMORY_RECORD memoryRecord=XBinary::getMemoryRecordByAddress(&memoryMap,nVirtualAddress);
+        XBinary::_MEMORY_RECORD memoryRecord=XBinary::getMemoryRecordByAddress(&g_memoryMap,nVirtualAddress);
 
         if(memoryRecord.nSize)
         {
@@ -286,11 +286,11 @@ void XMemoryMapWidget::ajust(bool bInit)
 
         if(bInit)
         {
-            ui->lineEditVirtualAddress->setModeValue(mode,nVirtualAddress);
+            ui->lineEditVirtualAddress->setModeValue(g_mode,nVirtualAddress);
         }
 
-        ui->lineEditFileOffset->setModeValue(mode,nFileOffset);
-        ui->lineEditRelativeVirtualAddress->setModeValue(mode,nRelativeVirtualAddress);
+        ui->lineEditFileOffset->setModeValue(g_mode,nFileOffset);
+        ui->lineEditRelativeVirtualAddress->setModeValue(g_mode,nRelativeVirtualAddress);
     }
     else if(ui->radioButtonRelativeVirtualAddress->isChecked())
     {
@@ -298,10 +298,10 @@ void XMemoryMapWidget::ajust(bool bInit)
         ui->lineEditVirtualAddress->setReadOnly(true);
         ui->lineEditRelativeVirtualAddress->setReadOnly(false);
 
-        nFileOffset=XBinary::relAddressToOffset(&memoryMap,nRelativeVirtualAddress);
-        nVirtualAddress=XBinary::relAddressToAddress(&memoryMap,nRelativeVirtualAddress);
+        nFileOffset=XBinary::relAddressToOffset(&g_memoryMap,nRelativeVirtualAddress);
+        nVirtualAddress=XBinary::relAddressToAddress(&g_memoryMap,nRelativeVirtualAddress);
 
-        XBinary::_MEMORY_RECORD memoryRecord=XBinary::getMemoryRecordByRelAddress(&memoryMap,nRelativeVirtualAddress);
+        XBinary::_MEMORY_RECORD memoryRecord=XBinary::getMemoryRecordByRelAddress(&g_memoryMap,nRelativeVirtualAddress);
 
         if(memoryRecord.nSize)
         {
@@ -310,11 +310,11 @@ void XMemoryMapWidget::ajust(bool bInit)
 
         if(bInit)
         {
-            ui->lineEditRelativeVirtualAddress->setModeValue(mode,nRelativeVirtualAddress);
+            ui->lineEditRelativeVirtualAddress->setModeValue(g_mode,nRelativeVirtualAddress);
         }
 
-        ui->lineEditFileOffset->setModeValue(mode,nFileOffset);
-        ui->lineEditVirtualAddress->setModeValue(mode,nVirtualAddress);
+        ui->lineEditFileOffset->setModeValue(g_mode,nFileOffset);
+        ui->lineEditVirtualAddress->setModeValue(g_mode,nVirtualAddress);
     }
 
     if(nTableViewIndex!=-1)
@@ -369,11 +369,11 @@ void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &selected, con
             qint64 nVirtualAddress=listIndexes.at(0).data(Qt::UserRole+1).toLongLong();
             qint64 nSize=listIndexes.at(0).data(Qt::UserRole+2).toLongLong();
 
-            qint64 nRelativeVirtualAddress=XBinary::addressToRelAddress(&memoryMap,nVirtualAddress);
+            qint64 nRelativeVirtualAddress=XBinary::addressToRelAddress(&g_memoryMap,nVirtualAddress);
 
-            ui->lineEditFileOffset->setModeValue(mode,nFileOffset);
-            ui->lineEditVirtualAddress->setModeValue(mode,nVirtualAddress);
-            ui->lineEditRelativeVirtualAddress->setModeValue(mode,nRelativeVirtualAddress);
+            ui->lineEditFileOffset->setModeValue(g_mode,nFileOffset);
+            ui->lineEditVirtualAddress->setModeValue(g_mode,nVirtualAddress);
+            ui->lineEditRelativeVirtualAddress->setModeValue(g_mode,nRelativeVirtualAddress);
 
             _goToOffset(nFileOffset,nSize);
         }
@@ -388,7 +388,7 @@ void XMemoryMapWidget::_goToOffset(qint64 nOffset, qint64 nSize)
         nSize=1;
     }
 
-    if(XBinary::isOffsetValid(&memoryMap,nOffset))
+    if(XBinary::isOffsetValid(&g_memoryMap,nOffset))
     {
         ui->stackedWidgetHex->setCurrentIndex(0);
 
