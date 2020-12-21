@@ -23,7 +23,7 @@ SOURCES += \
     include($$PWD/../Controls/xlineedithex.pri)
 }
 
-!contains(XCONFIG, qhexview) {
-    XCONFIG += qhexview
-    include($$PWD/../QHexView/qhexview.pri)
+!contains(XCONFIG, xhexview) {
+    XCONFIG += xhexview
+    include($$PWD/../XHexView/xhexview.pri)
 }

@@ -324,7 +324,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QHexView" name="widgetHex" native="true"/>
+           <widget class="XHexView" name="widgetHex" native="true"/>
           </item>
          </layout>
         </widget>
@@ -343,9 +343,9 @@
    <header>xlineedithex.h</header>
   </customwidget>
   <customwidget>
-   <class>QHexView</class>
+   <class>XHexView</class>
    <extends>QWidget</extends>
-   <header>qhexview.h</header>
+   <header>xhexview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
