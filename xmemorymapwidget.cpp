@@ -135,7 +135,7 @@ void XMemoryMapWidget::updateMemoryMap()
     {
         g_mode=XLineEditHEX::MODE_16;
     }
-    else if((g_memoryMap.mode==XBinary::MODE_16SEG)||(g_memoryMap.mode==XBinary::MODE_32))
+    else if((g_memoryMap.mode==XBinary::MODE_16SEG)||(g_memoryMap.mode==XBinary::MODE_32)||(g_memoryMap.mode==XBinary::MODE_DATA)) // TODO Check Data
     {
         g_mode=XLineEditHEX::MODE_32;
     }
