@@ -40,47 +40,15 @@ void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT fileType)
     this->g_pDevice=pDevice;
     ui->widgetHex->setData(pDevice);
 
-    const QSignalBlocker blocker(ui->comboBoxType);
-
-    ui->comboBoxType->clear();
-
     QSet<XBinary::FT> stFileType=XBinary::getFileTypes(pDevice,true);
 
     stFileType.insert(XBinary::FT_COM);
 
     QList<XBinary::FT> listFileTypes=XBinary::_getFileTypeListFromSet(stFileType);
 
-    int nNumberOfListTypes=listFileTypes.count();
+    XFormats::setFileTypeComboBox(ui->comboBoxType,&listFileTypes,fileType);
 
-    for(int i=0;i<nNumberOfListTypes;i++)
-    {
-        XBinary::FT fileType=listFileTypes.at(i);
-        ui->comboBoxType->addItem(XBinary::fileTypeIdToString(fileType),fileType);
-    }
-
-    if(nNumberOfListTypes)
-    {
-        if(fileType==XBinary::FT_UNKNOWN)
-        {
-            ui->comboBoxType->setCurrentIndex(nNumberOfListTypes-1);
-        }
-        else
-        {
-            int nNumberOfItems=ui->comboBoxType->count();
-
-            for(int i=0;i<nNumberOfItems;i++)
-            {
-                if(ui->comboBoxType->itemData(i).toUInt()==fileType)
-                {
-                    ui->comboBoxType->setCurrentIndex(i);
-
-                    break;
-                }
-            }
-        }
-
-        updateMemoryMap();
-    }
+    updateMemoryMap();
 }
 
 void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int nIndex)
