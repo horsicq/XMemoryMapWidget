@@ -23,6 +23,7 @@
 
 #include <QDialog>
 #include "xbinary.h"
+#include "xshortcuts.h"
 
 namespace Ui {
 class DialogMemoryMap;
@@ -35,6 +36,7 @@ class DialogMemoryMap : public QDialog
 public:
     explicit DialogMemoryMap(QWidget *pParent,QIODevice *pDevice,XBinary::FT fileType);
     ~DialogMemoryMap();
+    void setShortcuts(XShortcuts *pShortcuts);
 
 private slots:
     void on_pushButtonClose_clicked();

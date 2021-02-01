@@ -37,6 +37,11 @@ DialogMemoryMap::~DialogMemoryMap()
     delete ui;
 }
 
+void DialogMemoryMap::setShortcuts(XShortcuts *pShortcuts)
+{
+    // TODO
+}
+
 void DialogMemoryMap::on_pushButtonClose_clicked()
 {
     this->close();
