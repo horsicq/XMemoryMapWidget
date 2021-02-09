@@ -41,6 +41,7 @@ public:
     ~XMemoryMapWidget();
     void setData(QIODevice *pDevice,XBinary::FT fileType=XBinary::FT_UNKNOWN);
     void setShortcuts(XShortcuts *pShortcuts);
+    void goToOffset(qint64 nOffset);
 
 private slots:
     void on_comboBoxType_currentIndexChanged(int nIndex);

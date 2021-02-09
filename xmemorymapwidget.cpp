@@ -57,6 +57,11 @@ void XMemoryMapWidget::setShortcuts(XShortcuts *pShortcuts)
     ui->widgetHex->setShortcuts(pShortcuts);
 }
 
+void XMemoryMapWidget::goToOffset(qint64 nOffset)
+{
+    ui->lineEditFileOffset->setModeValue(g_mode,nOffset);
+}
+
 void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int nIndex)
 {
     Q_UNUSED(nIndex)
@@ -384,7 +389,6 @@ void XMemoryMapWidget::_goToOffset(qint64 nOffset, qint64 nSize)
 void XMemoryMapWidget::onHexCursorChanged(qint64 nOffset)
 {
     g_bLockHex=true;
-    ui->lineEditFileOffset->setValue(nOffset);
+    ui->lineEditFileOffset->setModeValue(g_mode,nOffset);
     g_bLockHex=false;
-    qDebug("%x",nOffset);
 }
