@@ -28,6 +28,7 @@ XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) :
     ui->setupUi(this);
 
     g_mode=XLineEditHEX::MODE_16;
+    g_bLockHex=false;
 }
 
 XMemoryMapWidget::~XMemoryMapWidget()
@@ -51,6 +52,11 @@ void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT fileType)
     updateMemoryMap();
 }
 
+void XMemoryMapWidget::setShortcuts(XShortcuts *pShortcuts)
+{
+    ui->widgetHex->setShortcuts(pShortcuts);
+}
+
 void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int nIndex)
 {
     Q_UNUSED(nIndex)
@@ -62,21 +68,21 @@ void XMemoryMapWidget::on_radioButtonFileOffset_toggled(bool bChecked)
 {
     Q_UNUSED(bChecked)
 
-    ajust(false);
+    adjust(false);
 }
 
 void XMemoryMapWidget::on_radioButtonVirtualAddress_toggled(bool bChecked)
 {
     Q_UNUSED(bChecked)
 
-    ajust(false);
+    adjust(false);
 }
 
 void XMemoryMapWidget::on_radioButtonRelativeVirtualAddress_toggled(bool bChecked)
 {
     Q_UNUSED(bChecked)
 
-    ajust(false);
+    adjust(false);
 }
 
 void XMemoryMapWidget::updateMemoryMap()
@@ -194,11 +200,12 @@ void XMemoryMapWidget::updateMemoryMap()
     ui->tableViewMemoryMap->setColumnWidth(3,nColumnSize);
 
     connect(ui->tableViewMemoryMap->selectionModel(),SIGNAL(selectionChanged(QItemSelection, QItemSelection)),this,SLOT(on_tableViewSelection(QItemSelection, QItemSelection)));
+    connect(ui->widgetHex,SIGNAL(cursorChanged(qint64)),this,SLOT(onHexCursorChanged(qint64)));
 
-    ajust(true);
+    adjust(true);
 }
 
-void XMemoryMapWidget::ajust(bool bInit)
+void XMemoryMapWidget::adjust(bool bInit)
 {
     const QSignalBlocker blocker1(ui->lineEditFileOffset);
     const QSignalBlocker blocker2(ui->lineEditVirtualAddress);
@@ -297,21 +304,21 @@ void XMemoryMapWidget::on_lineEditFileOffset_textChanged(const QString &sText)
 {
     Q_UNUSED(sText)
 
-    ajust(false);
+    adjust(false);
 }
 
 void XMemoryMapWidget::on_lineEditVirtualAddress_textChanged(const QString &sText)
 {
     Q_UNUSED(sText)
 
-    ajust(false);
+    adjust(false);
 }
 
 void XMemoryMapWidget::on_lineEditRelativeVirtualAddress_textChanged(const QString &sText)
 {
     Q_UNUSED(sText)
 
-    ajust(false);
+    adjust(false);
 }
 
 void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &selected, const QItemSelection &deselected)
@@ -351,22 +358,33 @@ void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &selected, con
 
 void XMemoryMapWidget::_goToOffset(qint64 nOffset, qint64 nSize)
 {
-    if(nSize==0)
+    if(!g_bLockHex)
     {
-        nSize=1;
-    }
+        if(nSize==0)
+        {
+            nSize=1;
+        }
 
-    if(XBinary::isOffsetValid(&g_memoryMap,nOffset))
-    {
-        ui->stackedWidgetHex->setCurrentIndex(0);
+        if(XBinary::isOffsetValid(&g_memoryMap,nOffset))
+        {
+            ui->stackedWidgetHex->setCurrentIndex(0);
 
-        ui->widgetHex->goToOffset(nOffset);
-        ui->widgetHex->setSelection(nOffset,nSize);
-        ui->widgetHex->reload();
+            ui->widgetHex->goToOffset(nOffset);
+            ui->widgetHex->setSelection(nOffset,nSize);
+            ui->widgetHex->reload();
+        }
+        else
+        {
+            // Invalid offset
+            ui->stackedWidgetHex->setCurrentIndex(1);
+        }
     }
-    else
-    {
-        // Invalid offset
-        ui->stackedWidgetHex->setCurrentIndex(1);
-    }
+}
+
+void XMemoryMapWidget::onHexCursorChanged(qint64 nOffset)
+{
+    g_bLockHex=true;
+    ui->lineEditFileOffset->setValue(nOffset);
+    g_bLockHex=false;
+    qDebug("%x",nOffset);
 }

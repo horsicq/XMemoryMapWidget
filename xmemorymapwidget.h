@@ -26,6 +26,7 @@
 #include <QItemSelection>
 #include "xformats.h"
 #include "xlineedithex.h"
+#include "xshortcuts.h"
 
 namespace Ui {
 class XMemoryMapWidget;
@@ -39,6 +40,7 @@ public:
     explicit XMemoryMapWidget(QWidget *pParent=nullptr);
     ~XMemoryMapWidget();
     void setData(QIODevice *pDevice,XBinary::FT fileType=XBinary::FT_UNKNOWN);
+    void setShortcuts(XShortcuts *pShortcuts);
 
 private slots:
     void on_comboBoxType_currentIndexChanged(int nIndex);
@@ -46,18 +48,20 @@ private slots:
     void on_radioButtonVirtualAddress_toggled(bool bChecked);
     void on_radioButtonRelativeVirtualAddress_toggled(bool bChecked);
     void updateMemoryMap();
-    void ajust(bool bInit);
+    void adjust(bool bInit);
     void on_lineEditFileOffset_textChanged(const QString &sText);
     void on_lineEditVirtualAddress_textChanged(const QString &sText);
     void on_lineEditRelativeVirtualAddress_textChanged(const QString &sText);
     void on_tableViewSelection(const QItemSelection &selected,const QItemSelection &deselected);
-    void _goToOffset(qint64 nOffset,qint64 nSize);
+    void _goToOffset(qint64 nOffset,qint64 nSize=0);
+    void onHexCursorChanged(qint64 nOffset);
 
 private:
     Ui::XMemoryMapWidget *ui;
     QIODevice *g_pDevice;
     XBinary::_MEMORY_MAP g_memoryMap;
     XLineEditHEX::MODE g_mode;
+    bool g_bLockHex;
 };
 
 #endif // XMEMORYMAPWIDGET_H

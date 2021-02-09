@@ -39,7 +39,7 @@ DialogMemoryMap::~DialogMemoryMap()
 
 void DialogMemoryMap::setShortcuts(XShortcuts *pShortcuts)
 {
-    // TODO
+    ui->widgetMemoryMap->setShortcuts(pShortcuts);
 }
 
 void DialogMemoryMap::on_pushButtonClose_clicked()
