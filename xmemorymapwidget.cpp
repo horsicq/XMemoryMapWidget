@@ -110,22 +110,12 @@ void XMemoryMapWidget::updateMemoryMap()
 
     ui->lineEditFileOffset->setValue((quint32)0);
 
-    if(g_memoryMap.mode==XBinary::MODE_16)
-    {
-        g_mode=XLineEditHEX::MODE_16;
-    }
-    else if((g_memoryMap.mode==XBinary::MODE_16SEG)||(g_memoryMap.mode==XBinary::MODE_32)||(g_memoryMap.mode==XBinary::MODE_DATA)) // TODO Check Data
-    {
-        g_mode=XLineEditHEX::MODE_32;
-    }
-    else if(g_memoryMap.mode==XBinary::MODE_64)
-    {
-        g_mode=XLineEditHEX::MODE_64;
-    }
-    else if(g_memoryMap.mode==XBinary::MODE_UNKNOWN)
-    {     
-        g_mode=XLineEditHEX::getModeFromSize(g_memoryMap.nRawSize);
-    }
+    XBinary::MODE _mode=XBinary::getWidthModeFromMemoryMap(&g_memoryMap);
+
+    if      (_mode==XBinary::MODE_8)    g_mode=XLineEditHEX::MODE_8;
+    else if (_mode==XBinary::MODE_16)   g_mode=XLineEditHEX::MODE_16;
+    else if (_mode==XBinary::MODE_32)   g_mode=XLineEditHEX::MODE_32;
+    else if (_mode==XBinary::MODE_64)   g_mode=XLineEditHEX::MODE_64;
 
     QAbstractItemModel *pOldModel=ui->tableViewMemoryMap->model();
 
@@ -142,7 +132,7 @@ void XMemoryMapWidget::updateMemoryMap()
 
     for(int i=0;i<nNumberOfRecords;i++)
     {
-        bool bIsVirtual=g_memoryMap.listRecords.at(i).bIsVirtual;
+//        bool bIsVirtual=g_memoryMap.listRecords.at(i).bIsVirtual;
 
         QStandardItem *pItemName=new QStandardItem;
 
