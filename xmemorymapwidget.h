@@ -26,13 +26,13 @@
 #include <QItemSelection>
 #include "xformats.h"
 #include "xlineedithex.h"
-#include "xshortcuts.h"
+#include "xshortcutswidget.h"
 
 namespace Ui {
 class XMemoryMapWidget;
 }
 
-class XMemoryMapWidget : public QWidget
+class XMemoryMapWidget : public XShortcutsWidget
 {
     Q_OBJECT
 
@@ -40,7 +40,6 @@ public:
     explicit XMemoryMapWidget(QWidget *pParent=nullptr);
     ~XMemoryMapWidget();
     void setData(QIODevice *pDevice,XBinary::FT fileType=XBinary::FT_UNKNOWN);
-    void setShortcuts(XShortcuts *pShortcuts);
     void goToOffset(qint64 nOffset);
 
 private slots:
@@ -56,6 +55,9 @@ private slots:
     void on_tableViewSelection(const QItemSelection &selected,const QItemSelection &deselected);
     void _goToOffset(qint64 nOffset,qint64 nSize=0);
     void onHexCursorChanged(qint64 nOffset);
+
+protected:
+    virtual void registerShortcuts(bool bState);
 
 private:
     Ui::XMemoryMapWidget *ui;

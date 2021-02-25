@@ -22,7 +22,7 @@
 #include "ui_xmemorymapwidget.h"
 
 XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) :
-    QWidget(pParent),
+    XShortcutsWidget(pParent),
     ui(new Ui::XMemoryMapWidget)
 {
     ui->setupUi(this);
@@ -48,11 +48,6 @@ void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT fileType)
     XFormats::setFileTypeComboBox(ui->comboBoxType,&listFileTypes,fileType);
 
     updateMemoryMap();
-}
-
-void XMemoryMapWidget::setShortcuts(XShortcuts *pShortcuts)
-{
-    ui->widgetHex->setShortcuts(pShortcuts);
 }
 
 void XMemoryMapWidget::goToOffset(qint64 nOffset)
@@ -379,4 +374,9 @@ void XMemoryMapWidget::onHexCursorChanged(qint64 nOffset)
     g_bLockHex=true;
     ui->lineEditFileOffset->setModeValue(g_mode,nOffset);
     g_bLockHex=false;
+}
+
+void XMemoryMapWidget::registerShortcuts(bool bState)
+{
+    // TODO
 }
