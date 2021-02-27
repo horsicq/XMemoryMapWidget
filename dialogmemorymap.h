@@ -34,7 +34,7 @@ class DialogMemoryMap : public XShortcutsDialog
     Q_OBJECT
 
 public:
-    explicit DialogMemoryMap(QWidget *pParent,QIODevice *pDevice,XBinary::FT fileType);
+    explicit DialogMemoryMap(QWidget *pParent,QIODevice *pDevice,XBinary::FT fileType,QString sSignaturesPath);
     ~DialogMemoryMap();
     void setShortcuts(XShortcuts *pShortcuts);
 

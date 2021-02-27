@@ -36,10 +36,14 @@ XMemoryMapWidget::~XMemoryMapWidget()
     delete ui;
 }
 
-void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT fileType)
+void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT fileType, QString sSignaturesPath)
 {
     this->g_pDevice=pDevice;
-    ui->widgetHex->setData(pDevice);
+
+    XHexView::OPTIONS options={};
+    options.sSignaturesPath=sSignaturesPath;
+
+    ui->widgetHex->setData(pDevice,options);
 
     QSet<XBinary::FT> stFileType=XBinary::getFileTypes(pDevice,true);
     stFileType.insert(XBinary::FT_COM);

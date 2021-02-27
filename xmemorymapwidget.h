@@ -39,7 +39,7 @@ class XMemoryMapWidget : public XShortcutsWidget
 public:
     explicit XMemoryMapWidget(QWidget *pParent=nullptr);
     ~XMemoryMapWidget();
-    void setData(QIODevice *pDevice,XBinary::FT fileType=XBinary::FT_UNKNOWN);
+    void setData(QIODevice *pDevice,XBinary::FT fileType,QString sSignaturesPath);
     void goToOffset(qint64 nOffset);
     void setShortcuts(XShortcuts *pShortcuts);
 
