@@ -55,6 +55,12 @@ void XMemoryMapWidget::goToOffset(qint64 nOffset)
     ui->lineEditFileOffset->setModeValue(g_mode,nOffset);
 }
 
+void XMemoryMapWidget::setShortcuts(XShortcuts *pShortcuts)
+{
+    ui->widgetHex->setShortcuts(pShortcuts);
+    XShortcutsWidget::setShortcuts(pShortcuts);
+}
+
 void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int nIndex)
 {
     Q_UNUSED(nIndex)

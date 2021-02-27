@@ -22,7 +22,7 @@
 #include "ui_dialogmemorymap.h"
 
 DialogMemoryMap::DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, XBinary::FT fileType) :
-    QDialog(pParent),
+    XShortcutsDialog(pParent),
     ui(new Ui::DialogMemoryMap)
 {
     ui->setupUi(this);
@@ -40,6 +40,7 @@ DialogMemoryMap::~DialogMemoryMap()
 void DialogMemoryMap::setShortcuts(XShortcuts *pShortcuts)
 {
     ui->widgetMemoryMap->setShortcuts(pShortcuts);
+    XShortcutsDialog::setShortcuts(pShortcuts);
 }
 
 void DialogMemoryMap::on_pushButtonClose_clicked()

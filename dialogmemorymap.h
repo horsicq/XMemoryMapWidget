@@ -23,13 +23,13 @@
 
 #include <QDialog>
 #include "xbinary.h"
-#include "xshortcuts.h"
+#include "xshortcutsdialog.h"
 
 namespace Ui {
 class DialogMemoryMap;
 }
 
-class DialogMemoryMap : public QDialog
+class DialogMemoryMap : public XShortcutsDialog
 {
     Q_OBJECT
 
