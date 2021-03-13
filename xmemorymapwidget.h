@@ -21,7 +21,6 @@
 #ifndef XMEMORYMAPWIDGET_H
 #define XMEMORYMAPWIDGET_H
 
-#include <QWidget>
 #include <QStandardItemModel>
 #include <QItemSelection>
 #include "xformats.h"
