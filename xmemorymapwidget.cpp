@@ -134,30 +134,16 @@ void XMemoryMapWidget::updateMemoryMap()
 
     QStandardItemModel *pModel=new QStandardItemModel(nNumberOfRecords,4,this);
 
-    pModel->setHeaderData(0,Qt::Horizontal,tr("Name"));
-    pModel->setHeaderData(1,Qt::Horizontal,tr("Offset"));
-    pModel->setHeaderData(2,Qt::Horizontal,tr("Address"));
-    pModel->setHeaderData(3,Qt::Horizontal,tr("Size"));
+    pModel->setHeaderData(0,Qt::Horizontal,tr("Offset"));
+    pModel->setHeaderData(1,Qt::Horizontal,tr("Address"));
+    pModel->setHeaderData(2,Qt::Horizontal,tr("Size"));
+    pModel->setHeaderData(3,Qt::Horizontal,tr("Name"));
 
 //    QColor colDisabled=QWidget::palette().color(QPalette::Window);
 
     for(int i=0;i<nNumberOfRecords;i++)
     {
 //        bool bIsVirtual=g_memoryMap.listRecords.at(i).bIsVirtual;
-
-        QStandardItem *pItemName=new QStandardItem;
-
-        pItemName->setData(g_memoryMap.listRecords.at(i).nOffset,Qt::UserRole+0);
-        pItemName->setData(g_memoryMap.listRecords.at(i).nAddress,Qt::UserRole+1);
-        pItemName->setData(g_memoryMap.listRecords.at(i).nSize,Qt::UserRole+2);
-
-//        if(bIsVirtual)
-//        {
-//            pItemName->setBackground(colDisabled);
-//        }
-
-        pItemName->setText(g_memoryMap.listRecords.at(i).sName);
-        pModel->setItem(i,0,pItemName);
 
         QStandardItem *pItemOffset=new QStandardItem;
 
@@ -166,8 +152,12 @@ void XMemoryMapWidget::updateMemoryMap()
 //            pItemOffset->setBackground(colDisabled);
 //        }
 
+        pItemOffset->setData(g_memoryMap.listRecords.at(i).nOffset,Qt::UserRole+0);
+        pItemOffset->setData(g_memoryMap.listRecords.at(i).nAddress,Qt::UserRole+1);
+        pItemOffset->setData(g_memoryMap.listRecords.at(i).nSize,Qt::UserRole+2);
+
         pItemOffset->setText(XLineEditHEX::getFormatString(g_mode,g_memoryMap.listRecords.at(i).nOffset));
-        pModel->setItem(i,1,pItemOffset);
+        pModel->setItem(i,0,pItemOffset);
 
         QStandardItem *pItemAddress=new QStandardItem;
 
@@ -177,7 +167,7 @@ void XMemoryMapWidget::updateMemoryMap()
 //        }
 
         pItemAddress->setText(XLineEditHEX::getFormatString(g_mode,g_memoryMap.listRecords.at(i).nAddress));
-        pModel->setItem(i,2,pItemAddress);
+        pModel->setItem(i,1,pItemAddress);
 
         QStandardItem *pItemSize=new QStandardItem;
 
@@ -187,23 +177,34 @@ void XMemoryMapWidget::updateMemoryMap()
 //        }
 
         pItemSize->setText(XLineEditHEX::getFormatString(g_mode,g_memoryMap.listRecords.at(i).nSize));
-        pModel->setItem(i,3,pItemSize);
+        pModel->setItem(i,2,pItemSize);
+
+
+        QStandardItem *pItemName=new QStandardItem;
+
+//        if(bIsVirtual)
+//        {
+//            pItemName->setBackground(colDisabled);
+//        }
+
+        pItemName->setText(g_memoryMap.listRecords.at(i).sName);
+        pModel->setItem(i,3,pItemName);
     }
 
     ui->tableViewMemoryMap->setModel(pModel);
 
     delete pOldModel;
 
-    ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(0,QHeaderView::Stretch);
+    ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(0,QHeaderView::Interactive);
     ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(1,QHeaderView::Interactive);
     ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(2,QHeaderView::Interactive);
-    ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(3,QHeaderView::Interactive);
+    ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(3,QHeaderView::Stretch);
 
     qint32 nColumnSize=XLineEditHEX::getWidthFromMode(this,g_mode);
 
+    ui->tableViewMemoryMap->setColumnWidth(0,nColumnSize);
     ui->tableViewMemoryMap->setColumnWidth(1,nColumnSize);
     ui->tableViewMemoryMap->setColumnWidth(2,nColumnSize);
-    ui->tableViewMemoryMap->setColumnWidth(3,nColumnSize);
 
     connect(ui->tableViewMemoryMap->selectionModel(),SIGNAL(selectionChanged(QItemSelection, QItemSelection)),this,SLOT(on_tableViewSelection(QItemSelection, QItemSelection)));
     connect(ui->widgetHex,SIGNAL(cursorChanged(qint64)),this,SLOT(onHexCursorChanged(qint64)));
