@@ -95,7 +95,7 @@ void XMemoryMapWidget::on_radioButtonRelativeVirtualAddress_toggled(bool bChecke
 
 void XMemoryMapWidget::updateMemoryMap()
 {
-#if QT_VERSION >= 0x050300
+#if QT_VERSION >= QT_VERSION_CHECK(5,3,0)
     const QSignalBlocker blocker1(ui->lineEditFileOffset);
     const QSignalBlocker blocker2(ui->lineEditVirtualAddress);
     const QSignalBlocker blocker3(ui->lineEditRelativeVirtualAddress);
@@ -211,7 +211,7 @@ void XMemoryMapWidget::updateMemoryMap()
 
     adjust(true);
 
-#if QT_VERSION < 0x050300
+#if QT_VERSION < QT_VERSION_CHECK(5,3,0)
     ui->lineEditFileOffset->blockSignals(bBlocked1);
     ui->lineEditVirtualAddress->blockSignals(bBlocked2);
     ui->lineEditRelativeVirtualAddress->blockSignals(bBlocked3);
@@ -222,7 +222,7 @@ void XMemoryMapWidget::updateMemoryMap()
 
 void XMemoryMapWidget::adjust(bool bInit)
 {
-#if QT_VERSION >= 0x050300
+#if QT_VERSION >= QT_VERSION_CHECK(5,3,0)
     const QSignalBlocker blocker1(ui->lineEditFileOffset);
     const QSignalBlocker blocker2(ui->lineEditVirtualAddress);
     const QSignalBlocker blocker3(ui->lineEditRelativeVirtualAddress);
@@ -322,7 +322,7 @@ void XMemoryMapWidget::adjust(bool bInit)
 
     _goToOffset(nFileOffset,1);
 
-#if QT_VERSION < 0x050300
+#if QT_VERSION < QT_VERSION_CHECK(5,3,0)
     ui->lineEditFileOffset->blockSignals(bBlocked1);
     ui->lineEditVirtualAddress->blockSignals(bBlocked2);
     ui->lineEditRelativeVirtualAddress->blockSignals(bBlocked3);
@@ -357,7 +357,7 @@ void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &selected, con
     Q_UNUSED(selected)
     Q_UNUSED(deselected)
 
-#if QT_VERSION >= 0x050300
+#if QT_VERSION >= QT_VERSION_CHECK(5,3,0)
     const QSignalBlocker blocker1(ui->lineEditFileOffset);
     const QSignalBlocker blocker2(ui->lineEditVirtualAddress);
     const QSignalBlocker blocker3(ui->lineEditRelativeVirtualAddress);
@@ -393,7 +393,7 @@ void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &selected, con
         }
     }
 
-#if QT_VERSION < 0x050300
+#if QT_VERSION < QT_VERSION_CHECK(5,3,0)
     ui->lineEditFileOffset->blockSignals(bBlocked1);
     ui->lineEditVirtualAddress->blockSignals(bBlocked2);
     ui->lineEditRelativeVirtualAddress->blockSignals(bBlocked3);
