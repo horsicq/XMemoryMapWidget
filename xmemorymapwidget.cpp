@@ -439,3 +439,15 @@ void XMemoryMapWidget::registerShortcuts(bool bState)
     Q_UNUSED(bState)
     // TODO
 }
+
+void XMemoryMapWidget::on_pushButtonSave_clicked()
+{
+    QString sFileName=XBinary::getResultFileName(g_pDevice,QString("%1.txt").arg(tr("Memory map")));
+
+    sFileName=QFileDialog::getSaveFileName(this,tr("Save"),sFileName,QString("%1 (*.txt);;%2 (*)").arg(tr("Text files"),tr("All files")));
+
+    if(!sFileName.isEmpty())
+    {
+        XOptions::saveModel(ui->tableViewMemoryMap->model(),sFileName);
+    }
+}

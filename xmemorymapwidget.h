@@ -55,6 +55,7 @@ private slots:
     void on_tableViewSelection(const QItemSelection &selected,const QItemSelection &deselected);
     void _goToOffset(qint64 nOffset,qint64 nSize=0);
     void onHexCursorChanged(qint64 nOffset);
+    void on_pushButtonSave_clicked();
 
 protected:
     virtual void registerShortcuts(bool bState);
