@@ -123,6 +123,7 @@ void XMemoryMapWidget::updateMemoryMap()
 
     XBinary::MODE _mode=XBinary::getWidthModeFromMemoryMap(&g_memoryMap);
 
+    // TODO function
     if      (_mode==XBinary::MODE_8)    g_mode=XLineEditHEX::MODE_8;
     else if (_mode==XBinary::MODE_16)   g_mode=XLineEditHEX::MODE_16;
     else if (_mode==XBinary::MODE_32)   g_mode=XLineEditHEX::MODE_32;
