@@ -21,7 +21,6 @@
 #ifndef DIALOGMEMORYMAP_H
 #define DIALOGMEMORYMAP_H
 
-#include <QDialog>
 #include "xbinary.h"
 #include "xshortcutsdialog.h"
 
