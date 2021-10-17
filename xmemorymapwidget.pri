@@ -27,3 +27,7 @@ SOURCES += \
     XCONFIG += xhexview
     include($$PWD/../XHexView/xhexview.pri)
 }
+
+DISTFILES += \
+    $$PWD/LICENSE \
+    $$PWD/README.md
