@@ -138,7 +138,7 @@ void XMemoryMapWidget::updateMemoryMap()
 
 //    QColor colDisabled=QWidget::palette().color(QPalette::Window);
 
-    for(int i=0;i<nNumberOfRecords;i++)
+    for(qint32 i=0;i<nNumberOfRecords;i++)
     {
 //        bool bIsVirtual=g_memoryMap.listRecords.at(i).bIsVirtual;
 
