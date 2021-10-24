@@ -127,7 +127,7 @@ void XMemoryMapWidget::updateMemoryMap()
 
     QAbstractItemModel *pOldModel=ui->tableViewMemoryMap->model();
 
-    int nNumberOfRecords=g_memoryMap.listRecords.count();
+    qint32 nNumberOfRecords=g_memoryMap.listRecords.count();
 
     QStandardItemModel *pModel=new QStandardItemModel(nNumberOfRecords,4,this);
 

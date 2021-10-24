@@ -30,4 +30,5 @@ SOURCES += \
 
 DISTFILES += \
     $$PWD/LICENSE \
-    $$PWD/README.md
+    $$PWD/README.md \
+    $$PWD/xmemorymapwidget.cmake
