@@ -233,7 +233,7 @@ void XMemoryMapWidget::adjust(bool bInit)
     const bool bBlocked5=ui->pageHex->blockSignals(true);
 #endif
 
-    int nTableViewIndex=-1;
+    qint32 nTableViewIndex=-1;
 
     quint64 nFileOffset=ui->lineEditFileOffset->getValue();
     quint64 nVirtualAddress=ui->lineEditVirtualAddress->getValue();
