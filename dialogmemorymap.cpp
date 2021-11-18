@@ -21,7 +21,7 @@
 #include "dialogmemorymap.h"
 #include "ui_dialogmemorymap.h"
 
-DialogMemoryMap::DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, XBinary::FT fileType, QString sSignaturesPath) :
+DialogMemoryMap::DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, XBinary::FT fileType) :
     XShortcutsDialog(pParent),
     ui(new Ui::DialogMemoryMap)
 {
@@ -29,7 +29,7 @@ DialogMemoryMap::DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, XBinary::
 
     setWindowFlags(Qt::Window);
 
-    ui->widgetMemoryMap->setData(pDevice,fileType,sSignaturesPath);
+    ui->widgetMemoryMap->setData(pDevice,fileType);
 }
 
 DialogMemoryMap::~DialogMemoryMap()
@@ -37,10 +37,10 @@ DialogMemoryMap::~DialogMemoryMap()
     delete ui;
 }
 
-void DialogMemoryMap::setShortcuts(XShortcuts *pShortcuts)
+void DialogMemoryMap::setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions)
 {
-    ui->widgetMemoryMap->setShortcuts(pShortcuts);
-    XShortcutsDialog::setShortcuts(pShortcuts);
+    ui->widgetMemoryMap->setGlobal(pShortcuts,pXOptions);
+    XShortcutsDialog::setGlobal(pShortcuts,pXOptions);
 }
 
 void DialogMemoryMap::on_pushButtonClose_clicked()

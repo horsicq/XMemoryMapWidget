@@ -38,9 +38,9 @@ class XMemoryMapWidget : public XShortcutsWidget
 public:
     explicit XMemoryMapWidget(QWidget *pParent=nullptr);
     ~XMemoryMapWidget();
-    void setData(QIODevice *pDevice,XBinary::FT fileType,QString sSignaturesPath);
+    void setData(QIODevice *pDevice,XBinary::FT fileType);
     void goToOffset(qint64 nOffset);
-    void setShortcuts(XShortcuts *pShortcuts);
+    void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
 
 private slots:
     void on_comboBoxType_currentIndexChanged(int nIndex);

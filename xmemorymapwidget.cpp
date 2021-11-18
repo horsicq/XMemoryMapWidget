@@ -36,12 +36,11 @@ XMemoryMapWidget::~XMemoryMapWidget()
     delete ui;
 }
 
-void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT fileType, QString sSignaturesPath)
+void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT fileType)
 {
     this->g_pDevice=pDevice;
 
     XHexView::OPTIONS options={};
-    options.sSignaturesPath=sSignaturesPath;
 
     ui->widgetHex->setData(pDevice,options);
 
@@ -55,10 +54,10 @@ void XMemoryMapWidget::goToOffset(qint64 nOffset)
     ui->lineEditFileOffset->setModeValue(g_mode,nOffset);
 }
 
-void XMemoryMapWidget::setShortcuts(XShortcuts *pShortcuts)
+void XMemoryMapWidget::setGlobal(XShortcuts *pShortcuts,XOptions *pXOptions)
 {
-    ui->widgetHex->setShortcuts(pShortcuts);
-    XShortcutsWidget::setShortcuts(pShortcuts);
+    ui->widgetHex->setGlobal(pShortcuts,pXOptions);
+    XShortcutsWidget::setGlobal(pShortcuts,pXOptions);
 }
 
 void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int nIndex)
