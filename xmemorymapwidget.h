@@ -38,6 +38,7 @@ class XMemoryMapWidget : public XShortcutsWidget
 public:
     explicit XMemoryMapWidget(QWidget *pParent=nullptr);
     ~XMemoryMapWidget();
+
     void setData(QIODevice *pDevice,XBinary::FT fileType);
     void goToOffset(qint64 nOffset);
     void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
