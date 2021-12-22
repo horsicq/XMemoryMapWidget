@@ -49,7 +49,7 @@ private slots:
     void on_radioButtonVirtualAddress_toggled(bool bChecked);
     void on_radioButtonRelativeVirtualAddress_toggled(bool bChecked);
     void updateMemoryMap();
-    void adjust(bool bInit);
+    void _adjust(bool bInit);
     void on_lineEditFileOffset_textChanged(const QString &sText);
     void on_lineEditVirtualAddress_textChanged(const QString &sText);
     void on_lineEditRelativeVirtualAddress_textChanged(const QString &sText);

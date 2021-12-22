@@ -71,21 +71,21 @@ void XMemoryMapWidget::on_radioButtonFileOffset_toggled(bool bChecked)
 {
     Q_UNUSED(bChecked)
 
-    adjust(false);
+    _adjust(false);
 }
 
 void XMemoryMapWidget::on_radioButtonVirtualAddress_toggled(bool bChecked)
 {
     Q_UNUSED(bChecked)
 
-    adjust(false);
+    _adjust(false);
 }
 
 void XMemoryMapWidget::on_radioButtonRelativeVirtualAddress_toggled(bool bChecked)
 {
     Q_UNUSED(bChecked)
 
-    adjust(false);
+    _adjust(false);
 }
 
 void XMemoryMapWidget::updateMemoryMap()
@@ -205,7 +205,7 @@ void XMemoryMapWidget::updateMemoryMap()
     connect(ui->tableViewMemoryMap->selectionModel(),SIGNAL(selectionChanged(QItemSelection, QItemSelection)),this,SLOT(on_tableViewSelection(QItemSelection, QItemSelection)));
     connect(ui->widgetHex,SIGNAL(cursorChanged(qint64)),this,SLOT(onHexCursorChanged(qint64)));
 
-    adjust(true);
+    _adjust(true);
 
 #if QT_VERSION < QT_VERSION_CHECK(5,3,0)
     ui->lineEditFileOffset->blockSignals(bBlocked1);
@@ -216,7 +216,7 @@ void XMemoryMapWidget::updateMemoryMap()
 #endif
 }
 
-void XMemoryMapWidget::adjust(bool bInit)
+void XMemoryMapWidget::_adjust(bool bInit)
 {
 #if QT_VERSION >= QT_VERSION_CHECK(5,3,0)
     const QSignalBlocker blocker1(ui->lineEditFileOffset);
@@ -331,21 +331,21 @@ void XMemoryMapWidget::on_lineEditFileOffset_textChanged(const QString &sText)
 {
     Q_UNUSED(sText)
 
-    adjust(false);
+    _adjust(false);
 }
 
 void XMemoryMapWidget::on_lineEditVirtualAddress_textChanged(const QString &sText)
 {
     Q_UNUSED(sText)
 
-    adjust(false);
+    _adjust(false);
 }
 
 void XMemoryMapWidget::on_lineEditRelativeVirtualAddress_textChanged(const QString &sText)
 {
     Q_UNUSED(sText)
 
-    adjust(false);
+    _adjust(false);
 }
 
 void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &selected, const QItemSelection &deselected)
