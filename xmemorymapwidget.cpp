@@ -433,7 +433,7 @@ void XMemoryMapWidget::onHexCursorChanged(qint64 nOffset)
 void XMemoryMapWidget::registerShortcuts(bool bState)
 {
     Q_UNUSED(bState)
-    // TODO
+    // mb TODO
 }
 
 void XMemoryMapWidget::on_pushButtonSave_clicked()
