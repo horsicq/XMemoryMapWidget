@@ -1,3 +1,3 @@
 # XMemoryMapWidget
 
-Widget for Memory Map
+Memory Map Widgets
