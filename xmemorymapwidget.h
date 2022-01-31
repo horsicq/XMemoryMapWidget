@@ -41,7 +41,7 @@ public:
 
     void setData(QIODevice *pDevice,XBinary::FT fileType);
     void goToOffset(qint64 nOffset);
-    void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
+    void setGlobal(XShortcuts *pShortcuts,XOptions *pXOptions);
 
 private slots:
     void on_comboBoxType_currentIndexChanged(int nIndex);
@@ -53,7 +53,7 @@ private slots:
     void on_lineEditFileOffset_textChanged(const QString &sText);
     void on_lineEditVirtualAddress_textChanged(const QString &sText);
     void on_lineEditRelativeVirtualAddress_textChanged(const QString &sText);
-    void on_tableViewSelection(const QItemSelection &selected,const QItemSelection &deselected);
+    void on_tableViewSelection(const QItemSelection &isSelected,const QItemSelection &isDeselected);
     void _goToOffset(qint64 nOffset,qint64 nSize=0);
     void onHexCursorChanged(qint64 nOffset);
     void on_pushButtonSave_clicked();

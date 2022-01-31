@@ -348,10 +348,10 @@ void XMemoryMapWidget::on_lineEditRelativeVirtualAddress_textChanged(const QStri
     _adjust(false);
 }
 
-void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &selected, const QItemSelection &deselected)
+void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &isSelected, const QItemSelection &isDeselected)
 {
-    Q_UNUSED(selected)
-    Q_UNUSED(deselected)
+    Q_UNUSED(isSelected)
+    Q_UNUSED(isDeselected)
 
 #if QT_VERSION >= QT_VERSION_CHECK(5,3,0)
     const QSignalBlocker blocker1(ui->lineEditFileOffset);
