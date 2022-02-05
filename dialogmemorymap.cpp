@@ -37,7 +37,7 @@ DialogMemoryMap::~DialogMemoryMap()
     delete ui;
 }
 
-void DialogMemoryMap::setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions)
+void DialogMemoryMap::setGlobal(XShortcuts *pShortcuts,XOptions *pXOptions)
 {
     ui->widgetMemoryMap->setGlobal(pShortcuts,pXOptions);
     XShortcutsDialog::setGlobal(pShortcuts,pXOptions);
