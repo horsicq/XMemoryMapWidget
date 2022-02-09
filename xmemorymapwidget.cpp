@@ -36,7 +36,7 @@ XMemoryMapWidget::~XMemoryMapWidget()
     delete ui;
 }
 
-void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT fileType)
+void XMemoryMapWidget::setData(QIODevice *pDevice,XBinary::FT fileType)
 {
     this->g_pDevice=pDevice;
 
