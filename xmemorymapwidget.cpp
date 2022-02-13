@@ -398,7 +398,7 @@ void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &isSelected,co
 #endif
 }
 
-void XMemoryMapWidget::_goToOffset(qint64 nOffset, qint64 nSize)
+void XMemoryMapWidget::_goToOffset(qint64 nOffset,qint64 nSize)
 {
     if(!g_bLockHex)
     {
