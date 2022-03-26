@@ -144,6 +144,7 @@ void XMemoryMapWidget::updateMemoryMap()
 
         QStandardItem *pItemOffset=new QStandardItem;
 
+        // TODO Check
 //        if(bIsVirtual)
 //        {
 //            pItemOffset->setBackground(colDisabled);
