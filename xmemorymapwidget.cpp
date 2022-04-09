@@ -422,7 +422,7 @@ void XMemoryMapWidget::_goToOffset(qint64 nOffset,qint64 nSize)
         else
         {
             // Invalid offset
-            ui->stackedWidgetHex->setCurrentIndex(1);
+            ui->stackedWidgetHex->setCurrentIndex(1); // TODO Consts
         }
     }
 }
