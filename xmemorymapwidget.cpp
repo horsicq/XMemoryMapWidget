@@ -27,9 +27,9 @@ XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) :
 {
     ui->setupUi(this);
 
+    g_pDevice=nullptr;
     g_mode=XLineEditHEX::MODE_16;
     g_bLockHex=false;
-    g_pDevice=nullptr;
     g_memoryMap={};
 }
 
