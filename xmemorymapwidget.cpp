@@ -239,7 +239,7 @@ void XMemoryMapWidget::_adjust(bool bInit)
     qint32 nTableViewIndex=-1;
 
     quint64 nFileOffset=ui->lineEditFileOffset->getValue();
-    quint64 nVirtualAddress=ui->lineEditVirtualAddress->getValue();
+    XADDR nVirtualAddress=ui->lineEditVirtualAddress->getValue();
     quint64 nRelativeVirtualAddress=ui->lineEditRelativeVirtualAddress->getValue();
 
     if(ui->radioButtonFileOffset->isChecked())
@@ -380,7 +380,7 @@ void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &isSelected,co
         if(listIndexes.count())
         {
             qint64 nFileOffset=listIndexes.at(0).data(Qt::UserRole+0).toLongLong();
-            qint64 nVirtualAddress=listIndexes.at(0).data(Qt::UserRole+1).toLongLong();
+            XADDR nVirtualAddress=listIndexes.at(0).data(Qt::UserRole+1).toLongLong();
             qint64 nSize=listIndexes.at(0).data(Qt::UserRole+2).toLongLong();
 
             qint64 nRelativeVirtualAddress=XBinary::addressToRelAddress(&g_memoryMap,nVirtualAddress);
