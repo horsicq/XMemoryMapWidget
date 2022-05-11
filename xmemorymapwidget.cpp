@@ -46,9 +46,12 @@ void XMemoryMapWidget::setData(QIODevice *pDevice,XBinary::FT fileType)
 
     ui->widgetHex->setData(pDevice,options);
 
-    XFormats::setFileTypeComboBox(fileType,g_pDevice,ui->comboBoxType);
+    if(pDevice)
+    {
+        XFormats::setFileTypeComboBox(fileType,g_pDevice,ui->comboBoxType);
 
-    updateMemoryMap();
+        updateMemoryMap();
+    }
 }
 
 void XMemoryMapWidget::goToOffset(qint64 nOffset)
