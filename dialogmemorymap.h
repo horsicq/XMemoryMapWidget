@@ -33,6 +33,7 @@ class DialogMemoryMap : public XShortcutsDialog
     Q_OBJECT
 
 public:
+    // TODO SetData
     explicit DialogMemoryMap(QWidget *pParent,QIODevice *pDevice,XBinary::FT fileType);
     ~DialogMemoryMap();
 
