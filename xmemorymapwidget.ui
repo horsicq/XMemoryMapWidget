@@ -31,7 +31,7 @@
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <property name="spacing">
         <number>0</number>
@@ -267,6 +267,13 @@
                </widget>
               </item>
              </layout>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBoxShowAll">
+              <property name="text">
+               <string>Show all</string>
+              </property>
+             </widget>
             </item>
             <item>
              <spacer name="verticalSpacer">

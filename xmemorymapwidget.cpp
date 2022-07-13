@@ -131,7 +131,18 @@ void XMemoryMapWidget::updateMemoryMap()
 
     QAbstractItemModel *pOldModel=ui->tableViewMemoryMap->model();
 
-    qint32 nNumberOfRecords=g_memoryMap.listRecords.count();
+    qint32 nNumberOfRecords=0;
+
+    bool bShowAll=ui->checkBoxShowAll->isChecked();
+
+    if(bShowAll)
+    {
+        nNumberOfRecords=g_memoryMap.listRecords.count();
+    }
+    else
+    {
+        nNumberOfRecords=XBinary::getNumberOfPhysicalRecords(&g_memoryMap);
+    }
 
     QStandardItemModel *pModel=new QStandardItemModel(nNumberOfRecords,4,this);
 
@@ -142,56 +153,62 @@ void XMemoryMapWidget::updateMemoryMap()
 
 //    QColor colDisabled=QWidget::palette().color(QPalette::Window);
 
+    qint32 _nNumberOfRecords=g_memoryMap.listRecords.count();
     // TODO Check virtual
-    for(qint32 i=0;i<nNumberOfRecords;i++)
+    for(qint32 i=0,j=0;i<_nNumberOfRecords;i++)
     {
 //        bool bIsVirtual=g_memoryMap.listRecords.at(i).bIsVirtual;
 
-        QStandardItem *pItemOffset=new QStandardItem;
+        if((!(g_memoryMap.listRecords.at(i).bIsVirtual))||(bShowAll))
+        {
+            QStandardItem *pItemOffset=new QStandardItem;
 
-        // TODO Check
-//        if(bIsVirtual)
-//        {
-//            pItemOffset->setBackground(colDisabled);
-//        }
+            // TODO Check
+    //        if(bIsVirtual)
+    //        {
+    //            pItemOffset->setBackground(colDisabled);
+    //        }
 
-        pItemOffset->setData(g_memoryMap.listRecords.at(i).nOffset,Qt::UserRole+0);
-        pItemOffset->setData(g_memoryMap.listRecords.at(i).nAddress,Qt::UserRole+1);
-        pItemOffset->setData(g_memoryMap.listRecords.at(i).nSize,Qt::UserRole+2);
+            pItemOffset->setData(g_memoryMap.listRecords.at(i).nOffset,Qt::UserRole+0);
+            pItemOffset->setData(g_memoryMap.listRecords.at(i).nAddress,Qt::UserRole+1);
+            pItemOffset->setData(g_memoryMap.listRecords.at(i).nSize,Qt::UserRole+2);
 
-        pItemOffset->setText(XLineEditHEX::getFormatString(g_mode,g_memoryMap.listRecords.at(i).nOffset));
-        pModel->setItem(i,0,pItemOffset);
+            pItemOffset->setText(XLineEditHEX::getFormatString(g_mode,g_memoryMap.listRecords.at(i).nOffset));
+            pModel->setItem(j,0,pItemOffset);
 
-        QStandardItem *pItemAddress=new QStandardItem;
+            QStandardItem *pItemAddress=new QStandardItem;
 
-//        if(bIsVirtual)
-//        {
-//            pItemAddress->setBackground(colDisabled);
-//        }
+    //        if(bIsVirtual)
+    //        {
+    //            pItemAddress->setBackground(colDisabled);
+    //        }
 
-        pItemAddress->setText(XLineEditHEX::getFormatString(g_mode,g_memoryMap.listRecords.at(i).nAddress));
-        pModel->setItem(i,1,pItemAddress);
+            pItemAddress->setText(XLineEditHEX::getFormatString(g_mode,g_memoryMap.listRecords.at(i).nAddress));
+            pModel->setItem(j,1,pItemAddress);
 
-        QStandardItem *pItemSize=new QStandardItem;
+            QStandardItem *pItemSize=new QStandardItem;
 
-//        if(bIsVirtual)
-//        {
-//            pItemSize->setBackground(colDisabled);
-//        }
+    //        if(bIsVirtual)
+    //        {
+    //            pItemSize->setBackground(colDisabled);
+    //        }
 
-        pItemSize->setText(XLineEditHEX::getFormatString(g_mode,g_memoryMap.listRecords.at(i).nSize));
-        pModel->setItem(i,2,pItemSize);
+            pItemSize->setText(XLineEditHEX::getFormatString(g_mode,g_memoryMap.listRecords.at(i).nSize));
+            pModel->setItem(j,2,pItemSize);
 
 
-        QStandardItem *pItemName=new QStandardItem;
+            QStandardItem *pItemName=new QStandardItem;
 
-//        if(bIsVirtual)
-//        {
-//            pItemName->setBackground(colDisabled);
-//        }
+    //        if(bIsVirtual)
+    //        {
+    //            pItemName->setBackground(colDisabled);
+    //        }
 
-        pItemName->setText(g_memoryMap.listRecords.at(i).sName);
-        pModel->setItem(i,3,pItemName);
+            pItemName->setText(g_memoryMap.listRecords.at(i).sName);
+            pModel->setItem(j,3,pItemName);
+
+            j++;
+        }
     }
 
     ui->tableViewMemoryMap->setModel(pModel);
@@ -446,4 +463,11 @@ void XMemoryMapWidget::registerShortcuts(bool bState)
 void XMemoryMapWidget::on_pushButtonSave_clicked()
 {
     XShortcutsWidget::saveModel(ui->tableViewMemoryMap->model(),XBinary::getResultFileName(g_pDevice,QString("%1.txt").arg(tr("Memory map"))));
+}
+
+void XMemoryMapWidget::on_checkBoxShowAll_stateChanged(int nArg)
+{
+    Q_UNUSED(nArg)
+
+    updateMemoryMap();
 }

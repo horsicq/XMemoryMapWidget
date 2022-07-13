@@ -57,6 +57,7 @@ private slots:
     void _goToOffset(qint64 nOffset,qint64 nSize=0);
     void onHexCursorChanged(qint64 nOffset);
     void on_pushButtonSave_clicked();
+    void on_checkBoxShowAll_stateChanged(int nArg);
 
 protected:
     virtual void registerShortcuts(bool bState);
