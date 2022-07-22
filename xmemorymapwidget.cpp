@@ -213,7 +213,7 @@ void XMemoryMapWidget::updateMemoryMap()
 
     ui->tableViewMemoryMap->setModel(pModel);
 
-    delete pOldModel;
+    deleteOldAbstractModel(&pOldModel);
 
     ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(0,QHeaderView::Interactive);
     ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(1,QHeaderView::Interactive);
