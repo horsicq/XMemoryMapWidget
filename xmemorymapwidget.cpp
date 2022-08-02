@@ -144,7 +144,7 @@ void XMemoryMapWidget::updateMemoryMap()
         nNumberOfRecords=XBinary::getNumberOfPhysicalRecords(&g_memoryMap);
     }
 
-    QStandardItemModel *pModel=new QStandardItemModel(nNumberOfRecords,4,this);
+    QStandardItemModel *pModel=new QStandardItemModel(nNumberOfRecords,4);
 
     pModel->setHeaderData(0,Qt::Horizontal,tr("Offset"));
     pModel->setHeaderData(1,Qt::Horizontal,tr("Address"));
