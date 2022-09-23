@@ -41,7 +41,7 @@ DialogMemoryMap::~DialogMemoryMap()
     delete ui;
 }
 
-void DialogMemoryMap::setData(QIODevice *pDevice, XBinary::FT fileType)
+void DialogMemoryMap::setData(QIODevice *pDevice,XBinary::FT fileType)
 {
     ui->widgetMemoryMap->setData(pDevice,fileType);
 }
