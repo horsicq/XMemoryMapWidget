@@ -1,10 +1,6 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-FORMS += \
-    $$PWD/dialogmemorymap.ui \
-    $$PWD/xmemorymapwidget.ui
-
 HEADERS += \
     $$PWD/dialogmemorymap.h \
     $$PWD/xmemorymapwidget.h
@@ -12,6 +8,10 @@ HEADERS += \
 SOURCES += \
     $$PWD/dialogmemorymap.cpp \
     $$PWD/xmemorymapwidget.cpp
+
+FORMS += \
+    $$PWD/dialogmemorymap.ui \
+    $$PWD/xmemorymapwidget.ui
 
 !contains(XCONFIG, xformats) {
     XCONFIG += xformats
