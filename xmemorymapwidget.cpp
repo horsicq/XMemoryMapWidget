@@ -95,19 +95,11 @@ void XMemoryMapWidget::on_radioButtonRelativeVirtualAddress_toggled(bool bChecke
 
 void XMemoryMapWidget::updateMemoryMap()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5,3,0)
-    const QSignalBlocker blocker1(ui->lineEditFileOffset);
-    const QSignalBlocker blocker2(ui->lineEditVirtualAddress);
-    const QSignalBlocker blocker3(ui->lineEditRelativeVirtualAddress);
-    const QSignalBlocker blocker4(ui->tableViewMemoryMap);
-    const QSignalBlocker blocker5(ui->pageHex);
-#else
     const bool bBlocked1=ui->lineEditFileOffset->blockSignals(true);
     const bool bBlocked2=ui->lineEditVirtualAddress->blockSignals(true);
     const bool bBlocked3=ui->lineEditRelativeVirtualAddress->blockSignals(true);
     const bool bBlocked4=ui->tableViewMemoryMap->blockSignals(true);
     const bool bBlocked5=ui->pageHex->blockSignals(true);
-#endif
 
     XBinary::FT fileType=(XBinary::FT)(ui->comboBoxType->currentData().toInt());
 
@@ -231,13 +223,11 @@ void XMemoryMapWidget::updateMemoryMap()
 
     _adjust(true);
 
-#if QT_VERSION < QT_VERSION_CHECK(5,3,0)
     ui->lineEditFileOffset->blockSignals(bBlocked1);
     ui->lineEditVirtualAddress->blockSignals(bBlocked2);
     ui->lineEditRelativeVirtualAddress->blockSignals(bBlocked3);
     ui->tableViewMemoryMap->blockSignals(bBlocked4);
     ui->pageHex->blockSignals(bBlocked5);
-#endif
 }
 
 void XMemoryMapWidget::_adjust(bool bInit)
