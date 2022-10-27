@@ -445,9 +445,9 @@ void XMemoryMapWidget::on_pushButtonSave_clicked()
     XShortcutsWidget::saveModel(ui->tableViewMemoryMap->model(),XBinary::getResultFileName(g_pDevice,QString("%1.txt").arg(tr("Memory map"))));
 }
 
-void XMemoryMapWidget::on_checkBoxShowAll_stateChanged(int nArg)
+void XMemoryMapWidget::on_checkBoxShowAll_stateChanged(int nValue)
 {
-    Q_UNUSED(nArg)
+    Q_UNUSED(nValue)
 
     updateMemoryMap();
 }
