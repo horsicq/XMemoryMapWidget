@@ -42,7 +42,7 @@ void XMemoryMapWidget::setData(QIODevice *pDevice,XBinary::FT fileType)
 {
     this->g_pDevice=pDevice;
 
-    XHexView::OPTIONS options={}; // TODO Check
+    XHexView::OPTIONS options={}; // TODO Check !!!
 
     ui->widgetHex->setData(pDevice,options);
 
