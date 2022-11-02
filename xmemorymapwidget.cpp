@@ -146,7 +146,7 @@ void XMemoryMapWidget::updateMemoryMap()
 //    QColor colDisabled=QWidget::palette().color(QPalette::Window);
 
     qint32 _nNumberOfRecords=g_memoryMap.listRecords.count();
-    // TODO Check virtual
+
     for(qint32 i=0,j=0;i<_nNumberOfRecords;i++)
     {
 //        bool bIsVirtual=g_memoryMap.listRecords.at(i).bIsVirtual;
