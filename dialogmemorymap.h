@@ -28,17 +28,16 @@ namespace Ui {
 class DialogMemoryMap;
 }
 
-class DialogMemoryMap : public XShortcutsDialog
-{
+class DialogMemoryMap : public XShortcutsDialog {
     Q_OBJECT
 
 public:
     explicit DialogMemoryMap(QWidget *pParent);
-    DialogMemoryMap(QWidget *pParent,QIODevice *pDevice,XBinary::FT fileType);
+    DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, XBinary::FT fileType);
     ~DialogMemoryMap();
 
-    void setData(QIODevice *pDevice,XBinary::FT fileType);
-    void setGlobal(XShortcuts *pShortcuts,XOptions *pXOptions);
+    void setData(QIODevice *pDevice, XBinary::FT fileType);
+    void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
 
 private slots:
     void on_pushButtonClose_clicked();
@@ -47,4 +46,4 @@ private:
     Ui::DialogMemoryMap *ui;
 };
 
-#endif // DIALOGMEMORYMAP_H
+#endif  // DIALOGMEMORYMAP_H

@@ -19,40 +19,32 @@
  * SOFTWARE.
  */
 #include "dialogmemorymap.h"
+
 #include "ui_dialogmemorymap.h"
 
-DialogMemoryMap::DialogMemoryMap(QWidget *pParent) :
-    XShortcutsDialog(pParent),
-    ui(new Ui::DialogMemoryMap)
-{
+DialogMemoryMap::DialogMemoryMap(QWidget *pParent) : XShortcutsDialog(pParent), ui(new Ui::DialogMemoryMap) {
     ui->setupUi(this);
 
     setWindowFlags(Qt::Window);
 }
 
-DialogMemoryMap::DialogMemoryMap(QWidget *pParent,QIODevice *pDevice,XBinary::FT fileType) :
-    DialogMemoryMap(pParent)
-{
-    setData(pDevice,fileType);
+DialogMemoryMap::DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, XBinary::FT fileType) : DialogMemoryMap(pParent) {
+    setData(pDevice, fileType);
 }
 
-DialogMemoryMap::~DialogMemoryMap()
-{
+DialogMemoryMap::~DialogMemoryMap() {
     delete ui;
 }
 
-void DialogMemoryMap::setData(QIODevice *pDevice,XBinary::FT fileType)
-{
-    ui->widgetMemoryMap->setData(pDevice,fileType);
+void DialogMemoryMap::setData(QIODevice *pDevice, XBinary::FT fileType) {
+    ui->widgetMemoryMap->setData(pDevice, fileType);
 }
 
-void DialogMemoryMap::setGlobal(XShortcuts *pShortcuts,XOptions *pXOptions)
-{
-    ui->widgetMemoryMap->setGlobal(pShortcuts,pXOptions);
-    XShortcutsDialog::setGlobal(pShortcuts,pXOptions);
+void DialogMemoryMap::setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions) {
+    ui->widgetMemoryMap->setGlobal(pShortcuts, pXOptions);
+    XShortcutsDialog::setGlobal(pShortcuts, pXOptions);
 }
 
-void DialogMemoryMap::on_pushButtonClose_clicked()
-{
+void DialogMemoryMap::on_pushButtonClose_clicked() {
     this->close();
 }

@@ -23,6 +23,7 @@
 
 #include <QItemSelection>
 #include <QStandardItemModel>
+
 #include "xformats.h"
 #include "xlineedithex.h"
 #include "xshortcutswidget.h"
@@ -31,17 +32,16 @@ namespace Ui {
 class XMemoryMapWidget;
 }
 
-class XMemoryMapWidget : public XShortcutsWidget
-{
+class XMemoryMapWidget : public XShortcutsWidget {
     Q_OBJECT
 
 public:
-    explicit XMemoryMapWidget(QWidget *pParent=nullptr);
+    explicit XMemoryMapWidget(QWidget *pParent = nullptr);
     ~XMemoryMapWidget();
 
-    void setData(QIODevice *pDevice,XBinary::FT fileType);
+    void setData(QIODevice *pDevice, XBinary::FT fileType);
     void goToOffset(qint64 nOffset);
-    void setGlobal(XShortcuts *pShortcuts,XOptions *pXOptions);
+    void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
 
 private slots:
     void on_comboBoxType_currentIndexChanged(int nIndex);
@@ -53,8 +53,8 @@ private slots:
     void on_lineEditFileOffset_textChanged(const QString &sText);
     void on_lineEditVirtualAddress_textChanged(const QString &sText);
     void on_lineEditRelativeVirtualAddress_textChanged(const QString &sText);
-    void on_tableViewSelection(const QItemSelection &isSelected,const QItemSelection &isDeselected);
-    void _goToOffset(qint64 nOffset,qint64 nSize=0);
+    void on_tableViewSelection(const QItemSelection &isSelected, const QItemSelection &isDeselected);
+    void _goToOffset(qint64 nOffset, qint64 nSize = 0);
     void onHexCursorChanged(qint64 nOffset);
     void on_pushButtonSave_clicked();
     void on_checkBoxShowAll_stateChanged(int nValue);
@@ -70,4 +70,4 @@ private:
     bool g_bLockHex;
 };
 
-#endif // XMEMORYMAPWIDGET_H
+#endif  // XMEMORYMAPWIDGET_H
