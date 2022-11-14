@@ -204,8 +204,7 @@ void XMemoryMapWidget::updateMemoryMap() {
     ui->tableViewMemoryMap->setColumnWidth(1, nColumnSize);
     ui->tableViewMemoryMap->setColumnWidth(2, nColumnSize);
 
-    connect(ui->tableViewMemoryMap->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this,
-            SLOT(on_tableViewSelection(QItemSelection, QItemSelection)));
+    connect(ui->tableViewMemoryMap->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(on_tableViewSelection(QItemSelection, QItemSelection)));
     connect(ui->widgetHex, SIGNAL(cursorChanged(qint64)), this, SLOT(onHexCursorChanged(qint64)));
 
     _adjust(true);
