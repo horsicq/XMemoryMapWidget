@@ -22,7 +22,8 @@
 
 #include "ui_xmemorymapwidget.h"
 
-XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) : XShortcutsWidget(pParent), ui(new Ui::XMemoryMapWidget) {
+XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) : XShortcutsWidget(pParent), ui(new Ui::XMemoryMapWidget)
+{
     ui->setupUi(this);
 
     g_pDevice = nullptr;
@@ -31,11 +32,13 @@ XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) : XShortcutsWidget(pParent)
     g_memoryMap = {};
 }
 
-XMemoryMapWidget::~XMemoryMapWidget() {
+XMemoryMapWidget::~XMemoryMapWidget()
+{
     delete ui;
 }
 
-void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT fileType) {
+void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT fileType)
+{
     this->g_pDevice = pDevice;
 
     XHexView::OPTIONS options = {};  // TODO Check !!!
@@ -49,40 +52,47 @@ void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT fileType) {
     }
 }
 
-void XMemoryMapWidget::goToOffset(qint64 nOffset) {
+void XMemoryMapWidget::goToOffset(qint64 nOffset)
+{
     ui->lineEditFileOffset->setModeValue(g_mode, nOffset);
 }
 
-void XMemoryMapWidget::setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions) {
+void XMemoryMapWidget::setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions)
+{
     ui->widgetHex->setGlobal(pShortcuts, pXOptions);
     XShortcutsWidget::setGlobal(pShortcuts, pXOptions);
 }
 
-void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int nIndex) {
+void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int nIndex)
+{
     Q_UNUSED(nIndex)
 
     updateMemoryMap();
 }
 
-void XMemoryMapWidget::on_radioButtonFileOffset_toggled(bool bChecked) {
+void XMemoryMapWidget::on_radioButtonFileOffset_toggled(bool bChecked)
+{
     Q_UNUSED(bChecked)
 
     _adjust(false);
 }
 
-void XMemoryMapWidget::on_radioButtonVirtualAddress_toggled(bool bChecked) {
+void XMemoryMapWidget::on_radioButtonVirtualAddress_toggled(bool bChecked)
+{
     Q_UNUSED(bChecked)
 
     _adjust(false);
 }
 
-void XMemoryMapWidget::on_radioButtonRelativeVirtualAddress_toggled(bool bChecked) {
+void XMemoryMapWidget::on_radioButtonRelativeVirtualAddress_toggled(bool bChecked)
+{
     Q_UNUSED(bChecked)
 
     _adjust(false);
 }
 
-void XMemoryMapWidget::updateMemoryMap() {
+void XMemoryMapWidget::updateMemoryMap()
+{
     const bool bBlocked1 = ui->lineEditFileOffset->blockSignals(true);
     const bool bBlocked2 = ui->lineEditVirtualAddress->blockSignals(true);
     const bool bBlocked3 = ui->lineEditRelativeVirtualAddress->blockSignals(true);
@@ -216,7 +226,8 @@ void XMemoryMapWidget::updateMemoryMap() {
     ui->pageHex->blockSignals(bBlocked5);
 }
 
-void XMemoryMapWidget::_adjust(bool bInit) {
+void XMemoryMapWidget::_adjust(bool bInit)
+{
     const bool bBlocked1 = ui->lineEditFileOffset->blockSignals(true);
     const bool bBlocked2 = ui->lineEditVirtualAddress->blockSignals(true);
     const bool bBlocked3 = ui->lineEditRelativeVirtualAddress->blockSignals(true);
@@ -304,25 +315,29 @@ void XMemoryMapWidget::_adjust(bool bInit) {
     ui->pageHex->blockSignals(bBlocked5);
 }
 
-void XMemoryMapWidget::on_lineEditFileOffset_textChanged(const QString &sText) {
+void XMemoryMapWidget::on_lineEditFileOffset_textChanged(const QString &sText)
+{
     Q_UNUSED(sText)
 
     _adjust(false);
 }
 
-void XMemoryMapWidget::on_lineEditVirtualAddress_textChanged(const QString &sText) {
+void XMemoryMapWidget::on_lineEditVirtualAddress_textChanged(const QString &sText)
+{
     Q_UNUSED(sText)
 
     _adjust(false);
 }
 
-void XMemoryMapWidget::on_lineEditRelativeVirtualAddress_textChanged(const QString &sText) {
+void XMemoryMapWidget::on_lineEditRelativeVirtualAddress_textChanged(const QString &sText)
+{
     Q_UNUSED(sText)
 
     _adjust(false);
 }
 
-void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &isSelected, const QItemSelection &isDeselected) {
+void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &isSelected, const QItemSelection &isDeselected)
+{
     Q_UNUSED(isSelected)
     Q_UNUSED(isDeselected)
 
@@ -359,7 +374,8 @@ void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &isSelected, c
     ui->pageHex->blockSignals(bBlocked5);
 }
 
-void XMemoryMapWidget::_goToOffset(qint64 nOffset, qint64 nSize) {
+void XMemoryMapWidget::_goToOffset(qint64 nOffset, qint64 nSize)
+{
     if (!g_bLockHex) {
         if (nSize == 0) {
             nSize = 1;
@@ -378,22 +394,26 @@ void XMemoryMapWidget::_goToOffset(qint64 nOffset, qint64 nSize) {
     }
 }
 
-void XMemoryMapWidget::onHexCursorChanged(qint64 nOffset) {
+void XMemoryMapWidget::onHexCursorChanged(qint64 nOffset)
+{
     g_bLockHex = true;
     ui->lineEditFileOffset->setModeValue(g_mode, nOffset);
     g_bLockHex = false;
 }
 
-void XMemoryMapWidget::registerShortcuts(bool bState) {
+void XMemoryMapWidget::registerShortcuts(bool bState)
+{
     Q_UNUSED(bState)
     // mb TODO
 }
 
-void XMemoryMapWidget::on_pushButtonSave_clicked() {
+void XMemoryMapWidget::on_pushButtonSave_clicked()
+{
     XShortcutsWidget::saveModel(ui->tableViewMemoryMap->model(), XBinary::getResultFileName(g_pDevice, QString("%1.txt").arg(tr("Memory map"))));
 }
 
-void XMemoryMapWidget::on_checkBoxShowAll_stateChanged(int nValue) {
+void XMemoryMapWidget::on_checkBoxShowAll_stateChanged(int nValue)
+{
     Q_UNUSED(nValue)
 
     updateMemoryMap();
