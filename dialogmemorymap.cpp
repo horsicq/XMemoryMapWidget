@@ -22,16 +22,14 @@
 
 #include "ui_dialogmemorymap.h"
 
-DialogMemoryMap::DialogMemoryMap(QWidget *pParent)
-    : XShortcutsDialog(pParent), ui(new Ui::DialogMemoryMap)
+DialogMemoryMap::DialogMemoryMap(QWidget *pParent) : XShortcutsDialog(pParent), ui(new Ui::DialogMemoryMap)
 {
     ui->setupUi(this);
 
     setWindowFlags(Qt::Window);
 }
 
-DialogMemoryMap::DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, XBinary::FT fileType)
-    : DialogMemoryMap(pParent)
+DialogMemoryMap::DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, XBinary::FT fileType) : DialogMemoryMap(pParent)
 {
     setData(pDevice, fileType);
 }
