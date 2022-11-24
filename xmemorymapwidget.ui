@@ -66,7 +66,7 @@
           <widget class="QWidget" name="widgetLeft" native="true">
            <property name="maximumSize">
             <size>
-             <width>280</width>
+             <width>320</width>
              <height>16777215</height>
             </size>
            </property>

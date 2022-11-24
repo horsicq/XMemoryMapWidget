@@ -142,7 +142,7 @@ void XMemoryMapWidget::updateMemoryMap()
     pModel->setHeaderData(2, Qt::Horizontal, tr("Size"));
     pModel->setHeaderData(3, Qt::Horizontal, tr("Name"));
 
-    //    QColor colDisabled=QWidget::palette().color(QPalette::Window);
+    QColor colDisabled=QWidget::palette().color(QPalette::Window);
 
     qint32 _nNumberOfRecords = g_memoryMap.listRecords.count();
 
@@ -152,45 +152,34 @@ void XMemoryMapWidget::updateMemoryMap()
         if ((!(g_memoryMap.listRecords.at(i).bIsVirtual)) || (bShowAll)) {
             QStandardItem *pItemOffset = new QStandardItem;
 
-            // TODO Check
-            //        if(bIsVirtual)
-            //        {
-            //            pItemOffset->setBackground(colDisabled);
-            //        }
-
             pItemOffset->setData(g_memoryMap.listRecords.at(i).nOffset, Qt::UserRole + 0);
             pItemOffset->setData(g_memoryMap.listRecords.at(i).nAddress, Qt::UserRole + 1);
             pItemOffset->setData(g_memoryMap.listRecords.at(i).nSize, Qt::UserRole + 2);
 
-            pItemOffset->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nOffset));
+            if(g_memoryMap.listRecords.at(i).nOffset != -1) {
+                pItemOffset->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nOffset));
+            } else {
+                pItemOffset->setBackground(colDisabled);
+            }
+
             pModel->setItem(j, 0, pItemOffset);
 
             QStandardItem *pItemAddress = new QStandardItem;
 
-            //        if(bIsVirtual)
-            //        {
-            //            pItemAddress->setBackground(colDisabled);
-            //        }
+            if(g_memoryMap.listRecords.at(i).nAddress != (quint64)-1) {
+                pItemAddress->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nAddress));
+            } else {
+                pItemAddress->setBackground(colDisabled);
+            }
 
-            pItemAddress->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nAddress));
             pModel->setItem(j, 1, pItemAddress);
 
             QStandardItem *pItemSize = new QStandardItem;
-
-            //        if(bIsVirtual)
-            //        {
-            //            pItemSize->setBackground(colDisabled);
-            //        }
 
             pItemSize->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nSize));
             pModel->setItem(j, 2, pItemSize);
 
             QStandardItem *pItemName = new QStandardItem;
-
-            //        if(bIsVirtual)
-            //        {
-            //            pItemName->setBackground(colDisabled);
-            //        }
 
             pItemName->setText(g_memoryMap.listRecords.at(i).sName);
             pModel->setItem(j, 3, pItemName);
