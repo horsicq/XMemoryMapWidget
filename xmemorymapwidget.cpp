@@ -155,6 +155,9 @@ void XMemoryMapWidget::updateMemoryMap()
             pItemOffset->setData(g_memoryMap.listRecords.at(i).nOffset, Qt::UserRole + 0);
             pItemOffset->setData(g_memoryMap.listRecords.at(i).nAddress, Qt::UserRole + 1);
             pItemOffset->setData(g_memoryMap.listRecords.at(i).nSize, Qt::UserRole + 2);
+            pItemOffset->setData(QString("%1_%2_%3.bin").arg(XBinary::valueToHexEx(g_memoryMap.listRecords.at(i).nOffset),
+                                                             XBinary::valueToHexEx(g_memoryMap.listRecords.at(i).nSize),
+                                                             g_memoryMap.listRecords.at(i).sName), Qt::UserRole + 3);
 
             if(g_memoryMap.listRecords.at(i).nOffset != -1) {
                 pItemOffset->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nOffset));
@@ -406,4 +409,78 @@ void XMemoryMapWidget::on_checkBoxShowAll_stateChanged(int nValue)
     Q_UNUSED(nValue)
 
     updateMemoryMap();
+}
+
+void XMemoryMapWidget::on_pushButtonDumpAll_clicked()
+{
+    QString sDirectory = QFileDialog::getExistingDirectory(this, tr("Dump all"), XBinary::getDeviceDirectory(g_pDevice));
+
+    if (!sDirectory.isEmpty()) {
+        qint32 nNumberOfRecords = ui->tableViewMemoryMap->model()->rowCount();
+
+        if (nNumberOfRecords) {
+            QList<DumpProcess::RECORD> listRecords;
+
+            for (qint32 i = 0; i < nNumberOfRecords; i++) {
+                QModelIndex index = ui->tableViewMemoryMap->model()->index(i, 0);
+
+                DumpProcess::RECORD record = {};
+
+                record.nOffset = ui->tableViewMemoryMap->model()->data(index, Qt::UserRole + 0).toLongLong();
+                record.nSize = ui->tableViewMemoryMap->model()->data(index, Qt::UserRole + 2).toLongLong();
+                record.sFileName = ui->tableViewMemoryMap->model()->data(index, Qt::UserRole + 3).toString();
+
+                record.sFileName = sDirectory + QDir::separator() + QFileInfo(record.sFileName).fileName();
+
+                listRecords.append(record);
+            }
+
+            DialogDumpProcess dd(this);
+
+            dd.setData(g_pDevice, listRecords, DumpProcess::DT_OFFSET);
+
+            dd.showDialogDelay(1000);
+        }
+    }
+}
+
+void XMemoryMapWidget::on_tableViewMemoryMap_customContextMenuRequested(const QPoint &pos)
+{
+    int nRow = ui->tableViewMemoryMap->currentIndex().row();
+
+    if (nRow != -1) {
+        QMenu contextMenu(this);
+
+        QAction actionDump(tr("Dump to file"), this);
+        connect(&actionDump, SIGNAL(triggered()), this, SLOT(dumpSection()));
+        contextMenu.addAction(&actionDump);
+
+        contextMenu.exec(ui->tableViewMemoryMap->viewport()->mapToGlobal(pos));
+    }
+}
+
+void XMemoryMapWidget::dumpSection()
+{
+    int nRow = ui->tableViewMemoryMap->currentIndex().row();
+
+    if (nRow != -1) {
+        QModelIndex index = ui->tableViewMemoryMap->selectionModel()->selectedIndexes().at(0);
+
+        qint64 nOffset = ui->tableViewMemoryMap->model()->data(index, Qt::UserRole + 0).toLongLong();
+        qint64 nSize = ui->tableViewMemoryMap->model()->data(index, Qt::UserRole + 2).toLongLong();
+        QString sName = ui->tableViewMemoryMap->model()->data(index, Qt::UserRole + 3).toString();
+
+        if (sName == "") {
+            sName = tr("Dump");
+        }
+
+        QString sSaveFileName = XBinary::getResultFileName(g_pDevice, QString("%1.bin").arg(sName));
+        QString sFileName = QFileDialog::getSaveFileName(this, tr("Save dump"), sSaveFileName, QString("%1 (*.bin)").arg(tr("Raw data")));
+
+        if (!sFileName.isEmpty()) {
+            DialogDumpProcess dd(this, g_pDevice, nOffset, nSize, sFileName, DumpProcess::DT_OFFSET);
+
+            dd.showDialogDelay(1000);
+        }
+    }
 }

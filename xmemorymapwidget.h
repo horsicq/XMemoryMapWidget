@@ -58,6 +58,9 @@ private slots:
     void onHexCursorChanged(qint64 nOffset);
     void on_pushButtonSave_clicked();
     void on_checkBoxShowAll_stateChanged(int nValue);
+    void on_pushButtonDumpAll_clicked();
+    void on_tableViewMemoryMap_customContextMenuRequested(const QPoint &pos);
+    void dumpSection();
 
 protected:
     virtual void registerShortcuts(bool bState);
