@@ -333,37 +333,7 @@ void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &isSelected, c
     Q_UNUSED(isSelected)
     Q_UNUSED(isDeselected)
 
-    const bool bBlocked1 = ui->lineEditFileOffset->blockSignals(true);
-    const bool bBlocked2 = ui->lineEditVirtualAddress->blockSignals(true);
-    const bool bBlocked3 = ui->lineEditRelativeVirtualAddress->blockSignals(true);
-    const bool bBlocked4 = ui->tableViewMemoryMap->blockSignals(true);
-    const bool bBlocked5 = ui->pageHex->blockSignals(true);
-
-    QItemSelectionModel *pSelectionModel = ui->tableViewMemoryMap->selectionModel();
-
-    if (pSelectionModel) {
-        QModelIndexList listIndexes = pSelectionModel->selectedRows(0);
-
-        if (listIndexes.count()) {
-            qint64 nFileOffset = listIndexes.at(0).data(Qt::UserRole + 0).toLongLong();
-            XADDR nVirtualAddress = listIndexes.at(0).data(Qt::UserRole + 1).toLongLong();
-            qint64 nSize = listIndexes.at(0).data(Qt::UserRole + 2).toLongLong();
-
-            qint64 nRelativeVirtualAddress = XBinary::addressToRelAddress(&g_memoryMap, nVirtualAddress);
-
-            ui->lineEditFileOffset->setModeValue(g_mode, nFileOffset);
-            ui->lineEditVirtualAddress->setModeValue(g_mode, nVirtualAddress);
-            ui->lineEditRelativeVirtualAddress->setModeValue(g_mode, nRelativeVirtualAddress);
-
-            _goToOffset(nFileOffset, nSize);
-        }
-    }
-
-    ui->lineEditFileOffset->blockSignals(bBlocked1);
-    ui->lineEditVirtualAddress->blockSignals(bBlocked2);
-    ui->lineEditRelativeVirtualAddress->blockSignals(bBlocked3);
-    ui->tableViewMemoryMap->blockSignals(bBlocked4);
-    ui->pageHex->blockSignals(bBlocked5);
+    viewSelection();
 }
 
 void XMemoryMapWidget::_goToOffset(qint64 nOffset, qint64 nSize)
@@ -484,3 +454,46 @@ void XMemoryMapWidget::dumpSection()
         }
     }
 }
+
+void XMemoryMapWidget::on_tableViewMemoryMap_clicked(const QModelIndex &index)
+{
+    Q_UNUSED(index);
+
+    viewSelection();
+}
+
+void XMemoryMapWidget::viewSelection()
+{
+    const bool bBlocked1 = ui->lineEditFileOffset->blockSignals(true);
+    const bool bBlocked2 = ui->lineEditVirtualAddress->blockSignals(true);
+    const bool bBlocked3 = ui->lineEditRelativeVirtualAddress->blockSignals(true);
+    const bool bBlocked4 = ui->tableViewMemoryMap->blockSignals(true);
+    const bool bBlocked5 = ui->pageHex->blockSignals(true);
+
+    QItemSelectionModel *pSelectionModel = ui->tableViewMemoryMap->selectionModel();
+
+    if (pSelectionModel) {
+        QModelIndexList listIndexes = pSelectionModel->selectedRows(0);
+
+        if (listIndexes.count()) {
+            qint64 nFileOffset = listIndexes.at(0).data(Qt::UserRole + 0).toLongLong();
+            XADDR nVirtualAddress = listIndexes.at(0).data(Qt::UserRole + 1).toLongLong();
+            qint64 nSize = listIndexes.at(0).data(Qt::UserRole + 2).toLongLong();
+
+            qint64 nRelativeVirtualAddress = XBinary::addressToRelAddress(&g_memoryMap, nVirtualAddress);
+
+            ui->lineEditFileOffset->setModeValue(g_mode, nFileOffset);
+            ui->lineEditVirtualAddress->setModeValue(g_mode, nVirtualAddress);
+            ui->lineEditRelativeVirtualAddress->setModeValue(g_mode, nRelativeVirtualAddress);
+
+            _goToOffset(nFileOffset, nSize);
+        }
+    }
+
+    ui->lineEditFileOffset->blockSignals(bBlocked1);
+    ui->lineEditVirtualAddress->blockSignals(bBlocked2);
+    ui->lineEditRelativeVirtualAddress->blockSignals(bBlocked3);
+    ui->tableViewMemoryMap->blockSignals(bBlocked4);
+    ui->pageHex->blockSignals(bBlocked5);
+}
+

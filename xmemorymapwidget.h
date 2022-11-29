@@ -61,6 +61,8 @@ private slots:
     void on_pushButtonDumpAll_clicked();
     void on_tableViewMemoryMap_customContextMenuRequested(const QPoint &pos);
     void dumpSection();
+    void on_tableViewMemoryMap_clicked(const QModelIndex &index);
+    void viewSelection();
 
 protected:
     virtual void registerShortcuts(bool bState);
