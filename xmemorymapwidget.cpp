@@ -142,7 +142,7 @@ void XMemoryMapWidget::updateMemoryMap()
     pModel->setHeaderData(2, Qt::Horizontal, tr("Size"));
     pModel->setHeaderData(3, Qt::Horizontal, tr("Name"));
 
-    QColor colDisabled=QWidget::palette().color(QPalette::Window);
+    QColor colDisabled = QWidget::palette().color(QPalette::Window);
 
     qint32 _nNumberOfRecords = g_memoryMap.listRecords.count();
 
@@ -155,11 +155,12 @@ void XMemoryMapWidget::updateMemoryMap()
             pItemOffset->setData(g_memoryMap.listRecords.at(i).nOffset, Qt::UserRole + 0);
             pItemOffset->setData(g_memoryMap.listRecords.at(i).nAddress, Qt::UserRole + 1);
             pItemOffset->setData(g_memoryMap.listRecords.at(i).nSize, Qt::UserRole + 2);
-            pItemOffset->setData(QString("%1_%2_%3.bin").arg(XBinary::valueToHexEx(g_memoryMap.listRecords.at(i).nOffset),
-                                                             XBinary::valueToHexEx(g_memoryMap.listRecords.at(i).nSize),
-                                                             g_memoryMap.listRecords.at(i).sName), Qt::UserRole + 3);
+            pItemOffset->setData(QString("%1_%2_%3.bin")
+                                     .arg(XBinary::valueToHexEx(g_memoryMap.listRecords.at(i).nOffset), XBinary::valueToHexEx(g_memoryMap.listRecords.at(i).nSize),
+                                          g_memoryMap.listRecords.at(i).sName),
+                                 Qt::UserRole + 3);
 
-            if(g_memoryMap.listRecords.at(i).nOffset != -1) {
+            if (g_memoryMap.listRecords.at(i).nOffset != -1) {
                 pItemOffset->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nOffset));
             } else {
                 pItemOffset->setBackground(colDisabled);
@@ -169,7 +170,7 @@ void XMemoryMapWidget::updateMemoryMap()
 
             QStandardItem *pItemAddress = new QStandardItem;
 
-            if(g_memoryMap.listRecords.at(i).nAddress != (quint64)-1) {
+            if (g_memoryMap.listRecords.at(i).nAddress != (quint64)-1) {
                 pItemAddress->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nAddress));
             } else {
                 pItemAddress->setBackground(colDisabled);
@@ -206,7 +207,8 @@ void XMemoryMapWidget::updateMemoryMap()
     ui->tableViewMemoryMap->setColumnWidth(1, nColumnSize);
     ui->tableViewMemoryMap->setColumnWidth(2, nColumnSize);
 
-    connect(ui->tableViewMemoryMap->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(on_tableViewSelection(QItemSelection, QItemSelection)));
+    connect(ui->tableViewMemoryMap->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this,
+            SLOT(on_tableViewSelection(QItemSelection, QItemSelection)));
     connect(ui->widgetHex, SIGNAL(cursorChanged(qint64)), this, SLOT(onHexCursorChanged(qint64)));
 
     _adjust(true);
@@ -496,4 +498,3 @@ void XMemoryMapWidget::viewSelection()
     ui->tableViewMemoryMap->blockSignals(bBlocked4);
     ui->pageHex->blockSignals(bBlocked5);
 }
-
