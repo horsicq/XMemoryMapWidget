@@ -160,12 +160,14 @@ void XMemoryMapWidget::updateMemoryMap()
                                           g_memoryMap.listRecords.at(i).sName),
                                  Qt::UserRole + 3);
 
+
             if (g_memoryMap.listRecords.at(i).nOffset != -1) {
                 pItemOffset->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nOffset));
             } else {
                 pItemOffset->setBackground(colDisabled);
             }
 
+            pItemOffset->setTextAlignment(Qt::AlignRight);
             pModel->setItem(j, 0, pItemOffset);
 
             QStandardItem *pItemAddress = new QStandardItem;
@@ -176,11 +178,14 @@ void XMemoryMapWidget::updateMemoryMap()
                 pItemAddress->setBackground(colDisabled);
             }
 
+            pItemAddress->setTextAlignment(Qt::AlignRight);
             pModel->setItem(j, 1, pItemAddress);
 
             QStandardItem *pItemSize = new QStandardItem;
 
             pItemSize->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nSize));
+
+            pItemSize->setTextAlignment(Qt::AlignRight);
             pModel->setItem(j, 2, pItemSize);
 
             QStandardItem *pItemName = new QStandardItem;
