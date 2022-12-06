@@ -99,6 +99,8 @@ void XMemoryMapWidget::updateMemoryMap()
     const bool bBlocked4 = ui->tableViewMemoryMap->blockSignals(true);
     const bool bBlocked5 = ui->pageHex->blockSignals(true);
 
+    g_mapIndexes.clear();
+
     XBinary::FT fileType = (XBinary::FT)(ui->comboBoxType->currentData().toInt());
 
     g_memoryMap = XFormats::getMemoryMap(fileType, g_pDevice);
@@ -150,6 +152,8 @@ void XMemoryMapWidget::updateMemoryMap()
         //        bool bIsVirtual=g_memoryMap.listRecords.at(i).bIsVirtual;
 
         if ((!(g_memoryMap.listRecords.at(i).bIsVirtual)) || (bShowAll)) {
+            g_mapIndexes.insert(i,j);
+
             QStandardItem *pItemOffset = new QStandardItem;
 
             pItemOffset->setData(g_memoryMap.listRecords.at(i).nOffset, Qt::UserRole + 0);
@@ -302,7 +306,7 @@ void XMemoryMapWidget::_adjust(bool bInit)
     }
 
     if (nTableViewIndex != -1) {
-        ui->tableViewMemoryMap->setCurrentIndex(ui->tableViewMemoryMap->model()->index(nTableViewIndex, 0));
+        ui->tableViewMemoryMap->setCurrentIndex(ui->tableViewMemoryMap->model()->index(g_mapIndexes.value(nTableViewIndex,0), 0));
     }
 
     _goToOffset(nFileOffset, 1);

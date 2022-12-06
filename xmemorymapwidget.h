@@ -73,6 +73,7 @@ private:
     XBinary::_MEMORY_MAP g_memoryMap;
     XLineEditHEX::MODE g_mode;
     bool g_bLockHex;
+    QMap<qint32,qint32> g_mapIndexes;
 };
 
 #endif  // XMEMORYMAPWIDGET_H
