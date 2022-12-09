@@ -382,7 +382,7 @@ void XMemoryMapWidget::registerShortcuts(bool bState)
 
 void XMemoryMapWidget::on_pushButtonSave_clicked()
 {
-    XShortcutsWidget::saveModel(ui->tableViewMemoryMap->model(), XBinary::getResultFileName(g_pDevice, QString("%1.txt").arg(tr("Memory map"))));
+    XShortcutsWidget::saveTableModel(ui->tableViewMemoryMap->model(), XBinary::getResultFileName(g_pDevice, QString("%1.txt").arg(tr("Memory map"))));
 }
 
 void XMemoryMapWidget::on_checkBoxShowAll_stateChanged(int nValue)
