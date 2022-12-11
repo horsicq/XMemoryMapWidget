@@ -152,7 +152,7 @@ void XMemoryMapWidget::updateMemoryMap()
         //        bool bIsVirtual=g_memoryMap.listRecords.at(i).bIsVirtual;
 
         if ((!(g_memoryMap.listRecords.at(i).bIsVirtual)) || (bShowAll)) {
-            g_mapIndexes.insert(i,j);
+            g_mapIndexes.insert(i, j);
 
             QStandardItem *pItemOffset = new QStandardItem;
 
@@ -163,7 +163,6 @@ void XMemoryMapWidget::updateMemoryMap()
                                      .arg(XBinary::valueToHexEx(g_memoryMap.listRecords.at(i).nOffset), XBinary::valueToHexEx(g_memoryMap.listRecords.at(i).nSize),
                                           g_memoryMap.listRecords.at(i).sName),
                                  Qt::UserRole + 3);
-
 
             if (g_memoryMap.listRecords.at(i).nOffset != -1) {
                 pItemOffset->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nOffset));
@@ -306,7 +305,7 @@ void XMemoryMapWidget::_adjust(bool bInit)
     }
 
     if (nTableViewIndex != -1) {
-        ui->tableViewMemoryMap->setCurrentIndex(ui->tableViewMemoryMap->model()->index(g_mapIndexes.value(nTableViewIndex,0), 0));
+        ui->tableViewMemoryMap->setCurrentIndex(ui->tableViewMemoryMap->model()->index(g_mapIndexes.value(nTableViewIndex, 0), 0));
     }
 
     _goToOffset(nFileOffset, 1);
