@@ -144,7 +144,7 @@ void XMemoryMapWidget::updateMemoryMap()
     pModel->setHeaderData(2, Qt::Horizontal, tr("Size"));
     pModel->setHeaderData(3, Qt::Horizontal, tr("Name"));
 
-//    QColor colDisabled = QWidget::palette().color(QPalette::Window);
+    //    QColor colDisabled = QWidget::palette().color(QPalette::Window);
 
     qint32 _nNumberOfRecords = g_memoryMap.listRecords.count();
 
@@ -167,7 +167,7 @@ void XMemoryMapWidget::updateMemoryMap()
             if (g_memoryMap.listRecords.at(i).nOffset != -1) {
                 pItemOffset->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nOffset));
             } else {
-//                pItemOffset->setBackground(colDisabled);
+                //                pItemOffset->setBackground(colDisabled);
             }
 
             pItemOffset->setTextAlignment(Qt::AlignRight);
@@ -178,7 +178,7 @@ void XMemoryMapWidget::updateMemoryMap()
             if (g_memoryMap.listRecords.at(i).nAddress != (quint64)-1) {
                 pItemAddress->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nAddress));
             } else {
-//                pItemAddress->setBackground(colDisabled);
+                //                pItemAddress->setBackground(colDisabled);
             }
 
             pItemAddress->setTextAlignment(Qt::AlignRight);
