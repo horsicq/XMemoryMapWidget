@@ -63,9 +63,15 @@ private slots:
     void dumpSection();
     void on_tableViewMemoryMap_clicked(const QModelIndex &index);
     void viewSelection();
+    void on_pushButtonFileOffsetFind_clicked();
+    void on_pushButtonVirtualAddressFind_clicked();
+    void on_pushButtonRelativeVirtualAddressFind_clicked();
 
 protected:
     virtual void registerShortcuts(bool bState);
+
+signals:
+    void findValue(quint64 nValue, bool bIsBigEndian);
 
 private:
     Ui::XMemoryMapWidget *ui;

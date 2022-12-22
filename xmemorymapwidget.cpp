@@ -506,3 +506,24 @@ void XMemoryMapWidget::viewSelection()
     ui->tableViewMemoryMap->blockSignals(bBlocked4);
     ui->pageHex->blockSignals(bBlocked5);
 }
+
+void XMemoryMapWidget::on_pushButtonFileOffsetFind_clicked()
+{
+    quint64 nValue = ui->lineEditFileOffset->getValue();
+
+    emit findValue(nValue, g_memoryMap.bIsBigEndian);
+}
+
+void XMemoryMapWidget::on_pushButtonVirtualAddressFind_clicked()
+{
+    quint64 nValue = ui->lineEditVirtualAddress->getValue();
+
+    emit findValue(nValue, g_memoryMap.bIsBigEndian);
+}
+
+void XMemoryMapWidget::on_pushButtonRelativeVirtualAddressFind_clicked()
+{
+    quint64 nValue = ui->lineEditRelativeVirtualAddress->getValue();
+
+    emit findValue(nValue, g_memoryMap.bIsBigEndian);
+}
