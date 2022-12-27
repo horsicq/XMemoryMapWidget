@@ -170,7 +170,6 @@ void XMemoryMapWidget::updateMemoryMap()
                 //                pItemOffset->setBackground(colDisabled);
             }
 
-            pItemOffset->setTextAlignment(Qt::AlignRight);
             pModel->setItem(j, 0, pItemOffset);
 
             QStandardItem *pItemAddress = new QStandardItem;
@@ -181,14 +180,12 @@ void XMemoryMapWidget::updateMemoryMap()
                 //                pItemAddress->setBackground(colDisabled);
             }
 
-            pItemAddress->setTextAlignment(Qt::AlignRight);
             pModel->setItem(j, 1, pItemAddress);
 
             QStandardItem *pItemSize = new QStandardItem;
 
             pItemSize->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nSize));
 
-            pItemSize->setTextAlignment(Qt::AlignRight);
             pModel->setItem(j, 2, pItemSize);
 
             QStandardItem *pItemName = new QStandardItem;
@@ -199,6 +196,11 @@ void XMemoryMapWidget::updateMemoryMap()
             j++;
         }
     }
+
+    XOptions::setModelTextAlignment(pModel, 0, Qt::AlignRight | Qt::AlignVCenter);
+    XOptions::setModelTextAlignment(pModel, 1, Qt::AlignRight | Qt::AlignVCenter);
+    XOptions::setModelTextAlignment(pModel, 2, Qt::AlignRight | Qt::AlignVCenter);
+    XOptions::setModelTextAlignment(pModel, 3, Qt::AlignLeft | Qt::AlignVCenter);
 
     ui->tableViewMemoryMap->setModel(pModel);
 
