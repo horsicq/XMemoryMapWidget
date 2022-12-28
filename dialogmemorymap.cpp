@@ -29,9 +29,9 @@ DialogMemoryMap::DialogMemoryMap(QWidget *pParent) : XShortcutsDialog(pParent), 
     setWindowFlags(Qt::Window);
 }
 
-DialogMemoryMap::DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, XBinary::FT fileType) : DialogMemoryMap(pParent)
+DialogMemoryMap::DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, XMemoryMapWidget::OPTIONS options) : DialogMemoryMap(pParent)
 {
-    setData(pDevice, fileType);
+    setData(pDevice, options);
 }
 
 DialogMemoryMap::~DialogMemoryMap()
@@ -39,9 +39,9 @@ DialogMemoryMap::~DialogMemoryMap()
     delete ui;
 }
 
-void DialogMemoryMap::setData(QIODevice *pDevice, XBinary::FT fileType)
+void DialogMemoryMap::setData(QIODevice *pDevice, XMemoryMapWidget::OPTIONS options)
 {
-    ui->widgetMemoryMap->setData(pDevice, fileType);
+    ui->widgetMemoryMap->setData(pDevice, options);
 }
 
 void DialogMemoryMap::setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions)

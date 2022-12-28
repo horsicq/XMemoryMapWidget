@@ -36,10 +36,15 @@ class XMemoryMapWidget : public XShortcutsWidget {
     Q_OBJECT
 
 public:
+    struct OPTIONS {
+        XBinary::FT fileType;
+        bool bIsSearchEnable;
+    };
+
     explicit XMemoryMapWidget(QWidget *pParent = nullptr);
     ~XMemoryMapWidget();
 
-    void setData(QIODevice *pDevice, XBinary::FT fileType);
+    void setData(QIODevice *pDevice, OPTIONS options);
     void goToOffset(qint64 nOffset);
     void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
 
@@ -76,6 +81,7 @@ signals:
 private:
     Ui::XMemoryMapWidget *ui;
     QIODevice *g_pDevice;
+    OPTIONS g_options;
     XBinary::_MEMORY_MAP g_memoryMap;
     XLineEditHEX::MODE g_mode;
     bool g_bLockHex;

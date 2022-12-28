@@ -27,6 +27,7 @@ XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) : XShortcutsWidget(pParent)
     ui->setupUi(this);
 
     g_pDevice = nullptr;
+    g_options = {};
     g_mode = XLineEditHEX::MODE_16;
     g_bLockHex = false;
     g_memoryMap = {};
@@ -37,18 +38,29 @@ XMemoryMapWidget::~XMemoryMapWidget()
     delete ui;
 }
 
-void XMemoryMapWidget::setData(QIODevice *pDevice, XBinary::FT fileType)
+void XMemoryMapWidget::setData(QIODevice *pDevice, OPTIONS options)
 {
     this->g_pDevice = pDevice;
+    this->g_options = options;
 
-    XHexView::OPTIONS options = {};  // TODO Check !!!
+    XHexView::OPTIONS hex_options = {};  // TODO Check !!!
 
-    ui->widgetHex->setData(pDevice, options);
+    ui->widgetHex->setData(pDevice, hex_options);
 
     if (pDevice) {
-        XFormats::setFileTypeComboBox(fileType, g_pDevice, ui->comboBoxType);
+        XFormats::setFileTypeComboBox(options.fileType, g_pDevice, ui->comboBoxType);
 
         updateMemoryMap();
+    }
+
+    if (options.bIsSearchEnable) {
+        ui->pushButtonFileOffsetFind->show();
+        ui->pushButtonRelativeVirtualAddressFind->show();
+        ui->pushButtonVirtualAddressFind->show();
+    } else {
+        ui->pushButtonFileOffsetFind->hide();
+        ui->pushButtonRelativeVirtualAddressFind->hide();
+        ui->pushButtonVirtualAddressFind->hide();
     }
 }
 
@@ -436,6 +448,8 @@ void XMemoryMapWidget::on_tableViewMemoryMap_customContextMenuRequested(const QP
         QAction actionDump(tr("Dump to file"), this);
         connect(&actionDump, SIGNAL(triggered()), this, SLOT(dumpSection()));
         contextMenu.addAction(&actionDump);
+
+        contextMenu.addMenu(getShortcuts()->getRowCopyMenu(this, ui->tableViewMemoryMap));
 
         contextMenu.exec(ui->tableViewMemoryMap->viewport()->mapToGlobal(pos));
     }

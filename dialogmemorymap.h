@@ -22,6 +22,7 @@
 #define DIALOGMEMORYMAP_H
 
 #include "xbinary.h"
+#include "xmemorymapwidget.h"
 #include "xshortcutsdialog.h"
 
 namespace Ui {
@@ -33,10 +34,10 @@ class DialogMemoryMap : public XShortcutsDialog {
 
 public:
     explicit DialogMemoryMap(QWidget *pParent);
-    DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, XBinary::FT fileType);
+    DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, XMemoryMapWidget::OPTIONS options);
     ~DialogMemoryMap();
 
-    void setData(QIODevice *pDevice, XBinary::FT fileType);
+    void setData(QIODevice *pDevice,XMemoryMapWidget::OPTIONS options);
     void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
 
 private slots:
