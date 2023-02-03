@@ -371,7 +371,7 @@ void XMemoryMapWidget::_goToOffset(qint64 nOffset, qint64 nSize)
             ui->stackedWidgetHex->setCurrentIndex(0);
 
             ui->widgetHex->goToOffset(nOffset);
-            ui->widgetHex->setSelection(nOffset, nSize);
+            ui->widgetHex->setDeviceSelection(nOffset, nSize);
             ui->widgetHex->reload();
         } else {
             // Invalid offset
