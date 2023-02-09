@@ -319,7 +319,15 @@ void XMemoryMapWidget::_adjust(bool bInit)
     }
 
     if (nTableViewIndex != -1) {
-        ui->tableViewMemoryMap->setCurrentIndex(ui->tableViewMemoryMap->model()->index(g_mapIndexes.value(nTableViewIndex, 0), 0));
+        qint32 nIndex = g_mapIndexes.value(nTableViewIndex, -1);
+
+        if (nIndex == -1) {
+            QMessageBox::information(this, tr("Information"), tr("Virtual address"));
+            nIndex = 0;
+        }
+
+        QModelIndex miCurrentIndex = ui->tableViewMemoryMap->model()->index(nIndex, 0);
+        ui->tableViewMemoryMap->setCurrentIndex(miCurrentIndex);
     }
 
     _goToOffset(nFileOffset, 1);
