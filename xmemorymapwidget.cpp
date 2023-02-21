@@ -360,10 +360,10 @@ void XMemoryMapWidget::on_lineEditRelativeVirtualAddress_textChanged(const QStri
     _adjust(false);
 }
 
-void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &isSelected, const QItemSelection &isDeselected)
+void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &itemSelected, const QItemSelection &itemDeselected)
 {
-    Q_UNUSED(isSelected)
-    Q_UNUSED(isDeselected)
+    Q_UNUSED(itemSelected)
+    Q_UNUSED(itemDeselected)
 
     viewSelection();
 }

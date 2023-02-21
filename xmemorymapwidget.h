@@ -58,7 +58,7 @@ private slots:
     void on_lineEditFileOffset_textChanged(const QString &sText);
     void on_lineEditVirtualAddress_textChanged(const QString &sText);
     void on_lineEditRelativeVirtualAddress_textChanged(const QString &sText);
-    void on_tableViewSelection(const QItemSelection &isSelected, const QItemSelection &isDeselected);
+    void on_tableViewSelection(const QItemSelection &itemSelected, const QItemSelection &itemDeselected);
     void _goToOffset(qint64 nOffset, qint64 nSize = 0);
     void onHexCursorChanged(qint64 nOffset);
     void on_pushButtonSave_clicked();
