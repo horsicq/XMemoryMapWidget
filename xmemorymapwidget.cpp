@@ -390,7 +390,7 @@ void XMemoryMapWidget::_goToOffset(qint64 nOffset, qint64 nSize)
 
 void XMemoryMapWidget::onHexCursorChanged(qint64 nOffset)
 {
-    g_bLockHex = true;
+    g_bLockHex = true; // TODO mb use SignalBlocker
 
     if (!ui->lineEditFileOffset->isFocused()) {
         ui->lineEditFileOffset->setModeValue(g_mode, nOffset);
