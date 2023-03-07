@@ -445,7 +445,7 @@ void XMemoryMapWidget::on_pushButtonDumpAll_clicked()
 
             dd.setData(g_pDevice, listRecords, DumpProcess::DT_OFFSET);
 
-            dd.showDialogDelay(1000);
+            dd.showDialogDelay();
         }
     }
 }
@@ -488,7 +488,7 @@ void XMemoryMapWidget::dumpSection()
         if (!sFileName.isEmpty()) {
             DialogDumpProcess dd(this, g_pDevice, nOffset, nSize, sFileName, DumpProcess::DT_OFFSET);
 
-            dd.showDialogDelay(1000);
+            dd.showDialogDelay();
         }
     }
 }
