@@ -31,6 +31,7 @@ XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) : XShortcutsWidget(pParent)
     g_mode = XLineEditHEX::MODE_16;
     g_bLockHex = false;
     g_memoryMap = {};
+    g_pXInfoDB = nullptr;
 }
 
 XMemoryMapWidget::~XMemoryMapWidget()
@@ -38,14 +39,16 @@ XMemoryMapWidget::~XMemoryMapWidget()
     delete ui;
 }
 
-void XMemoryMapWidget::setData(QIODevice *pDevice, OPTIONS options)
+void XMemoryMapWidget::setData(QIODevice *pDevice, OPTIONS options, XInfoDB *pXInfoDB)
 {
-    this->g_pDevice = pDevice;
-    this->g_options = options;
+    g_pDevice = pDevice;
+    g_options = options;
+    g_pXInfoDB = pXInfoDB;
 
     XHexView::OPTIONS hex_options = {};  // TODO Check !!!
 
     ui->widgetHex->setData(pDevice, hex_options);
+    ui->widgetHex->setXInfoDB(pXInfoDB);
 
     if (pDevice) {
         XFormats::setFileTypeComboBox(options.fileType, g_pDevice, ui->comboBoxType);
@@ -62,6 +65,11 @@ void XMemoryMapWidget::setData(QIODevice *pDevice, OPTIONS options)
         ui->pushButtonRelativeVirtualAddressFind->hide();
         ui->pushButtonVirtualAddressFind->hide();
     }
+}
+
+void XMemoryMapWidget::setXInfoDB(XInfoDB *pXInfoDB)
+{
+    ui->widgetHex->setXInfoDB(pXInfoDB);
 }
 
 void XMemoryMapWidget::goToOffset(qint64 nOffset)

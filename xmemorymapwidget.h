@@ -27,6 +27,7 @@
 #include "xformats.h"
 #include "xlineedithex.h"
 #include "xshortcutswidget.h"
+#include "xinfodb.h"
 
 namespace Ui {
 class XMemoryMapWidget;
@@ -44,7 +45,8 @@ public:
     explicit XMemoryMapWidget(QWidget *pParent = nullptr);
     ~XMemoryMapWidget();
 
-    void setData(QIODevice *pDevice, OPTIONS options);
+    void setData(QIODevice *pDevice, OPTIONS options, XInfoDB *pXInfoDB);
+    void setXInfoDB(XInfoDB *pXInfoDB);
     void goToOffset(qint64 nOffset);
     void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
 
@@ -86,6 +88,7 @@ private:
     XLineEditHEX::MODE g_mode;
     bool g_bLockHex;
     QMap<qint32, qint32> g_mapIndexes;
+    XInfoDB *g_pXInfoDB;
 };
 
 #endif  // XMEMORYMAPWIDGET_H
