@@ -456,7 +456,7 @@ void XMemoryMapWidget::on_pushButtonDumpAll_clicked()
 
 void XMemoryMapWidget::on_tableViewMemoryMap_customContextMenuRequested(const QPoint &pos)
 {
-    int nRow = ui->tableViewMemoryMap->currentIndex().row();
+    qint32 nRow = ui->tableViewMemoryMap->currentIndex().row();
 
     if (nRow != -1) {
         QMenu contextMenu(this);
