@@ -473,7 +473,7 @@ void XMemoryMapWidget::on_tableViewMemoryMap_customContextMenuRequested(const QP
 
 void XMemoryMapWidget::dumpSection()
 {
-    int nRow = ui->tableViewMemoryMap->currentIndex().row();
+    qint32 nRow = ui->tableViewMemoryMap->currentIndex().row();
 
     if (nRow != -1) {
         QModelIndex index = ui->tableViewMemoryMap->selectionModel()->selectedIndexes().at(0);
