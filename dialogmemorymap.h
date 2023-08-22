@@ -34,7 +34,7 @@ class DialogMemoryMap : public XShortcutsDialog {
 
 public:
     explicit DialogMemoryMap(QWidget *pParent);
-    DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, XMemoryMapWidget::OPTIONS options);
+    DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, const XMemoryMapWidget::OPTIONS &options);
     ~DialogMemoryMap();
 
     void setData(QIODevice *pDevice, XMemoryMapWidget::OPTIONS options);

@@ -29,7 +29,7 @@ DialogMemoryMap::DialogMemoryMap(QWidget *pParent) : XShortcutsDialog(pParent), 
     setWindowFlags(Qt::Window);
 }
 
-DialogMemoryMap::DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, XMemoryMapWidget::OPTIONS options) : DialogMemoryMap(pParent)
+DialogMemoryMap::DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, const XMemoryMapWidget::OPTIONS &options) : DialogMemoryMap(pParent)
 {
     setData(pDevice, options);
 }
