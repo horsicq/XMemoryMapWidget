@@ -37,7 +37,7 @@ public:
     DialogMemoryMap(QWidget *pParent, QIODevice *pDevice, const XMemoryMapWidget::OPTIONS &options);
     ~DialogMemoryMap();
 
-    void setData(QIODevice *pDevice, XMemoryMapWidget::OPTIONS options);
+    void setData(QIODevice *pDevice, const XMemoryMapWidget::OPTIONS &options);
     void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
 
 private slots:

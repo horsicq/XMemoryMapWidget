@@ -39,7 +39,7 @@ DialogMemoryMap::~DialogMemoryMap()
     delete ui;
 }
 
-void DialogMemoryMap::setData(QIODevice *pDevice, XMemoryMapWidget::OPTIONS options)
+void DialogMemoryMap::setData(QIODevice *pDevice, const XMemoryMapWidget::OPTIONS &options)
 {
     ui->widgetMemoryMap->setData(pDevice, options, nullptr);
 }
