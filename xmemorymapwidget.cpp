@@ -39,7 +39,7 @@ XMemoryMapWidget::~XMemoryMapWidget()
     delete ui;
 }
 
-void XMemoryMapWidget::setData(QIODevice *pDevice, OPTIONS options, XInfoDB *pXInfoDB)
+void XMemoryMapWidget::setData(QIODevice *pDevice, const OPTIONS &options, XInfoDB *pXInfoDB)
 {
     g_pDevice = pDevice;
     g_options = options;
