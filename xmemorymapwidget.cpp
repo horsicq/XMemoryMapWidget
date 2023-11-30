@@ -131,7 +131,7 @@ void XMemoryMapWidget::updateMemoryMap()
 
     ui->radioButtonFileOffset->setChecked(true);
 
-    ui->lineEditFileOffset->setValue((quint32)0);
+    ui->lineEditFileOffset->setValue_uint32((quint32)0);
 
     XBinary::MODE _mode = XBinary::getWidthModeFromMemoryMap(&g_memoryMap);
 
