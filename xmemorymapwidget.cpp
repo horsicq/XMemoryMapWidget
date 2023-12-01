@@ -256,9 +256,9 @@ void XMemoryMapWidget::_adjust(bool bInit)
 
     qint32 nTableViewIndex = -1;
 
-    quint64 nFileOffset = ui->lineEditFileOffset->getIntValue();
-    XADDR nVirtualAddress = ui->lineEditVirtualAddress->getIntValue();
-    quint64 nRelativeVirtualAddress = ui->lineEditRelativeVirtualAddress->getIntValue();
+    quint64 nFileOffset = ui->lineEditFileOffset->_getValue().toULongLong();
+    XADDR nVirtualAddress = ui->lineEditVirtualAddress->_getValue().toULongLong();
+    quint64 nRelativeVirtualAddress = ui->lineEditRelativeVirtualAddress->_getValue().toULongLong();
 
     if (ui->radioButtonFileOffset->isChecked()) {
         ui->lineEditFileOffset->setReadOnly(false);
@@ -541,21 +541,21 @@ void XMemoryMapWidget::viewSelection()
 
 void XMemoryMapWidget::on_pushButtonFileOffsetFind_clicked()
 {
-    quint64 nValue = ui->lineEditFileOffset->getIntValue();
+    quint64 nValue = ui->lineEditFileOffset->_getValue().toULongLong();
 
     emit findValue(nValue, g_memoryMap.bIsBigEndian);
 }
 
 void XMemoryMapWidget::on_pushButtonVirtualAddressFind_clicked()
 {
-    quint64 nValue = ui->lineEditVirtualAddress->getIntValue();
+    quint64 nValue = ui->lineEditVirtualAddress->_getValue().toULongLong();
 
     emit findValue(nValue, g_memoryMap.bIsBigEndian);
 }
 
 void XMemoryMapWidget::on_pushButtonRelativeVirtualAddressFind_clicked()
 {
-    quint64 nValue = ui->lineEditRelativeVirtualAddress->getIntValue();
+    quint64 nValue = ui->lineEditRelativeVirtualAddress->_getValue().toULongLong();
 
     emit findValue(nValue, g_memoryMap.bIsBigEndian);
 }
