@@ -123,7 +123,7 @@ void XMemoryMapWidget::updateMemoryMap()
 
     XBinary::FT fileType = (XBinary::FT)(ui->comboBoxType->currentData().toInt());
 
-    g_memoryMap = XFormats::getMemoryMap(fileType, g_pDevice);
+    g_memoryMap = XFormats::getMemoryMap(fileType, XBinary::MAPMODE_UNKNOWN, g_pDevice);
 
     ui->lineEditArch->setText(g_memoryMap.sArch);
     ui->lineEditMode->setText(XBinary::modeIdToString(g_memoryMap.mode));
