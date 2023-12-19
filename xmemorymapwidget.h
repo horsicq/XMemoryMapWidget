@@ -73,6 +73,7 @@ private slots:
     void on_pushButtonFileOffsetFind_clicked();
     void on_pushButtonVirtualAddressFind_clicked();
     void on_pushButtonRelativeVirtualAddressFind_clicked();
+    void on_comboBoxMapMode_currentIndexChanged(int nIndex);
 
 protected:
     virtual void registerShortcuts(bool bState);

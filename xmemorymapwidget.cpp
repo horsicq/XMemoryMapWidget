@@ -52,6 +52,7 @@ void XMemoryMapWidget::setData(QIODevice *pDevice, const OPTIONS &options, XInfo
 
     if (pDevice) {
         XFormats::setFileTypeComboBox(options.fileType, g_pDevice, ui->comboBoxType);
+        XFormats::setMapModeComboBox(options.fileType, g_pDevice, false, -1, ui->comboBoxMapMode);
 
         updateMemoryMap();
     }
@@ -122,8 +123,9 @@ void XMemoryMapWidget::updateMemoryMap()
     g_mapIndexes.clear();
 
     XBinary::FT fileType = (XBinary::FT)(ui->comboBoxType->currentData().toInt());
+    XBinary::MAPMODE mapMode = (XBinary::MAPMODE)(ui->comboBoxMapMode->currentData().toInt());
 
-    g_memoryMap = XFormats::getMemoryMap(fileType, XBinary::MAPMODE_UNKNOWN, g_pDevice);
+    g_memoryMap = XFormats::getMemoryMap(fileType, mapMode, g_pDevice);
 
     ui->lineEditArch->setText(g_memoryMap.sArch);
     ui->lineEditMode->setText(XBinary::modeIdToString(g_memoryMap.mode));
@@ -558,4 +560,11 @@ void XMemoryMapWidget::on_pushButtonRelativeVirtualAddressFind_clicked()
     quint64 nValue = ui->lineEditRelativeVirtualAddress->getValue_uint64();
 
     emit findValue(nValue, g_memoryMap.bIsBigEndian);
+}
+
+void XMemoryMapWidget::on_comboBoxMapMode_currentIndexChanged(int nIndex)
+{
+    Q_UNUSED(nIndex)
+
+    updateMemoryMap();
 }
