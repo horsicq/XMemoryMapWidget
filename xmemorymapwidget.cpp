@@ -129,7 +129,7 @@ void XMemoryMapWidget::updateMemoryMap()
 
     ui->lineEditArch->setText(g_memoryMap.sArch);
     ui->lineEditMode->setText(XBinary::modeIdToString(g_memoryMap.mode));
-    ui->lineEditEndianness->setText(XBinary::endiannessToString(g_memoryMap.endian));
+    ui->lineEditEndianness->setText(XBinary::endianToString(g_memoryMap.endian));
 
     ui->radioButtonFileOffset->setChecked(true);
 
