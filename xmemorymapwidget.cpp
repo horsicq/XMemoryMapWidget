@@ -451,7 +451,7 @@ void XMemoryMapWidget::on_pushButtonDumpAll_clicked()
 
             DialogDumpProcess dd(this);
 
-            dd.setData(g_pDevice, listRecords, DumpProcess::DT_DUMP_OFFSET, sJsonFileName);
+            dd.setData(g_pDevice, listRecords, DumpProcess::DT_DUMP_DEVICE_OFFSET, sJsonFileName);
 
             dd.showDialogDelay();
         }
@@ -495,7 +495,7 @@ void XMemoryMapWidget::dumpSection()
 
         if (!sFileName.isEmpty()) {
             DialogDumpProcess dd(this);
-            dd.setData(g_pDevice, nOffset, nSize, sFileName, DumpProcess::DT_DUMP_OFFSET);
+            dd.setData(g_pDevice, nOffset, nSize, sFileName, DumpProcess::DT_DUMP_DEVICE_OFFSET);
 
             dd.showDialogDelay();
         }
