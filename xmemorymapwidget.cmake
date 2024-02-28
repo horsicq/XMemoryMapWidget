@@ -9,7 +9,9 @@ set(XMEMORYMAPWIDGET_SOURCES
     ${XLINEEDITHEX_SOURCES}
     ${XHEXVIEW_SOURCES}
     ${CMAKE_CURRENT_LIST_DIR}/dialogmemorymap.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/dialogmemorymap.h
     ${CMAKE_CURRENT_LIST_DIR}/dialogmemorymap.ui
     ${CMAKE_CURRENT_LIST_DIR}/xmemorymapwidget.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/xmemorymapwidget.h
     ${CMAKE_CURRENT_LIST_DIR}/xmemorymapwidget.ui
 )
