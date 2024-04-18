@@ -79,7 +79,7 @@ protected:
     virtual void registerShortcuts(bool bState);
 
 signals:
-    void findValue(quint64 nValue, bool bIsBigEndian);
+    void findValue(quint64 nValue, XBinary::ENDIAN endian);
 
 private:
     Ui::XMemoryMapWidget *ui;

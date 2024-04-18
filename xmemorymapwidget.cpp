@@ -548,21 +548,21 @@ void XMemoryMapWidget::on_pushButtonFileOffsetFind_clicked()
 {
     quint64 nValue = ui->lineEditFileOffset->getValue_uint64();
 
-    emit findValue(nValue, g_memoryMap.endian == XBinary::ENDIAN_BIG);
+    emit findValue(nValue, g_memoryMap.endian);
 }
 
 void XMemoryMapWidget::on_pushButtonVirtualAddressFind_clicked()
 {
     quint64 nValue = ui->lineEditVirtualAddress->getValue_uint64();
 
-    emit findValue(nValue, g_memoryMap.endian == XBinary::ENDIAN_BIG);
+    emit findValue(nValue, g_memoryMap.endian);
 }
 
 void XMemoryMapWidget::on_pushButtonRelativeVirtualAddressFind_clicked()
 {
     quint64 nValue = ui->lineEditRelativeVirtualAddress->getValue_uint64();
 
-    emit findValue(nValue, g_memoryMap.endian == XBinary::ENDIAN_BIG);
+    emit findValue(nValue, g_memoryMap.endian);
 }
 
 void XMemoryMapWidget::on_comboBoxMapMode_currentIndexChanged(int nIndex)
