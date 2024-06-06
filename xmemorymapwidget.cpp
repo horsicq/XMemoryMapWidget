@@ -52,7 +52,7 @@ void XMemoryMapWidget::setData(QIODevice *pDevice, const OPTIONS &options, XInfo
 
     if (pDevice) {
         XFormats::setFileTypeComboBox(options.fileType, g_pDevice, ui->comboBoxType);
-        XFormats::setMapModeComboBox(options.fileType, g_pDevice, false, -1, ui->comboBoxMapMode);
+        XFormats::getMapModesList(options.fileType, ui->comboBoxMapMode);
 
         updateMemoryMap();
     }
@@ -87,6 +87,9 @@ void XMemoryMapWidget::setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions)
 void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int nIndex)
 {
     Q_UNUSED(nIndex)
+
+    XBinary::FT fileType = (XBinary::FT)(ui->comboBoxType->currentData().toInt());
+    XFormats::getMapModesList(fileType, ui->comboBoxMapMode);
 
     updateMemoryMap();
 }
