@@ -84,6 +84,10 @@ void XMemoryMapWidget::setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions)
     XShortcutsWidget::setGlobal(pShortcuts, pXOptions);
 }
 
+void XMemoryMapWidget::adjustView()
+{
+}
+
 void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int nIndex)
 {
     Q_UNUSED(nIndex)

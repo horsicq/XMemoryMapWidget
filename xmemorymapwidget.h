@@ -49,6 +49,7 @@ public:
     void setXInfoDB(XInfoDB *pXInfoDB);
     void goToOffset(qint64 nOffset);
     void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
+    virtual void adjustView();
 
 private slots:
     void on_comboBoxType_currentIndexChanged(int nIndex);
