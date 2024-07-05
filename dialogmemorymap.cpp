@@ -22,7 +22,7 @@
 
 #include "ui_dialogmemorymap.h"
 
-DialogMemoryMap::DialogMemoryMap(QWidget *pParent) : XShortcutsDialog(pParent), ui(new Ui::DialogMemoryMap)
+DialogMemoryMap::DialogMemoryMap(QWidget *pParent) : XShortcutsDialog(pParent, true), ui(new Ui::DialogMemoryMap)
 {
     ui->setupUi(this);
 }
