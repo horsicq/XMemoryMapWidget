@@ -244,7 +244,7 @@ void XMemoryMapWidget::updateMemoryMap()
 
     connect(ui->tableViewMemoryMap->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this,
             SLOT(on_tableViewSelection(QItemSelection, QItemSelection)));
-    connect(ui->widgetHex, SIGNAL(cursorViewOffsetChanged(qint64)), this, SLOT(onHexCursorChanged(qint64)));
+    connect(ui->widgetHex, SIGNAL(cursorViewPosChanged(qint64)), this, SLOT(onHexCursorChanged(qint64)));
 
     _adjust(true);
 
