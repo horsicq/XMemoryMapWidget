@@ -26,6 +26,29 @@ XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) : XShortcutsWidget(pParent)
 {
     ui->setupUi(this);
 
+    XOptions::adjustToolButton(ui->toolButtonSave, XOptions::ICONTYPE_SAVE);
+    XOptions::adjustToolButton(ui->toolButtonDumpAll, XOptions::ICONTYPE_DUMPTOFILE);
+    XOptions::adjustToolButton(ui->toolButtonFileOffsetFind, XOptions::ICONTYPE_SEARCH, Qt::ToolButtonIconOnly);
+    XOptions::adjustToolButton(ui->toolButtonVirtualAddressFind, XOptions::ICONTYPE_SEARCH, Qt::ToolButtonIconOnly);
+    XOptions::adjustToolButton(ui->toolButtonRelativeVirtualAddressFind, XOptions::ICONTYPE_SEARCH, Qt::ToolButtonIconOnly);
+
+    ui->toolButtonSave->setToolTip( tr("Save"));
+    ui->toolButtonDumpAll->setToolTip( tr("Dump all"));
+    ui->toolButtonFileOffsetFind->setToolTip( tr("Find"));
+    ui->toolButtonVirtualAddressFind->setToolTip( tr("Find"));
+    ui->toolButtonRelativeVirtualAddressFind->setToolTip( tr("Find"));
+    ui->comboBoxType->setToolTip( tr("Type"));
+    ui->comboBoxMapMode->setToolTip( tr("Mode"));
+    ui->lineEditArch->setToolTip( tr("Architecture"));
+    ui->lineEditMode->setToolTip( tr("Mode"));
+    ui->lineEditEndianness->setToolTip( tr("Endianness"));
+    ui->checkBoxShowAll->setToolTip( tr("Show all"));
+    ui->toolButtonDumpAll->setToolTip( tr("Dump all"));
+    ui->tableViewMemoryMap->setToolTip( tr("Memory map"));
+    ui->lineEditFileOffset->setToolTip( tr("File offset"));
+    ui->lineEditVirtualAddress->setToolTip( tr("Virtual address"));
+    ui->lineEditRelativeVirtualAddress->setToolTip( tr("Relative virtual address"));
+
     g_pDevice = nullptr;
     g_options = {};
     g_mode = XLineEditValidator::MODE_HEX_16;
@@ -58,13 +81,13 @@ void XMemoryMapWidget::setData(QIODevice *pDevice, const OPTIONS &options, XInfo
     }
 
     if (options.bIsSearchEnable) {
-        ui->pushButtonFileOffsetFind->show();
-        ui->pushButtonRelativeVirtualAddressFind->show();
-        ui->pushButtonVirtualAddressFind->show();
+        ui->toolButtonFileOffsetFind->show();
+        ui->toolButtonRelativeVirtualAddressFind->show();
+        ui->toolButtonVirtualAddressFind->show();
     } else {
-        ui->pushButtonFileOffsetFind->hide();
-        ui->pushButtonRelativeVirtualAddressFind->hide();
-        ui->pushButtonVirtualAddressFind->hide();
+        ui->toolButtonFileOffsetFind->hide();
+        ui->toolButtonRelativeVirtualAddressFind->hide();
+        ui->toolButtonVirtualAddressFind->hide();
     }
 }
 
@@ -418,7 +441,7 @@ void XMemoryMapWidget::registerShortcuts(bool bState)
     // mb TODO
 }
 
-void XMemoryMapWidget::on_pushButtonSave_clicked()
+void XMemoryMapWidget::on_toolButtonSave_clicked()
 {
     XShortcutsWidget::saveTableModel(ui->tableViewMemoryMap->model(), XBinary::getResultFileName(g_pDevice, QString("%1.txt").arg(tr("Memory map"))));
 }
@@ -430,7 +453,7 @@ void XMemoryMapWidget::on_checkBoxShowAll_stateChanged(int nValue)
     updateMemoryMap();
 }
 
-void XMemoryMapWidget::on_pushButtonDumpAll_clicked()
+void XMemoryMapWidget::on_toolButtonDumpAll_clicked()
 {
     QString sDirectory = QFileDialog::getExistingDirectory(this, tr("Dump all"), XBinary::getDeviceDirectory(g_pDevice));
 
@@ -552,21 +575,21 @@ void XMemoryMapWidget::viewSelection()
     ui->pageHex->blockSignals(bBlocked5);
 }
 
-void XMemoryMapWidget::on_pushButtonFileOffsetFind_clicked()
+void XMemoryMapWidget::on_toolButtonFileOffsetFind_clicked()
 {
     quint64 nValue = ui->lineEditFileOffset->getValue_uint64();
 
     emit findValue(nValue, g_memoryMap.endian);
 }
 
-void XMemoryMapWidget::on_pushButtonVirtualAddressFind_clicked()
+void XMemoryMapWidget::on_toolButtonVirtualAddressFind_clicked()
 {
     quint64 nValue = ui->lineEditVirtualAddress->getValue_uint64();
 
     emit findValue(nValue, g_memoryMap.endian);
 }
 
-void XMemoryMapWidget::on_pushButtonRelativeVirtualAddressFind_clicked()
+void XMemoryMapWidget::on_toolButtonRelativeVirtualAddressFind_clicked()
 {
     quint64 nValue = ui->lineEditRelativeVirtualAddress->getValue_uint64();
 

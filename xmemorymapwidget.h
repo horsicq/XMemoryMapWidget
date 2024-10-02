@@ -64,16 +64,16 @@ private slots:
     void on_tableViewSelection(const QItemSelection &itemSelected, const QItemSelection &itemDeselected);
     void _goToOffset(qint64 nOffset, qint64 nSize = 0);
     void onHexCursorChanged(qint64 nOffset);
-    void on_pushButtonSave_clicked();
+    void on_toolButtonSave_clicked();
     void on_checkBoxShowAll_stateChanged(int nValue);
-    void on_pushButtonDumpAll_clicked();
+    void on_toolButtonDumpAll_clicked();
     void on_tableViewMemoryMap_customContextMenuRequested(const QPoint &pos);
     void dumpSection();
     void on_tableViewMemoryMap_clicked(const QModelIndex &index);
     void viewSelection();
-    void on_pushButtonFileOffsetFind_clicked();
-    void on_pushButtonVirtualAddressFind_clicked();
-    void on_pushButtonRelativeVirtualAddressFind_clicked();
+    void on_toolButtonFileOffsetFind_clicked();
+    void on_toolButtonVirtualAddressFind_clicked();
+    void on_toolButtonRelativeVirtualAddressFind_clicked();
     void on_comboBoxMapMode_currentIndexChanged(int nIndex);
 
 protected:
