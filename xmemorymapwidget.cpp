@@ -32,22 +32,22 @@ XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) : XShortcutsWidget(pParent)
     XOptions::adjustToolButton(ui->toolButtonVirtualAddressFind, XOptions::ICONTYPE_SEARCH, Qt::ToolButtonIconOnly);
     XOptions::adjustToolButton(ui->toolButtonRelativeVirtualAddressFind, XOptions::ICONTYPE_SEARCH, Qt::ToolButtonIconOnly);
 
-    ui->toolButtonSave->setToolTip( tr("Save"));
-    ui->toolButtonDumpAll->setToolTip( tr("Dump all"));
-    ui->toolButtonFileOffsetFind->setToolTip( tr("Find"));
-    ui->toolButtonVirtualAddressFind->setToolTip( tr("Find"));
-    ui->toolButtonRelativeVirtualAddressFind->setToolTip( tr("Find"));
-    ui->comboBoxType->setToolTip( tr("Type"));
-    ui->comboBoxMapMode->setToolTip( tr("Mode"));
-    ui->lineEditArch->setToolTip( tr("Architecture"));
-    ui->lineEditMode->setToolTip( tr("Mode"));
-    ui->lineEditEndianness->setToolTip( tr("Endianness"));
-    ui->checkBoxShowAll->setToolTip( tr("Show all"));
-    ui->toolButtonDumpAll->setToolTip( tr("Dump all"));
-    ui->tableViewMemoryMap->setToolTip( tr("Memory map"));
-    ui->lineEditFileOffset->setToolTip( tr("File offset"));
-    ui->lineEditVirtualAddress->setToolTip( tr("Virtual address"));
-    ui->lineEditRelativeVirtualAddress->setToolTip( tr("Relative virtual address"));
+    ui->toolButtonSave->setToolTip(tr("Save"));
+    ui->toolButtonDumpAll->setToolTip(tr("Dump all"));
+    ui->toolButtonFileOffsetFind->setToolTip(tr("Find"));
+    ui->toolButtonVirtualAddressFind->setToolTip(tr("Find"));
+    ui->toolButtonRelativeVirtualAddressFind->setToolTip(tr("Find"));
+    ui->comboBoxType->setToolTip(tr("Type"));
+    ui->comboBoxMapMode->setToolTip(tr("Mode"));
+    ui->lineEditArch->setToolTip(tr("Architecture"));
+    ui->lineEditMode->setToolTip(tr("Mode"));
+    ui->lineEditEndianness->setToolTip(tr("Endianness"));
+    ui->checkBoxShowAll->setToolTip(tr("Show all"));
+    ui->toolButtonDumpAll->setToolTip(tr("Dump all"));
+    ui->tableViewMemoryMap->setToolTip(tr("Memory map"));
+    ui->lineEditFileOffset->setToolTip(tr("File offset"));
+    ui->lineEditVirtualAddress->setToolTip(tr("Virtual address"));
+    ui->lineEditRelativeVirtualAddress->setToolTip(tr("Relative virtual address"));
 
     g_pDevice = nullptr;
     g_options = {};
