@@ -173,8 +173,6 @@ void XMemoryMapWidget::updateMemoryMap()
     else if (_mode == XBinary::MODE_32) g_mode = XLineEditValidator::MODE_HEX_32;
     else if (_mode == XBinary::MODE_64) g_mode = XLineEditValidator::MODE_HEX_64;
 
-    QAbstractItemModel *pOldModel = ui->tableViewMemoryMap->model();
-
     qint32 nNumberOfRecords = 0;
 
     bool bShowAll = ui->checkBoxShowAll->isChecked();
@@ -250,9 +248,7 @@ void XMemoryMapWidget::updateMemoryMap()
     XOptions::setModelTextAlignment(pModel, 2, Qt::AlignRight | Qt::AlignVCenter);
     XOptions::setModelTextAlignment(pModel, 3, Qt::AlignLeft | Qt::AlignVCenter);
 
-    ui->tableViewMemoryMap->setModel(pModel);
-
-    deleteOldAbstractModel(&pOldModel);
+    ui->tableViewMemoryMap->setCustomModel(pModel, true);
 
     ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Interactive);
     ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Interactive);
@@ -443,7 +439,7 @@ void XMemoryMapWidget::registerShortcuts(bool bState)
 
 void XMemoryMapWidget::on_toolButtonSave_clicked()
 {
-    XShortcutsWidget::saveTableModel(ui->tableViewMemoryMap->model(), XBinary::getResultFileName(g_pDevice, QString("%1.txt").arg(tr("Memory map"))));
+    XShortcutsWidget::saveTableModel(ui->tableViewMemoryMap->getProxyModel(), XBinary::getResultFileName(g_pDevice, QString("%1.txt").arg(tr("Memory map"))));
 }
 
 void XMemoryMapWidget::on_checkBoxShowAll_stateChanged(int nValue)

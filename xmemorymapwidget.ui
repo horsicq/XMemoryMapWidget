@@ -324,7 +324,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QTableView" name="tableViewMemoryMap">
+      <widget class="XTableView" name="tableViewMemoryMap">
        <property name="contextMenuPolicy">
         <enum>Qt::CustomContextMenu</enum>
        </property>
@@ -409,6 +409,11 @@
    <extends>QWidget</extends>
    <header>xhexview.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>XTableView</class>
+   <extends>QTableView</extends>
+   <header>xtableview.h</header>
   </customwidget>
   <customwidget>
    <class>XLineEditHEX</class>
