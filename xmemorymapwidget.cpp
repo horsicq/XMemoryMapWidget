@@ -495,7 +495,9 @@ void XMemoryMapWidget::on_tableViewMemoryMap_customContextMenuRequested(const QP
         connect(&actionDump, SIGNAL(triggered()), this, SLOT(dumpSection()));
         contextMenu.addAction(&actionDump);
 
-        contextMenu.addMenu(getShortcuts()->getRowCopyMenu(this, ui->tableViewMemoryMap));
+        QMenu menuCopy(this);
+
+        getShortcuts()->adjustRowCopyMenu(&contextMenu, &menuCopy, ui->tableViewMemoryMap);
 
         contextMenu.exec(ui->tableViewMemoryMap->viewport()->mapToGlobal(pos));
     }
