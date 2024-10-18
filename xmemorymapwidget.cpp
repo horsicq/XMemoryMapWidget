@@ -491,15 +491,15 @@ void XMemoryMapWidget::on_tableViewMemoryMap_customContextMenuRequested(const QP
     if (nRow != -1) {
         QMenu contextMenu(this);
 
-        QAction actionDump(tr("Dump to file"), this);
-        connect(&actionDump, SIGNAL(triggered()), this, SLOT(dumpSection()));
-        contextMenu.addAction(&actionDump);
+        QList<XShortcuts::MENUITEM> listMenuItems;
 
-        QMenu menuCopy(this);
-
-        getShortcuts()->adjustRowCopyMenu(&contextMenu, &menuCopy, ui->tableViewMemoryMap);
+        getShortcuts()->_addMenuItem(&listMenuItems, X_ID_SELECTION_DUMPTOFILE, this, SLOT(dumpSection()));
+        getShortcuts()->_addMenuItem_CopyRow(&listMenuItems, ui->tableViewMemoryMap);
+        QList<QObject *> listObjects = getShortcuts()->adjustContextMenu(&contextMenu, &listMenuItems);
 
         contextMenu.exec(ui->tableViewMemoryMap->viewport()->mapToGlobal(pos));
+
+        XOptions::deleteQObjectList(&listObjects);
     }
 }
 
