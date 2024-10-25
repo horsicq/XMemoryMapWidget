@@ -493,7 +493,7 @@ void XMemoryMapWidget::on_tableViewMemoryMap_customContextMenuRequested(const QP
 
         QList<XShortcuts::MENUITEM> listMenuItems;
 
-        getShortcuts()->_addMenuItem(&listMenuItems, X_ID_SELECTION_DUMPTOFILE, this, SLOT(dumpSection()));
+        getShortcuts()->_addMenuItem(&listMenuItems, X_ID_TABLE_SELECTION_DUMPTOFILE, this, SLOT(dumpSection()), XShortcuts::GROUPID_SELECTION);
         getShortcuts()->_addMenuItem_CopyRow(&listMenuItems, ui->tableViewMemoryMap);
 
         QList<QObject *> listObjects = getShortcuts()->adjustContextMenu(&contextMenu, &listMenuItems);
