@@ -50,6 +50,7 @@ public:
     void goToOffset(qint64 nOffset);
     void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
     virtual void adjustView();
+    virtual void reloadData(bool bSaveSelection);
 
 private slots:
     void on_comboBoxType_currentIndexChanged(int nIndex);

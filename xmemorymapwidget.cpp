@@ -111,6 +111,13 @@ void XMemoryMapWidget::adjustView()
 {
 }
 
+void XMemoryMapWidget::reloadData(bool bSaveSelection)
+{
+    if (!bSaveSelection) {
+        updateMemoryMap();
+    }
+}
+
 void XMemoryMapWidget::on_comboBoxType_currentIndexChanged(int nIndex)
 {
     Q_UNUSED(nIndex)
