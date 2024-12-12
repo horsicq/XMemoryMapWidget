@@ -101,6 +101,20 @@ void XMemoryMapWidget::goToOffset(qint64 nOffset)
     ui->lineEditFileOffset->setValidatorModeValue(g_mode, nOffset);
 }
 
+void XMemoryMapWidget::setLocation(quint64 nLocation, qint32 nLocationType, qint64 nSize)
+{
+    Q_UNUSED(nSize)
+
+    if ( nLocationType == XBinary::LT_ADDRESS)
+    {
+        ui->lineEditVirtualAddress->setValidatorModeValue(g_mode, nLocation);
+    }
+    else if (nLocationType == XBinary::LT_OFFSET)
+    {
+        ui->lineEditFileOffset->setValidatorModeValue(g_mode, nLocation);
+    }
+}
+
 void XMemoryMapWidget::setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions)
 {
     ui->widgetHex->setGlobal(pShortcuts, pXOptions);

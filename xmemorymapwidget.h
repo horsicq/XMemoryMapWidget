@@ -47,7 +47,8 @@ public:
 
     void setData(QIODevice *pDevice, const OPTIONS &options, XInfoDB *pXInfoDB);
     void setXInfoDB(XInfoDB *pXInfoDB);
-    void goToOffset(qint64 nOffset);
+    void goToOffset(qint64 nOffset); // TODO remove use setLocation
+    virtual void setLocation(quint64 nLocation, qint32 nLocationType, qint64 nSize);
     void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
     virtual void adjustView();
     virtual void reloadData(bool bSaveSelection);
