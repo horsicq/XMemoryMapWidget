@@ -105,12 +105,9 @@ void XMemoryMapWidget::setLocation(quint64 nLocation, qint32 nLocationType, qint
 {
     Q_UNUSED(nSize)
 
-    if ( nLocationType == XBinary::LT_ADDRESS)
-    {
+    if (nLocationType == XBinary::LT_ADDRESS) {
         ui->lineEditVirtualAddress->setValidatorModeValue(g_mode, nLocation);
-    }
-    else if (nLocationType == XBinary::LT_OFFSET)
-    {
+    } else if (nLocationType == XBinary::LT_OFFSET) {
         ui->lineEditFileOffset->setValidatorModeValue(g_mode, nLocation);
     }
 }
