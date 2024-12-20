@@ -374,7 +374,7 @@
       <item>
        <widget class="QStackedWidget" name="stackedWidgetHex">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="pageHex">
          <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -391,7 +391,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="XHexView" name="widgetHex" native="true"/>
+           <widget class="XHexView" name="widgetHex"/>
           </item>
          </layout>
         </widget>
@@ -406,7 +406,7 @@
  <customwidgets>
   <customwidget>
    <class>XHexView</class>
-   <extends>QWidget</extends>
+   <extends>QScrollArea</extends>
    <header>xhexview.h</header>
    <container>1</container>
   </customwidget>
