@@ -11,8 +11,6 @@ endif()
 
 set(XMEMORYMAPWIDGET_SOURCES
     ${XMEMORYMAPWIDGET_SOURCES}
-    ${XFORMATS_SOURCES}
-    ${XLINEEDITHEX_SOURCES}
     ${CMAKE_CURRENT_LIST_DIR}/dialogmemorymap.cpp
     ${CMAKE_CURRENT_LIST_DIR}/dialogmemorymap.h
     ${CMAKE_CURRENT_LIST_DIR}/dialogmemorymap.ui
