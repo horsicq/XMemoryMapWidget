@@ -584,6 +584,12 @@ void XMemoryMapWidget::viewSelection()
             ui->lineEditRelativeVirtualAddress->setValidatorModeValue(g_mode, nRelativeVirtualAddress);
 
             _goToOffset(nFileOffset, nSize);
+
+            if (nFileOffset != -1) {
+                emit currentLocationChanged(nFileOffset, XBinary::LT_OFFSET, nSize);
+            } else if (nVirtualAddress != (XADDR)-1) {
+                emit currentLocationChanged(nVirtualAddress, XBinary::LT_ADDRESS, nSize);
+            }
         }
     }
 
