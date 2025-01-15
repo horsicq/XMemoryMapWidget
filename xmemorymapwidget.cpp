@@ -55,6 +55,8 @@ XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) : XShortcutsWidget(pParent)
     g_bLockHex = false;
     g_memoryMap = {};
     g_pXInfoDB = nullptr;
+
+    ui->checkBoxShowAll->setChecked(true);
 }
 
 XMemoryMapWidget::~XMemoryMapWidget()
