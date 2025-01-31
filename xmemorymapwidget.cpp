@@ -124,7 +124,7 @@ void XMemoryMapWidget::adjustView()
 {
     ui->widgetHex->adjustView();
     getGlobalOptions()->adjustWidget(this, XOptions::ID_VIEW_FONT_CONTROLS);
-    getGlobalOptions()->adjustWidget(ui->tableViewMemoryMap, XOptions::ID_VIEW_FONT_TABLEVIEWS);
+    getGlobalOptions()->adjustTableView(ui->tableViewMemoryMap, XOptions::ID_VIEW_FONT_TABLEVIEWS);
 }
 
 void XMemoryMapWidget::reloadData(bool bSaveSelection)
