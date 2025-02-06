@@ -64,7 +64,7 @@ XMemoryMapWidget::~XMemoryMapWidget()
     delete ui;
 }
 
-void XMemoryMapWidget::setData(QIODevice *pDevice, const OPTIONS &options, XInfoDB *pXInfoDB)
+void XMemoryMapWidget::setData(QIODevice *pDevice, const OPTIONS &options, XInfoDB *pXInfoDB, QString sXInfoProfile)
 {
     g_pDevice = pDevice;
     g_options = options;
@@ -72,7 +72,7 @@ void XMemoryMapWidget::setData(QIODevice *pDevice, const OPTIONS &options, XInfo
 
     XHexView::OPTIONS hex_options = {};  // TODO Check !!!
 
-    ui->widgetHex->setXInfoDB(pXInfoDB);
+    ui->widgetHex->setXInfoDB(pXInfoDB, sXInfoProfile);
     ui->widgetHex->setData(pDevice, hex_options, true);
 
     if (pDevice) {
@@ -93,9 +93,9 @@ void XMemoryMapWidget::setData(QIODevice *pDevice, const OPTIONS &options, XInfo
     }
 }
 
-void XMemoryMapWidget::setXInfoDB(XInfoDB *pXInfoDB)
+void XMemoryMapWidget::setXInfoDB(XInfoDB *pXInfoDB, QString sXInfoProfile)
 {
-    ui->widgetHex->setXInfoDB(pXInfoDB);
+    ui->widgetHex->setXInfoDB(pXInfoDB, sXInfoProfile);
 }
 
 void XMemoryMapWidget::goToOffset(qint64 nOffset)
