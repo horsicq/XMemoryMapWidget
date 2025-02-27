@@ -39,7 +39,7 @@ DialogMemoryMap::~DialogMemoryMap()
 
 void DialogMemoryMap::setData(QIODevice *pDevice, const XMemoryMapWidget::OPTIONS &options)
 {
-    ui->widgetMemoryMap->setData(pDevice, options, nullptr, "");
+    ui->widgetMemoryMap->setData(pDevice, options, nullptr, XInfoDB::PROFILE_UNKNOWN);
 }
 
 void DialogMemoryMap::setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions)

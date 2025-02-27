@@ -45,8 +45,8 @@ public:
     explicit XMemoryMapWidget(QWidget *pParent = nullptr);
     ~XMemoryMapWidget();
 
-    void setData(QIODevice *pDevice, const OPTIONS &options, XInfoDB *pXInfoDB, QString sXInfoProfile);
-    void setXInfoDB(XInfoDB *pXInfoDB, QString sXInfoProfile);
+    void setData(QIODevice *pDevice, const OPTIONS &options, XInfoDB *pXInfoDB, XInfoDB::PROFILE profile);
+    void setXInfoDB(XInfoDB *pXInfoDB, XInfoDB::PROFILE profile);
     void goToOffset(qint64 nOffset);  // TODO remove use setLocation
     virtual void setLocation(quint64 nLocation, qint32 nLocationType, qint64 nSize);
     void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
