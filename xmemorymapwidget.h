@@ -46,8 +46,8 @@ public:
     ~XMemoryMapWidget();
 
     void setData(QIODevice *pDevice, const OPTIONS &options, XInfoDB *pXInfoDB);
-    void setXInfoDB(XInfoDB *pXInfoDB); // TODO remove
-    void goToOffset(qint64 nOffset);  // TODO remove use setLocation
+    void setXInfoDB(XInfoDB *pXInfoDB);  // TODO remove
+    void goToOffset(qint64 nOffset);     // TODO remove use setLocation
     virtual void setLocation(quint64 nLocation, qint32 nLocationType, qint64 nSize);
     void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
     virtual void adjustView();
