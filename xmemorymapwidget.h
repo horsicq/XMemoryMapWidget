@@ -77,6 +77,7 @@ private slots:
     void on_toolButtonVirtualAddressFind_clicked();
     void on_toolButtonRelativeVirtualAddressFind_clicked();
     void on_comboBoxMapMode_currentIndexChanged(int nIndex);
+    void on_toolButtonReload_clicked();
 
 protected:
     virtual void registerShortcuts(bool bState);

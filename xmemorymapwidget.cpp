@@ -28,12 +28,14 @@ XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) : XShortcutsWidget(pParent)
 
     XOptions::adjustToolButton(ui->toolButtonSave, XOptions::ICONTYPE_SAVE);
     XOptions::adjustToolButton(ui->toolButtonDumpAll, XOptions::ICONTYPE_DUMPTOFILE);
+    XOptions::adjustToolButton(ui->toolButtonReload, XOptions::ICONTYPE_RELOAD);
     XOptions::adjustToolButton(ui->toolButtonFileOffsetFind, XOptions::ICONTYPE_SEARCH, Qt::ToolButtonIconOnly);
     XOptions::adjustToolButton(ui->toolButtonVirtualAddressFind, XOptions::ICONTYPE_SEARCH, Qt::ToolButtonIconOnly);
     XOptions::adjustToolButton(ui->toolButtonRelativeVirtualAddressFind, XOptions::ICONTYPE_SEARCH, Qt::ToolButtonIconOnly);
 
     ui->toolButtonSave->setToolTip(tr("Save"));
     ui->toolButtonDumpAll->setToolTip(tr("Dump all"));
+    ui->toolButtonReload->setToolTip(tr("Reload"));
     ui->toolButtonFileOffsetFind->setToolTip(tr("Find"));
     ui->toolButtonVirtualAddressFind->setToolTip(tr("Find"));
     ui->toolButtonRelativeVirtualAddressFind->setToolTip(tr("Find"));
@@ -629,3 +631,9 @@ void XMemoryMapWidget::on_comboBoxMapMode_currentIndexChanged(int nIndex)
 
     updateMemoryMap();
 }
+
+void XMemoryMapWidget::on_toolButtonReload_clicked()
+{
+    reloadData(true);
+}
+
