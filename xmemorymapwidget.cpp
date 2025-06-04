@@ -168,134 +168,136 @@ void XMemoryMapWidget::on_radioButtonRelativeVirtualAddress_toggled(bool bChecke
 
 void XMemoryMapWidget::updateMemoryMap()
 {
-    const bool bBlocked1 = ui->lineEditFileOffset->blockSignals(true);
-    const bool bBlocked2 = ui->lineEditVirtualAddress->blockSignals(true);
-    const bool bBlocked3 = ui->lineEditRelativeVirtualAddress->blockSignals(true);
-    const bool bBlocked4 = ui->tableViewMemoryMap->blockSignals(true);
-    const bool bBlocked5 = ui->pageHex->blockSignals(true);
+    if (g_pDevice) {
+        const bool bBlocked1 = ui->lineEditFileOffset->blockSignals(true);
+        const bool bBlocked2 = ui->lineEditVirtualAddress->blockSignals(true);
+        const bool bBlocked3 = ui->lineEditRelativeVirtualAddress->blockSignals(true);
+        const bool bBlocked4 = ui->tableViewMemoryMap->blockSignals(true);
+        const bool bBlocked5 = ui->pageHex->blockSignals(true);
 
-    g_mapIndexes.clear();
+        g_mapIndexes.clear();
 
-    XBinary::FT fileType = (XBinary::FT)(ui->comboBoxType->currentData().toInt());
-    XBinary::MAPMODE mapMode = (XBinary::MAPMODE)(ui->comboBoxMapMode->currentData().toInt());
+        XBinary::FT fileType = (XBinary::FT)(ui->comboBoxType->currentData().toInt());
+        XBinary::MAPMODE mapMode = (XBinary::MAPMODE)(ui->comboBoxMapMode->currentData().toInt());
 
-    g_memoryMap = XFormats::getMemoryMap(fileType, mapMode, g_pDevice);
+        g_memoryMap = XFormats::getMemoryMap(fileType, mapMode, g_pDevice);
 
-    ui->lineEditArch->setText(g_memoryMap.sArch);
-    ui->lineEditMode->setText(XBinary::modeIdToString(g_memoryMap.mode));
-    ui->lineEditEndianness->setText(XBinary::endianToString(g_memoryMap.endian));
+        ui->lineEditArch->setText(g_memoryMap.sArch);
+        ui->lineEditMode->setText(XBinary::modeIdToString(g_memoryMap.mode));
+        ui->lineEditEndianness->setText(XBinary::endianToString(g_memoryMap.endian));
 
-    ui->radioButtonFileOffset->setChecked(true);
+        ui->radioButtonFileOffset->setChecked(true);
 
-    ui->lineEditFileOffset->setValue_uint32((quint32)0);
+        ui->lineEditFileOffset->setValue_uint32((quint32)0);
 
-    XBinary::MODE _mode = XBinary::getWidthModeFromMemoryMap(&g_memoryMap);
+        XBinary::MODE _mode = XBinary::getWidthModeFromMemoryMap(&g_memoryMap);
 
-    // TODO move function to XShortcutWidget !!!
-    if (_mode == XBinary::MODE_8) g_mode = XLineEditValidator::MODE_HEX_8;
-    else if (_mode == XBinary::MODE_16) g_mode = XLineEditValidator::MODE_HEX_16;
-    else if (_mode == XBinary::MODE_32) g_mode = XLineEditValidator::MODE_HEX_32;
-    else if (_mode == XBinary::MODE_64) g_mode = XLineEditValidator::MODE_HEX_64;
+        // TODO move function to XShortcutWidget !!!
+        if (_mode == XBinary::MODE_8) g_mode = XLineEditValidator::MODE_HEX_8;
+        else if (_mode == XBinary::MODE_16) g_mode = XLineEditValidator::MODE_HEX_16;
+        else if (_mode == XBinary::MODE_32) g_mode = XLineEditValidator::MODE_HEX_32;
+        else if (_mode == XBinary::MODE_64) g_mode = XLineEditValidator::MODE_HEX_64;
 
-    qint32 nNumberOfRecords = 0;
+        qint32 nNumberOfRecords = 0;
 
-    bool bShowAll = ui->checkBoxShowAll->isChecked();
+        bool bShowAll = ui->checkBoxShowAll->isChecked();
 
-    if (bShowAll) {
-        nNumberOfRecords = g_memoryMap.listRecords.count();
-    } else {
-        nNumberOfRecords = XBinary::getNumberOfPhysicalRecords(&g_memoryMap);
-    }
-
-    QStandardItemModel *pModel = new QStandardItemModel(nNumberOfRecords, 4);
-
-    pModel->setHeaderData(0, Qt::Horizontal, tr("Offset"));
-    pModel->setHeaderData(1, Qt::Horizontal, tr("Address"));
-    pModel->setHeaderData(2, Qt::Horizontal, tr("Size"));
-    pModel->setHeaderData(3, Qt::Horizontal, tr("Name"));
-
-    //    QColor colDisabled = QWidget::palette().color(QPalette::Window);
-
-    qint32 _nNumberOfRecords = g_memoryMap.listRecords.count();
-
-    for (qint32 i = 0, j = 0; i < _nNumberOfRecords; i++) {
-        //        bool bIsVirtual=g_memoryMap.listRecords.at(i).bIsVirtual;
-
-        if ((!(g_memoryMap.listRecords.at(i).bIsVirtual)) || (bShowAll)) {
-            g_mapIndexes.insert(i, j);
-
-            QStandardItem *pItemOffset = new QStandardItem;
-
-            pItemOffset->setData(g_memoryMap.listRecords.at(i).nOffset, Qt::UserRole + 0);
-            pItemOffset->setData(g_memoryMap.listRecords.at(i).nAddress, Qt::UserRole + 1);
-            pItemOffset->setData(g_memoryMap.listRecords.at(i).nSize, Qt::UserRole + 2);
-            pItemOffset->setData(QString("%1_%2_%3.bin")
-                                     .arg(XBinary::valueToHexEx(g_memoryMap.listRecords.at(i).nOffset), XBinary::valueToHexEx(g_memoryMap.listRecords.at(i).nSize),
-                                          g_memoryMap.listRecords.at(i).sName),
-                                 Qt::UserRole + 3);
-
-            if (g_memoryMap.listRecords.at(i).nOffset != -1) {
-                pItemOffset->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nOffset));
-            } else {
-                //                pItemOffset->setBackground(colDisabled);
-            }
-
-            pModel->setItem(j, 0, pItemOffset);
-
-            QStandardItem *pItemAddress = new QStandardItem;
-
-            if (g_memoryMap.listRecords.at(i).nAddress != (quint64)-1) {
-                pItemAddress->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nAddress));
-            } else {
-                //                pItemAddress->setBackground(colDisabled);
-            }
-
-            pModel->setItem(j, 1, pItemAddress);
-
-            QStandardItem *pItemSize = new QStandardItem;
-
-            pItemSize->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nSize));
-
-            pModel->setItem(j, 2, pItemSize);
-
-            QStandardItem *pItemName = new QStandardItem;
-
-            pItemName->setText(g_memoryMap.listRecords.at(i).sName);
-            pModel->setItem(j, 3, pItemName);
-
-            j++;
+        if (bShowAll) {
+            nNumberOfRecords = g_memoryMap.listRecords.count();
+        } else {
+            nNumberOfRecords = XBinary::getNumberOfPhysicalRecords(&g_memoryMap);
         }
+
+        QStandardItemModel *pModel = new QStandardItemModel(nNumberOfRecords, 4);
+
+        pModel->setHeaderData(0, Qt::Horizontal, tr("Offset"));
+        pModel->setHeaderData(1, Qt::Horizontal, tr("Address"));
+        pModel->setHeaderData(2, Qt::Horizontal, tr("Size"));
+        pModel->setHeaderData(3, Qt::Horizontal, tr("Name"));
+
+        //    QColor colDisabled = QWidget::palette().color(QPalette::Window);
+
+        qint32 _nNumberOfRecords = g_memoryMap.listRecords.count();
+
+        for (qint32 i = 0, j = 0; i < _nNumberOfRecords; i++) {
+            //        bool bIsVirtual=g_memoryMap.listRecords.at(i).bIsVirtual;
+
+            if ((!(g_memoryMap.listRecords.at(i).bIsVirtual)) || (bShowAll)) {
+                g_mapIndexes.insert(i, j);
+
+                QStandardItem *pItemOffset = new QStandardItem;
+
+                pItemOffset->setData(g_memoryMap.listRecords.at(i).nOffset, Qt::UserRole + 0);
+                pItemOffset->setData(g_memoryMap.listRecords.at(i).nAddress, Qt::UserRole + 1);
+                pItemOffset->setData(g_memoryMap.listRecords.at(i).nSize, Qt::UserRole + 2);
+                pItemOffset->setData(QString("%1_%2_%3.bin")
+                                         .arg(XBinary::valueToHexEx(g_memoryMap.listRecords.at(i).nOffset), XBinary::valueToHexEx(g_memoryMap.listRecords.at(i).nSize),
+                                              g_memoryMap.listRecords.at(i).sName),
+                                     Qt::UserRole + 3);
+
+                if (g_memoryMap.listRecords.at(i).nOffset != -1) {
+                    pItemOffset->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nOffset));
+                } else {
+                    //                pItemOffset->setBackground(colDisabled);
+                }
+
+                pModel->setItem(j, 0, pItemOffset);
+
+                QStandardItem *pItemAddress = new QStandardItem;
+
+                if (g_memoryMap.listRecords.at(i).nAddress != (quint64)-1) {
+                    pItemAddress->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nAddress));
+                } else {
+                    //                pItemAddress->setBackground(colDisabled);
+                }
+
+                pModel->setItem(j, 1, pItemAddress);
+
+                QStandardItem *pItemSize = new QStandardItem;
+
+                pItemSize->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nSize));
+
+                pModel->setItem(j, 2, pItemSize);
+
+                QStandardItem *pItemName = new QStandardItem;
+
+                pItemName->setText(g_memoryMap.listRecords.at(i).sName);
+                pModel->setItem(j, 3, pItemName);
+
+                j++;
+            }
+        }
+
+        XOptions::setModelTextAlignment(pModel, 0, Qt::AlignRight | Qt::AlignVCenter);
+        XOptions::setModelTextAlignment(pModel, 1, Qt::AlignRight | Qt::AlignVCenter);
+        XOptions::setModelTextAlignment(pModel, 2, Qt::AlignRight | Qt::AlignVCenter);
+        XOptions::setModelTextAlignment(pModel, 3, Qt::AlignLeft | Qt::AlignVCenter);
+
+        ui->tableViewMemoryMap->setCustomModel(pModel, true);
+
+        ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Interactive);
+        ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Interactive);
+        ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Interactive);
+        ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+
+        qint32 nColumnSize = XLineEditHEX::getWidthFromMode(this, g_mode);
+
+        ui->tableViewMemoryMap->setColumnWidth(0, nColumnSize);
+        ui->tableViewMemoryMap->setColumnWidth(1, nColumnSize);
+        ui->tableViewMemoryMap->setColumnWidth(2, nColumnSize);
+
+        connect(ui->tableViewMemoryMap->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this,
+                SLOT(on_tableViewSelection(QItemSelection, QItemSelection)));
+        connect(ui->widgetHex, SIGNAL(cursorViewPosChanged(qint64)), this, SLOT(onHexCursorChanged(qint64)));
+
+        _adjust(true);
+
+        ui->lineEditFileOffset->blockSignals(bBlocked1);
+        ui->lineEditVirtualAddress->blockSignals(bBlocked2);
+        ui->lineEditRelativeVirtualAddress->blockSignals(bBlocked3);
+        ui->tableViewMemoryMap->blockSignals(bBlocked4);
+        ui->pageHex->blockSignals(bBlocked5);
     }
-
-    XOptions::setModelTextAlignment(pModel, 0, Qt::AlignRight | Qt::AlignVCenter);
-    XOptions::setModelTextAlignment(pModel, 1, Qt::AlignRight | Qt::AlignVCenter);
-    XOptions::setModelTextAlignment(pModel, 2, Qt::AlignRight | Qt::AlignVCenter);
-    XOptions::setModelTextAlignment(pModel, 3, Qt::AlignLeft | Qt::AlignVCenter);
-
-    ui->tableViewMemoryMap->setCustomModel(pModel, true);
-
-    ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Interactive);
-    ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Interactive);
-    ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Interactive);
-    ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
-
-    qint32 nColumnSize = XLineEditHEX::getWidthFromMode(this, g_mode);
-
-    ui->tableViewMemoryMap->setColumnWidth(0, nColumnSize);
-    ui->tableViewMemoryMap->setColumnWidth(1, nColumnSize);
-    ui->tableViewMemoryMap->setColumnWidth(2, nColumnSize);
-
-    connect(ui->tableViewMemoryMap->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this,
-            SLOT(on_tableViewSelection(QItemSelection, QItemSelection)));
-    connect(ui->widgetHex, SIGNAL(cursorViewPosChanged(qint64)), this, SLOT(onHexCursorChanged(qint64)));
-
-    _adjust(true);
-
-    ui->lineEditFileOffset->blockSignals(bBlocked1);
-    ui->lineEditVirtualAddress->blockSignals(bBlocked2);
-    ui->lineEditRelativeVirtualAddress->blockSignals(bBlocked3);
-    ui->tableViewMemoryMap->blockSignals(bBlocked4);
-    ui->pageHex->blockSignals(bBlocked5);
 }
 
 void XMemoryMapWidget::_adjust(bool bInit)
