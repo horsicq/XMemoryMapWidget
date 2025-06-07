@@ -638,4 +638,3 @@ void XMemoryMapWidget::on_toolButtonReload_clicked()
 {
     reloadData(true);
 }
-
