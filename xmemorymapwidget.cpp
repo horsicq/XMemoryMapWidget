@@ -501,10 +501,11 @@ void XMemoryMapWidget::on_toolButtonDumpAll_clicked()
 
             QString sJsonFileName = sDirectory + QDir::separator() + XBinary::getDeviceFileBaseName(g_pDevice) + ".patch.json";
 
-            DialogDumpProcess dd(this);
+            DumpProcess dumpProcess;
+            XDialogProcess dd(this, &dumpProcess);
             dd.setGlobal(getShortcuts(), getGlobalOptions());
-            dd.setData(g_pDevice, listRecords, DumpProcess::DT_DUMP_DEVICE_OFFSET, sJsonFileName);
-
+            dumpProcess.setData(g_pDevice, listRecords, DumpProcess::DT_DUMP_DEVICE_OFFSET, sJsonFileName, dd.getPdStruct());
+            dd.start();
             dd.showDialogDelay();
         }
     }
@@ -549,10 +550,11 @@ void XMemoryMapWidget::dumpSection()
         QString sFileName = QFileDialog::getSaveFileName(this, tr("Save dump"), sSaveFileName, QString("%1 (*.bin)").arg(tr("Raw data")));
 
         if (!sFileName.isEmpty()) {
-            DialogDumpProcess dd(this);
+            DumpProcess dumpProcess;
+            XDialogProcess dd(this, &dumpProcess);
             dd.setGlobal(getShortcuts(), getGlobalOptions());
-            dd.setData(g_pDevice, nOffset, nSize, sFileName, DumpProcess::DT_DUMP_DEVICE_OFFSET);
-
+            dumpProcess.setData(g_pDevice, nOffset, nSize, sFileName, DumpProcess::DT_DUMP_DEVICE_OFFSET, dd.getPdStruct());
+            dd.start();
             dd.showDialogDelay();
         }
     }

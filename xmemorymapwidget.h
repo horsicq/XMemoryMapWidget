@@ -28,6 +28,8 @@
 #include "xlineedithex.h"
 #include "xshortcutswidget.h"
 #include "xinfodb.h"
+#include "dumpprocess.h"
+#include "xdialogprocess.h"
 
 namespace Ui {
 class XMemoryMapWidget;
