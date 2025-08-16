@@ -74,8 +74,7 @@ void XMemoryMapWidget::setData(QIODevice *pDevice, const OPTIONS &options, XInfo
 
     XHexView::OPTIONS hex_options = {};  // TODO Check !!!
 
-    ui->widgetHex->setXInfoDB(pXInfoDB);
-    ui->widgetHex->setData(pDevice, hex_options, true);
+    ui->widgetHex->setData(pDevice, hex_options, true, pXInfoDB);
 
     if (pDevice) {
         XFormats::setFileTypeComboBox(options.fileType, g_pDevice, ui->comboBoxType);
