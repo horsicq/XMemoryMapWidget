@@ -89,7 +89,7 @@ signals:
 
 private:
     Ui::XMemoryMapWidget *ui;
-    QIODevice *g_pDevice;
+    QIODevice *m_pDevice;
     OPTIONS g_options;
     XBinary::_MEMORY_MAP g_memoryMap;
     XLineEditValidator::MODE g_mode;

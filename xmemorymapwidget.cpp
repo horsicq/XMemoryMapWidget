@@ -51,7 +51,7 @@ XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) : XShortcutsWidget(pParent)
     ui->lineEditVirtualAddress->setToolTip(tr("Virtual address"));
     ui->lineEditRelativeVirtualAddress->setToolTip(tr("Relative virtual address"));
 
-    g_pDevice = nullptr;
+    m_pDevice = nullptr;
     g_options = {};
     g_mode = XLineEditValidator::MODE_HEX_16;
     g_bLockHex = false;
@@ -68,7 +68,7 @@ XMemoryMapWidget::~XMemoryMapWidget()
 
 void XMemoryMapWidget::setData(QIODevice *pDevice, const OPTIONS &options, XInfoDB *pXInfoDB)
 {
-    g_pDevice = pDevice;
+    m_pDevice = pDevice;
     g_options = options;
     g_pXInfoDB = pXInfoDB;
 
@@ -77,7 +77,7 @@ void XMemoryMapWidget::setData(QIODevice *pDevice, const OPTIONS &options, XInfo
     ui->widgetHex->setData(pDevice, hex_options, true, pXInfoDB);
 
     if (pDevice) {
-        XFormats::setFileTypeComboBox(options.fileType, g_pDevice, ui->comboBoxType);
+        XFormats::setFileTypeComboBox(options.fileType, m_pDevice, ui->comboBoxType);
         XFormats::getMapModesList(options.fileType, ui->comboBoxMapMode);
 
         updateMemoryMap();
@@ -167,7 +167,7 @@ void XMemoryMapWidget::on_radioButtonRelativeVirtualAddress_toggled(bool bChecke
 
 void XMemoryMapWidget::updateMemoryMap()
 {
-    if (g_pDevice) {
+    if (m_pDevice) {
         const bool bBlocked1 = ui->lineEditFileOffset->blockSignals(true);
         const bool bBlocked2 = ui->lineEditVirtualAddress->blockSignals(true);
         const bool bBlocked3 = ui->lineEditRelativeVirtualAddress->blockSignals(true);
@@ -179,7 +179,7 @@ void XMemoryMapWidget::updateMemoryMap()
         XBinary::FT fileType = (XBinary::FT)(ui->comboBoxType->currentData().toInt());
         XBinary::MAPMODE mapMode = (XBinary::MAPMODE)(ui->comboBoxMapMode->currentData().toInt());
 
-        g_memoryMap = XFormats::getMemoryMap(fileType, mapMode, g_pDevice);
+        g_memoryMap = XFormats::getMemoryMap(fileType, mapMode, m_pDevice);
 
         ui->lineEditArch->setText(g_memoryMap.sArch);
         ui->lineEditMode->setText(XBinary::modeIdToString(g_memoryMap.mode));
@@ -464,7 +464,7 @@ void XMemoryMapWidget::registerShortcuts(bool bState)
 
 void XMemoryMapWidget::on_toolButtonSave_clicked()
 {
-    XShortcutsWidget::saveTableModel(ui->tableViewMemoryMap->getProxyModel(), XBinary::getResultFileName(g_pDevice, QString("%1.txt").arg(tr("Memory map"))));
+    XShortcutsWidget::saveTableModel(ui->tableViewMemoryMap->getProxyModel(), XBinary::getResultFileName(m_pDevice, QString("%1.txt").arg(tr("Memory map"))));
 }
 
 void XMemoryMapWidget::on_checkBoxShowAll_stateChanged(int nValue)
@@ -476,7 +476,7 @@ void XMemoryMapWidget::on_checkBoxShowAll_stateChanged(int nValue)
 
 void XMemoryMapWidget::on_toolButtonDumpAll_clicked()
 {
-    QString sDirectory = QFileDialog::getExistingDirectory(this, tr("Dump all"), XBinary::getDeviceDirectory(g_pDevice));
+    QString sDirectory = QFileDialog::getExistingDirectory(this, tr("Dump all"), XBinary::getDeviceDirectory(m_pDevice));
 
     if (!sDirectory.isEmpty()) {
         qint32 nNumberOfRecords = ui->tableViewMemoryMap->model()->rowCount();
@@ -498,12 +498,12 @@ void XMemoryMapWidget::on_toolButtonDumpAll_clicked()
                 listRecords.append(record);
             }
 
-            QString sJsonFileName = sDirectory + QDir::separator() + XBinary::getDeviceFileBaseName(g_pDevice) + ".patch.json";
+            QString sJsonFileName = sDirectory + QDir::separator() + XBinary::getDeviceFileBaseName(m_pDevice) + ".patch.json";
 
             DumpProcess dumpProcess;
             XDialogProcess dd(this, &dumpProcess);
             dd.setGlobal(getShortcuts(), getGlobalOptions());
-            dumpProcess.setData(g_pDevice, listRecords, DumpProcess::DT_DUMP_DEVICE_OFFSET, sJsonFileName, dd.getPdStruct());
+            dumpProcess.setData(m_pDevice, listRecords, DumpProcess::DT_DUMP_DEVICE_OFFSET, sJsonFileName, dd.getPdStruct());
             dd.start();
             dd.showDialogDelay();
         }
@@ -545,14 +545,14 @@ void XMemoryMapWidget::dumpSection()
             sName = tr("Dump");
         }
 
-        QString sSaveFileName = XBinary::getResultFileName(g_pDevice, QString("%1.bin").arg(sName));
+        QString sSaveFileName = XBinary::getResultFileName(m_pDevice, QString("%1.bin").arg(sName));
         QString sFileName = QFileDialog::getSaveFileName(this, tr("Save dump"), sSaveFileName, QString("%1 (*.bin)").arg(tr("Raw data")));
 
         if (!sFileName.isEmpty()) {
             DumpProcess dumpProcess;
             XDialogProcess dd(this, &dumpProcess);
             dd.setGlobal(getShortcuts(), getGlobalOptions());
-            dumpProcess.setData(g_pDevice, nOffset, nSize, sFileName, DumpProcess::DT_DUMP_DEVICE_OFFSET, dd.getPdStruct());
+            dumpProcess.setData(m_pDevice, nOffset, nSize, sFileName, DumpProcess::DT_DUMP_DEVICE_OFFSET, dd.getPdStruct());
             dd.start();
             dd.showDialogDelay();
         }
