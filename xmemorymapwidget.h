@@ -92,7 +92,7 @@ private:
     QIODevice *m_pDevice;
     OPTIONS g_options;
     XBinary::_MEMORY_MAP g_memoryMap;
-    XLineEditValidator::MODE g_mode;
+    XLineEditValidator::MODE m_mode;
     bool g_bLockHex;
     QMap<qint32, qint32> g_mapIndexes;
     XInfoDB *g_pXInfoDB;

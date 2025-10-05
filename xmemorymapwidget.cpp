@@ -53,7 +53,7 @@ XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) : XShortcutsWidget(pParent)
 
     m_pDevice = nullptr;
     g_options = {};
-    g_mode = XLineEditValidator::MODE_HEX_16;
+    m_mode = XLineEditValidator::MODE_HEX_16;
     g_bLockHex = false;
     g_memoryMap = {};
     g_pXInfoDB = nullptr;
@@ -101,7 +101,7 @@ void XMemoryMapWidget::setXInfoDB(XInfoDB *pXInfoDB)
 
 void XMemoryMapWidget::goToOffset(qint64 nOffset)
 {
-    ui->lineEditFileOffset->setValidatorModeValue(g_mode, nOffset);
+    ui->lineEditFileOffset->setValidatorModeValue(m_mode, nOffset);
 }
 
 void XMemoryMapWidget::setLocation(quint64 nLocation, qint32 nLocationType, qint64 nSize)
@@ -109,9 +109,9 @@ void XMemoryMapWidget::setLocation(quint64 nLocation, qint32 nLocationType, qint
     Q_UNUSED(nSize)
 
     if (nLocationType == XBinary::LT_ADDRESS) {
-        ui->lineEditVirtualAddress->setValidatorModeValue(g_mode, nLocation);
+        ui->lineEditVirtualAddress->setValidatorModeValue(m_mode, nLocation);
     } else if (nLocationType == XBinary::LT_OFFSET) {
-        ui->lineEditFileOffset->setValidatorModeValue(g_mode, nLocation);
+        ui->lineEditFileOffset->setValidatorModeValue(m_mode, nLocation);
     }
 }
 
@@ -192,10 +192,10 @@ void XMemoryMapWidget::updateMemoryMap()
         XBinary::MODE _mode = XBinary::getWidthModeFromMemoryMap(&g_memoryMap);
 
         // TODO move function to XShortcutWidget !!!
-        if (_mode == XBinary::MODE_8) g_mode = XLineEditValidator::MODE_HEX_8;
-        else if (_mode == XBinary::MODE_16) g_mode = XLineEditValidator::MODE_HEX_16;
-        else if (_mode == XBinary::MODE_32) g_mode = XLineEditValidator::MODE_HEX_32;
-        else if (_mode == XBinary::MODE_64) g_mode = XLineEditValidator::MODE_HEX_64;
+        if (_mode == XBinary::MODE_8) m_mode = XLineEditValidator::MODE_HEX_8;
+        else if (_mode == XBinary::MODE_16) m_mode = XLineEditValidator::MODE_HEX_16;
+        else if (_mode == XBinary::MODE_32) m_mode = XLineEditValidator::MODE_HEX_32;
+        else if (_mode == XBinary::MODE_64) m_mode = XLineEditValidator::MODE_HEX_64;
 
         qint32 nNumberOfRecords = 0;
 
@@ -235,7 +235,7 @@ void XMemoryMapWidget::updateMemoryMap()
                                      Qt::UserRole + 3);
 
                 if (g_memoryMap.listRecords.at(i).nOffset != -1) {
-                    pItemOffset->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nOffset));
+                    pItemOffset->setText(XLineEditHEX::getFormatString(m_mode, g_memoryMap.listRecords.at(i).nOffset));
                 } else {
                     //                pItemOffset->setBackground(colDisabled);
                 }
@@ -245,7 +245,7 @@ void XMemoryMapWidget::updateMemoryMap()
                 QStandardItem *pItemAddress = new QStandardItem;
 
                 if (g_memoryMap.listRecords.at(i).nAddress != (quint64)-1) {
-                    pItemAddress->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nAddress));
+                    pItemAddress->setText(XLineEditHEX::getFormatString(m_mode, g_memoryMap.listRecords.at(i).nAddress));
                 } else {
                     //                pItemAddress->setBackground(colDisabled);
                 }
@@ -254,7 +254,7 @@ void XMemoryMapWidget::updateMemoryMap()
 
                 QStandardItem *pItemSize = new QStandardItem;
 
-                pItemSize->setText(XLineEditHEX::getFormatString(g_mode, g_memoryMap.listRecords.at(i).nSize));
+                pItemSize->setText(XLineEditHEX::getFormatString(m_mode, g_memoryMap.listRecords.at(i).nSize));
 
                 pModel->setItem(j, 2, pItemSize);
 
@@ -279,7 +279,7 @@ void XMemoryMapWidget::updateMemoryMap()
         ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Interactive);
         ui->tableViewMemoryMap->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
 
-        qint32 nColumnSize = XLineEditHEX::getWidthFromMode(this, g_mode);
+        qint32 nColumnSize = XLineEditHEX::getWidthFromMode(this, m_mode);
 
         ui->tableViewMemoryMap->setColumnWidth(0, nColumnSize);
         ui->tableViewMemoryMap->setColumnWidth(1, nColumnSize);
@@ -328,11 +328,11 @@ void XMemoryMapWidget::_adjust(bool bInit)
         }
 
         if (bInit) {
-            ui->lineEditFileOffset->setValidatorModeValue(g_mode, nFileOffset);
+            ui->lineEditFileOffset->setValidatorModeValue(m_mode, nFileOffset);
         }
 
-        ui->lineEditVirtualAddress->setValidatorModeValue(g_mode, nVirtualAddress);
-        ui->lineEditRelativeVirtualAddress->setValidatorModeValue(g_mode, nRelativeVirtualAddress);
+        ui->lineEditVirtualAddress->setValidatorModeValue(m_mode, nVirtualAddress);
+        ui->lineEditRelativeVirtualAddress->setValidatorModeValue(m_mode, nRelativeVirtualAddress);
     } else if (ui->radioButtonVirtualAddress->isChecked()) {
         ui->lineEditFileOffset->setReadOnly(true);
         ui->lineEditVirtualAddress->setReadOnly(false);
@@ -348,11 +348,11 @@ void XMemoryMapWidget::_adjust(bool bInit)
         }
 
         if (bInit) {
-            ui->lineEditVirtualAddress->setValidatorModeValue(g_mode, nVirtualAddress);
+            ui->lineEditVirtualAddress->setValidatorModeValue(m_mode, nVirtualAddress);
         }
 
-        ui->lineEditFileOffset->setValidatorModeValue(g_mode, nFileOffset);
-        ui->lineEditRelativeVirtualAddress->setValidatorModeValue(g_mode, nRelativeVirtualAddress);
+        ui->lineEditFileOffset->setValidatorModeValue(m_mode, nFileOffset);
+        ui->lineEditRelativeVirtualAddress->setValidatorModeValue(m_mode, nRelativeVirtualAddress);
     } else if (ui->radioButtonRelativeVirtualAddress->isChecked()) {
         ui->lineEditFileOffset->setReadOnly(true);
         ui->lineEditVirtualAddress->setReadOnly(true);
@@ -368,11 +368,11 @@ void XMemoryMapWidget::_adjust(bool bInit)
         }
 
         if (bInit) {
-            ui->lineEditRelativeVirtualAddress->setValidatorModeValue(g_mode, nRelativeVirtualAddress);
+            ui->lineEditRelativeVirtualAddress->setValidatorModeValue(m_mode, nRelativeVirtualAddress);
         }
 
-        ui->lineEditFileOffset->setValidatorModeValue(g_mode, nFileOffset);
-        ui->lineEditVirtualAddress->setValidatorModeValue(g_mode, nVirtualAddress);
+        ui->lineEditFileOffset->setValidatorModeValue(m_mode, nFileOffset);
+        ui->lineEditVirtualAddress->setValidatorModeValue(m_mode, nVirtualAddress);
     }
 
     if (nTableViewIndex != -1) {
@@ -450,7 +450,7 @@ void XMemoryMapWidget::onHexCursorChanged(qint64 nOffset)
     g_bLockHex = true;  // TODO mb use SignalBlocker
 
     if (!ui->lineEditFileOffset->isFocused()) {
-        ui->lineEditFileOffset->setValidatorModeValue(g_mode, nOffset);
+        ui->lineEditFileOffset->setValidatorModeValue(m_mode, nOffset);
     }
 
     g_bLockHex = false;
@@ -586,9 +586,9 @@ void XMemoryMapWidget::viewSelection()
 
             qint64 nRelativeVirtualAddress = XBinary::addressToRelAddress(&g_memoryMap, nVirtualAddress);
 
-            ui->lineEditFileOffset->setValidatorModeValue(g_mode, nFileOffset);
-            ui->lineEditVirtualAddress->setValidatorModeValue(g_mode, nVirtualAddress);
-            ui->lineEditRelativeVirtualAddress->setValidatorModeValue(g_mode, nRelativeVirtualAddress);
+            ui->lineEditFileOffset->setValidatorModeValue(m_mode, nFileOffset);
+            ui->lineEditVirtualAddress->setValidatorModeValue(m_mode, nVirtualAddress);
+            ui->lineEditRelativeVirtualAddress->setValidatorModeValue(m_mode, nRelativeVirtualAddress);
 
             _goToOffset(nFileOffset, nSize);
 
