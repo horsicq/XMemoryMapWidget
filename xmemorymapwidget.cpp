@@ -303,7 +303,8 @@ void XMemoryMapWidget::updateMemoryMap()
 
         connect(ui->tableViewMemoryMap->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this,
                 SLOT(on_tableViewSelection(QItemSelection, QItemSelection)));
-        connect(ui->widgetHex, SIGNAL(cursorViewPosChanged(qint64)), this, SLOT(onHexCursorChanged(qint64)));
+        // widgetHex is persistent across refreshes; UniqueConnection stops the slot stacking up on every updateMemoryMap().
+        connect(ui->widgetHex, SIGNAL(cursorViewPosChanged(qint64)), this, SLOT(onHexCursorChanged(qint64)), Qt::UniqueConnection);
 
         _adjust(true);
 
