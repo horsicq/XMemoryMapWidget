@@ -45,7 +45,6 @@ XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) : XShortcutsWidget(pParent)
     ui->lineEditMode->setToolTip(tr("Mode"));
     ui->lineEditEndianness->setToolTip(tr("Endianness"));
     ui->checkBoxShowAll->setToolTip(tr("Show all"));
-    ui->toolButtonDumpAll->setToolTip(tr("Dump all"));
     ui->tableViewMemoryMap->setToolTip(tr("Memory map"));
     ui->lineEditFileOffset->setToolTip(tr("File offset"));
     ui->lineEditVirtualAddress->setToolTip(tr("Virtual address"));
@@ -55,6 +54,7 @@ XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) : XShortcutsWidget(pParent)
     m_options = {};
     m_mode = XLineEditValidator::MODE_HEX_16;
     m_bLockHex = false;
+    m_bLockSelection = false;
     m_memoryMap = {};
     m_pXInfoDB = nullptr;
 
@@ -124,9 +124,14 @@ void XMemoryMapWidget::setLocation(quint64 nLocation, qint32 nLocationType, qint
 {
     Q_UNUSED(nSize)
 
+    // The matching radio button must be active first, otherwise _adjust()
+    // recomputes the fields from the previously active one and the requested
+    // location is discarded.
     if (nLocationType == XBinary::LT_ADDRESS) {
+        ui->radioButtonVirtualAddress->setChecked(true);
         ui->lineEditVirtualAddress->setValidatorModeValue(m_mode, nLocation);
     } else if (nLocationType == XBinary::LT_OFFSET) {
+        ui->radioButtonFileOffset->setChecked(true);
         ui->lineEditFileOffset->setValidatorModeValue(m_mode, nLocation);
     }
 }
@@ -192,6 +197,8 @@ void XMemoryMapWidget::updateMemoryMap()
 
         m_mapIndexes.clear();
 
+        quint64 nSavedOffset = ui->lineEditFileOffset->getValue_uint64();
+
         XBinary::FT fileType = (XBinary::FT)(ui->comboBoxType->currentData().toInt());
         XBinary::MAPMODE mapMode = (XBinary::MAPMODE)(ui->comboBoxMapMode->currentData().toInt());
 
@@ -203,8 +210,6 @@ void XMemoryMapWidget::updateMemoryMap()
 
         ui->radioButtonFileOffset->setChecked(true);
 
-        ui->lineEditFileOffset->setValue_uint32((quint32)0);
-
         XBinary::MODE _mode = XBinary::getWidthModeFromMemoryMap(&m_memoryMap);
 
         // TODO move function to XShortcutWidget !!!
@@ -212,6 +217,14 @@ void XMemoryMapWidget::updateMemoryMap()
         else if (_mode == XBinary::MODE_16) m_mode = XLineEditValidator::MODE_HEX_16;
         else if (_mode == XBinary::MODE_32) m_mode = XLineEditValidator::MODE_HEX_32;
         else if (_mode == XBinary::MODE_64) m_mode = XLineEditValidator::MODE_HEX_64;
+
+        // Keep the position across reloads, show-all toggles and map mode
+        // switches; fall back to the start when it no longer maps.
+        if (!XBinary::isOffsetValid(&m_memoryMap, (qint64)nSavedOffset)) {
+            nSavedOffset = 0;
+        }
+
+        ui->lineEditFileOffset->setValidatorModeValue(m_mode, nSavedOffset);
 
         qint32 nNumberOfRecords = 0;
 
@@ -230,14 +243,15 @@ void XMemoryMapWidget::updateMemoryMap()
         pModel->setHeaderData(2, Qt::Horizontal, tr("Size"));
         pModel->setHeaderData(3, Qt::Horizontal, tr("Name"));
 
-        //    QColor colDisabled = QWidget::palette().color(QPalette::Window);
+        // Virtual records (no backing file data) are listed dimmed.
+        QBrush brushVirtual(QWidget::palette().color(QPalette::Disabled, QPalette::WindowText));
 
         qint32 _nNumberOfRecords = m_memoryMap.listRecords.count();
 
         for (qint32 i = 0, j = 0; i < _nNumberOfRecords; i++) {
-            //        bool bIsVirtual=m_memoryMap.listRecords.at(i).bIsVirtual;
+            bool bIsVirtual = m_memoryMap.listRecords.at(i).bIsVirtual;
 
-            if ((!(m_memoryMap.listRecords.at(i).bIsVirtual)) || (bShowAll)) {
+            if ((!bIsVirtual) || (bShowAll)) {
                 m_mapIndexes.insert(i, j);
 
                 QStandardItem *pItemOffset = new QStandardItem;
@@ -252,8 +266,6 @@ void XMemoryMapWidget::updateMemoryMap()
 
                 if (m_memoryMap.listRecords.at(i).nOffset != -1) {
                     pItemOffset->setText(XLineEditHEX::getFormatString(m_mode, m_memoryMap.listRecords.at(i).nOffset));
-                } else {
-                    //                pItemOffset->setBackground(colDisabled);
                 }
 
                 pModel->setItem(j, 0, pItemOffset);
@@ -262,8 +274,6 @@ void XMemoryMapWidget::updateMemoryMap()
 
                 if (m_memoryMap.listRecords.at(i).nAddress != (quint64)-1) {
                     pItemAddress->setText(XLineEditHEX::getFormatString(m_mode, m_memoryMap.listRecords.at(i).nAddress));
-                } else {
-                    //                pItemAddress->setBackground(colDisabled);
                 }
 
                 pModel->setItem(j, 1, pItemAddress);
@@ -278,6 +288,13 @@ void XMemoryMapWidget::updateMemoryMap()
 
                 pItemName->setText(m_memoryMap.listRecords.at(i).sName);
                 pModel->setItem(j, 3, pItemName);
+
+                if (bIsVirtual) {
+                    pItemOffset->setForeground(brushVirtual);
+                    pItemAddress->setForeground(brushVirtual);
+                    pItemSize->setForeground(brushVirtual);
+                    pItemName->setForeground(brushVirtual);
+                }
 
                 j++;
             }
@@ -392,17 +409,27 @@ void XMemoryMapWidget::_adjust(bool bInit)
         ui->lineEditVirtualAddress->setValidatorModeValue(m_mode, nVirtualAddress);
     }
 
+    // The selection model emits selectionChanged past the view's blockSignals;
+    // without the lock, viewSelection() would snap the fields being typed back
+    // to the start of the selected record.
+    m_bLockSelection = true;
+
     if (nTableViewIndex != -1) {
         qint32 nIndex = m_mapIndexes.value(nTableViewIndex, -1);
 
-        if (nIndex == -1) {
-            QMessageBox::information(this, tr("Information"), tr("Virtual address"));
-            nIndex = 0;
+        if (nIndex != -1) {
+            QModelIndex miCurrentIndex = ui->tableViewMemoryMap->model()->index(nIndex, 0);
+            ui->tableViewMemoryMap->setCurrentIndex(miCurrentIndex);
+        } else {
+            // The record is filtered out ("Show all" is off and the location is
+            // virtual-only) - drop the selection instead of interrupting typing.
+            ui->tableViewMemoryMap->clearSelection();
         }
-
-        QModelIndex miCurrentIndex = ui->tableViewMemoryMap->model()->index(nIndex, 0);
-        ui->tableViewMemoryMap->setCurrentIndex(miCurrentIndex);
+    } else {
+        ui->tableViewMemoryMap->clearSelection();
     }
+
+    m_bLockSelection = false;
 
     _goToOffset(nFileOffset, 1);
 
@@ -439,7 +466,9 @@ void XMemoryMapWidget::on_tableViewSelection(const QItemSelection &itemSelected,
     Q_UNUSED(itemSelected)
     Q_UNUSED(itemDeselected)
 
-    viewSelection();
+    if (!m_bLockSelection) {
+        viewSelection();
+    }
 }
 
 void XMemoryMapWidget::_goToOffset(qint64 nOffset, qint64 nSize)
@@ -481,6 +510,10 @@ void XMemoryMapWidget::registerShortcuts(bool bState)
 
 void XMemoryMapWidget::on_toolButtonSave_clicked()
 {
+    if (!m_inData.pDevice) {
+        return;
+    }
+
     XShortcutsWidget::saveTableModel(ui->tableViewMemoryMap->getProxyModel(),
                                      XBinary::getResultFileName(m_inData.pDevice, QString("%1.txt").arg(tr("Memory map"))));
 }
@@ -494,6 +527,10 @@ void XMemoryMapWidget::on_checkBoxShowAll_stateChanged(int nValue)
 
 void XMemoryMapWidget::on_toolButtonDumpAll_clicked()
 {
+    if (!m_inData.pDevice) {
+        return;
+    }
+
     QString sDirectory = QFileDialog::getExistingDirectory(this, tr("Dump all"), XBinary::getDeviceDirectory(m_inData.pDevice));
 
     if (!sDirectory.isEmpty()) {
@@ -548,10 +585,10 @@ void XMemoryMapWidget::on_tableViewMemoryMap_customContextMenuRequested(const QP
 
 void XMemoryMapWidget::dumpSection()
 {
-    qint32 nRow = ui->tableViewMemoryMap->currentIndex().row();
+    QModelIndexList listSelected = ui->tableViewMemoryMap->selectionModel()->selectedIndexes();
 
-    if (nRow != -1) {
-        QModelIndex index = ui->tableViewMemoryMap->selectionModel()->selectedIndexes().at(0);
+    if (!listSelected.isEmpty()) {
+        QModelIndex index = listSelected.at(0);
 
         qint64 nOffset = ui->tableViewMemoryMap->model()->data(index, Qt::UserRole + 0).toLongLong();
         qint64 nSize = ui->tableViewMemoryMap->model()->data(index, Qt::UserRole + 2).toLongLong();

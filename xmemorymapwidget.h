@@ -96,6 +96,7 @@ private:
     XBinary::_MEMORY_MAP m_memoryMap;
     XLineEditValidator::MODE m_mode;
     bool m_bLockHex;
+    bool m_bLockSelection;
     QMap<qint32, qint32> m_mapIndexes;
     XInfoDB *m_pXInfoDB;
 };

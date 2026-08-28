@@ -436,7 +436,23 @@
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="pageInvalid"/>
+         <widget class="QWidget" name="pageInvalid">
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <widget class="QLabel" name="labelInvalidLocation">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>No file data at this location</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
       </layout>
