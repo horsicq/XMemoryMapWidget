@@ -514,8 +514,7 @@ void XMemoryMapWidget::on_toolButtonSave_clicked()
         return;
     }
 
-    XShortcutsWidget::saveTableModel(ui->tableViewMemoryMap->getProxyModel(),
-                                     XBinary::getResultFileName(m_inData.pDevice, QString("%1.txt").arg(tr("Memory map"))));
+    XShortcutsWidget::saveTableModel(ui->tableViewMemoryMap->getProxyModel(), XBinary::getResultFileName(m_inData.pDevice, QString("%1.txt").arg(tr("Memory map"))));
 }
 
 void XMemoryMapWidget::on_checkBoxShowAll_stateChanged(int nValue)
