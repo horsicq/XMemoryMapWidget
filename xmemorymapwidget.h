@@ -57,6 +57,10 @@ public:
     virtual void adjustView();
     virtual void reloadData(bool bSaveSelection);
 
+private:
+    void _setLocationValue(XLineEditHEX *pLineEdit, quint64 nValue);
+    void _adjustLineEditWidths();
+
 private slots:
     void on_comboBoxType_currentIndexChanged(int nIndex);
     void on_radioButtonFileOffset_toggled(bool bChecked);

@@ -59,6 +59,8 @@ XMemoryMapWidget::XMemoryMapWidget(QWidget *pParent) : XShortcutsWidget(pParent)
     m_pXInfoDB = nullptr;
 
     ui->checkBoxShowAll->setChecked(true);
+
+    _adjustLineEditWidths();
 }
 
 XMemoryMapWidget::~XMemoryMapWidget()
@@ -147,6 +149,7 @@ void XMemoryMapWidget::adjustView()
     ui->widgetHex->adjustView();
     getGlobalOptions()->adjustWidget(this, XOptions::ID_VIEW_FONT_CONTROLS);
     getGlobalOptions()->adjustTableView(ui->tableViewMemoryMap, XOptions::ID_VIEW_FONT_TABLEVIEWS);
+    _adjustLineEditWidths();
 }
 
 void XMemoryMapWidget::reloadData(bool bSaveSelection)
@@ -217,6 +220,8 @@ void XMemoryMapWidget::updateMemoryMap()
         else if (_mode == XBinary::MODE_16) m_mode = XLineEditValidator::MODE_HEX_16;
         else if (_mode == XBinary::MODE_32) m_mode = XLineEditValidator::MODE_HEX_32;
         else if (_mode == XBinary::MODE_64) m_mode = XLineEditValidator::MODE_HEX_64;
+
+        _adjustLineEditWidths();
 
         // Keep the position across reloads, show-all toggles and map mode
         // switches; fall back to the start when it no longer maps.
@@ -314,9 +319,12 @@ void XMemoryMapWidget::updateMemoryMap()
 
         qint32 nColumnSize = XLineEditHEX::getWidthFromMode(this, m_mode);
 
-        ui->tableViewMemoryMap->setColumnWidth(0, nColumnSize);
-        ui->tableViewMemoryMap->setColumnWidth(1, nColumnSize);
-        ui->tableViewMemoryMap->setColumnWidth(2, nColumnSize);
+        // The mode width fits the values; a small file (narrow mode) must still
+        // show the whole column title, so never go below the header's own hint.
+        for (qint32 i = 0; i < 3; i++) {
+            qint32 nHeaderWidth = ui->tableViewMemoryMap->horizontalHeader()->sectionSizeHint(i);
+            ui->tableViewMemoryMap->setColumnWidth(i, qMax(nColumnSize, nHeaderWidth));
+        }
 
         connect(ui->tableViewMemoryMap->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this,
                 SLOT(on_tableViewSelection(QItemSelection, QItemSelection)));
@@ -365,8 +373,8 @@ void XMemoryMapWidget::_adjust(bool bInit)
             ui->lineEditFileOffset->setValidatorModeValue(m_mode, nFileOffset);
         }
 
-        ui->lineEditVirtualAddress->setValidatorModeValue(m_mode, nVirtualAddress);
-        ui->lineEditRelativeVirtualAddress->setValidatorModeValue(m_mode, nRelativeVirtualAddress);
+        _setLocationValue(ui->lineEditVirtualAddress, nVirtualAddress);
+        _setLocationValue(ui->lineEditRelativeVirtualAddress, nRelativeVirtualAddress);
     } else if (ui->radioButtonVirtualAddress->isChecked()) {
         ui->lineEditFileOffset->setReadOnly(true);
         ui->lineEditVirtualAddress->setReadOnly(false);
@@ -385,8 +393,8 @@ void XMemoryMapWidget::_adjust(bool bInit)
             ui->lineEditVirtualAddress->setValidatorModeValue(m_mode, nVirtualAddress);
         }
 
-        ui->lineEditFileOffset->setValidatorModeValue(m_mode, nFileOffset);
-        ui->lineEditRelativeVirtualAddress->setValidatorModeValue(m_mode, nRelativeVirtualAddress);
+        _setLocationValue(ui->lineEditFileOffset, nFileOffset);
+        _setLocationValue(ui->lineEditRelativeVirtualAddress, nRelativeVirtualAddress);
     } else if (ui->radioButtonRelativeVirtualAddress->isChecked()) {
         ui->lineEditFileOffset->setReadOnly(true);
         ui->lineEditVirtualAddress->setReadOnly(true);
@@ -405,8 +413,8 @@ void XMemoryMapWidget::_adjust(bool bInit)
             ui->lineEditRelativeVirtualAddress->setValidatorModeValue(m_mode, nRelativeVirtualAddress);
         }
 
-        ui->lineEditFileOffset->setValidatorModeValue(m_mode, nFileOffset);
-        ui->lineEditVirtualAddress->setValidatorModeValue(m_mode, nVirtualAddress);
+        _setLocationValue(ui->lineEditFileOffset, nFileOffset);
+        _setLocationValue(ui->lineEditVirtualAddress, nVirtualAddress);
     }
 
     // The selection model emits selectionChanged past the view's blockSignals;
@@ -438,6 +446,52 @@ void XMemoryMapWidget::_adjust(bool bInit)
     ui->lineEditRelativeVirtualAddress->blockSignals(bBlocked3);
     ui->tableViewMemoryMap->blockSignals(bBlocked4);
     ui->pageHex->blockSignals(bBlocked5);
+}
+
+void XMemoryMapWidget::_setLocationValue(XLineEditHEX *pLineEdit, quint64 nValue)
+{
+    // (quint64)-1 is the "not mapped" result of the offset<->address
+    // conversions and of the virtual/unmapped memory records; show an
+    // empty field for it instead of the sentinel formatted as ff.. in the
+    // current width. The validator mode and the stored value (0) are kept
+    // in step with the empty text.
+    if (nValue != (quint64)-1) {
+        pLineEdit->setValidatorModeValue(m_mode, nValue);
+    } else {
+        pLineEdit->setValidatorModeValue(m_mode, 0);
+        pLineEdit->clear();
+    }
+}
+
+void XMemoryMapWidget::_adjustLineEditWidths()
+{
+    // The edits are centre-aligned, so a text wider than the field loses
+    // characters at both ends. Reserve room for the widest value of the
+    // current mode (16 hex digits for 64-bit; XLineEditHEX shows non-zero
+    // values in bold) plus the frame, style padding and text margins.
+    QFont fontValue = ui->lineEditFileOffset->font();
+    fontValue.setBold(true);
+    QFontMetrics fmValue(fontValue);
+
+    qint32 nNumberOfDigits = XLineEditValidator::getNumberOfBits(m_mode) / 4;
+    qint32 nExtra = fmValue.horizontalAdvance(QString("WWW"));
+    qint32 nValueWidth = fmValue.horizontalAdvance(QString(nNumberOfDigits, QChar('0'))) + nExtra;
+
+    ui->lineEditFileOffset->setMinimumWidth(nValueWidth);
+    ui->lineEditVirtualAddress->setMinimumWidth(nValueWidth);
+    ui->lineEditRelativeVirtualAddress->setMinimumWidth(nValueWidth);
+
+    // Mode / Endianness / Architecture hold short words; "Unknown" is the
+    // widest one the first two can show, so size for it and the current
+    // text (the edits have an Ignored horizontal policy, so this width is
+    // what the group boxes are laid out from).
+    QFontMetrics fmInfo(ui->lineEditMode->font());
+    qint32 nUnknownModeWidth = fmInfo.horizontalAdvance(XBinary::modeIdToString(XBinary::MODE_UNKNOWN));
+    qint32 nUnknownEndianWidth = fmInfo.horizontalAdvance(XBinary::endianToString(XBinary::ENDIAN_UNKNOWN));
+
+    ui->lineEditMode->setMinimumWidth(qMax(fmInfo.horizontalAdvance(ui->lineEditMode->text()), nUnknownModeWidth) + nExtra);
+    ui->lineEditEndianness->setMinimumWidth(qMax(fmInfo.horizontalAdvance(ui->lineEditEndianness->text()), nUnknownEndianWidth) + nExtra);
+    ui->lineEditArch->setMinimumWidth(qMax(fmInfo.horizontalAdvance(ui->lineEditArch->text()), nUnknownModeWidth) + nExtra);
 }
 
 void XMemoryMapWidget::on_lineEditFileOffset_textChanged(const QString &sText)
@@ -638,9 +692,9 @@ void XMemoryMapWidget::viewSelection()
 
             qint64 nRelativeVirtualAddress = XBinary::addressToRelAddress(&m_memoryMap, nVirtualAddress);
 
-            ui->lineEditFileOffset->setValidatorModeValue(m_mode, nFileOffset);
-            ui->lineEditVirtualAddress->setValidatorModeValue(m_mode, nVirtualAddress);
-            ui->lineEditRelativeVirtualAddress->setValidatorModeValue(m_mode, nRelativeVirtualAddress);
+            _setLocationValue(ui->lineEditFileOffset, nFileOffset);
+            _setLocationValue(ui->lineEditVirtualAddress, nVirtualAddress);
+            _setLocationValue(ui->lineEditRelativeVirtualAddress, nRelativeVirtualAddress);
 
             _goToOffset(nFileOffset, nSize);
 
